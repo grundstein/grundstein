@@ -46,10 +46,10 @@ printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\n"
 
 printf "${GREEN}GRUNDSTEIN${NC} bootstrap done\n"
 
-printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung."
+printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung.\n"
 
 git clone git://github.com/grundstein/legung /grundsteinlegung
 
-su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-certbot.sh"
+/usr/bin/env bash /grundsteinlegung/bash/bootstrap-certbot.sh
 
 # su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-user-env.sh"

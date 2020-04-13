@@ -23,12 +23,7 @@ printf "${YELLOW}GRUNDSTEIN${NC} starting bootstrap\n"
 apt -y update
 
 # install git
-apt -y install git software-properties-common makepasswd curl nano python3-pip
-
-# prepare certbot install
-add-apt-repository -y universe
-add-apt-repository -y ppa:certbot/certbot
-apt -y update
+apt -y install git makepasswd
 
 # update packages
 apt -y upgrade

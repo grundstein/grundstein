@@ -6,7 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User=grundstein
-ExecStart=/home/grundstein/cloud.grundstein.it/src/bin.mjs
+ExecStart=/home/grundstein/gas/src/bin.mjs
 Restart=on-failure
 
 [Install]

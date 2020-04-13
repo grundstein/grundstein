@@ -315,15 +315,7 @@ print_status 'Running `apt-get update` for you...'
 
 exec_cmd 'apt-get update'
 
-print_status """Run \`${bold}sudo apt-get install -y ${NODEPKG}${normal}\` to install ${NODENAME} and npm
-## You may also need development tools to build native addons:
-     sudo apt-get install gcc g++ make
-## To install the Yarn package manager, run:
-     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-     echo \"deb https://dl.yarnpkg.com/debian/ stable main\" | sudo tee /etc/apt/sources.list.d/yarn.list
-     sudo apt-get update && sudo apt-get install yarn
-"""
-
+exec_cmd 'apt-get install -y nodejs'
 }
 
 ## Defer setup until we have the complete script

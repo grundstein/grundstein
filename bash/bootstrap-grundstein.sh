@@ -26,7 +26,8 @@ apt -y update
 
 # curl needed for nvm
 # makepasswd needed for user generation below
-apt -y install git makepasswd curl
+# nano should later be removed from the list, convenience install for dev.
+apt -y install git makepasswd curl nano
 
 # update packages
 apt -y upgrade

@@ -30,12 +30,6 @@ add-apt-repository -y universe
 add-apt-repository -y ppa:certbot/certbot
 apt -y update
 
-# actually install certbot
-TZ=Europe/Vienna && apt -y install certbot
-
-# install certbot digitalocean plugin.
-pip3 install certbot-dns-digitalocean
-
 # update packages
 apt -y upgrade
 
@@ -63,4 +57,6 @@ git clone git://github.com/grundstein/legung /grundsteinlegung
 
 cd /grundsteinlegung
 
-su -c "/usr/bin/env bash bash/bootstrap-user-env.sh"
+su - "$USERNAME" -c "/usr/bin/env bash bash/bootrap-certbot.sh"
+
+# su - "$USERNAME" -c "/usr/bin/env bash bash/bootstrap-user-env.sh"

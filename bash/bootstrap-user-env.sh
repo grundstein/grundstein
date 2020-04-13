@@ -34,12 +34,6 @@ git clone "$GIT_URL/cloud.grundstein.it" "$USERHOME/cloud.grundstein.it"
 
 # clone the various grundstein services
 
-printf "${YELLOW}GRUNDSTEIN${NC} cloning gms.\n"
-git clone $GIT_URL/gms $USERHOME/gms || echo "gms cloned already"
-cd $USERHOME/gms && git pull && npm install
-
-printf "${YELLOW}GRUNDSTEIN${NC} cloning gas.\n"
-git clone $GIT_URL/gas $USERHOME/gas || echo "gas cloned already"
-cd $USERHOME/gas && git pull && npm install
+npm install -g grundstein/gms grundstein/gas
 
 printf "${GREEN}GRUNDSTEIN${NC} user env generation finished successfully.\n"

@@ -59,4 +59,4 @@ chown grundstein:grundstein /grundsteinlegung/bash/nvm-install.sh
 
 su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-node.sh"
 
-su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-user-env.sh"
+su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-services.sh"

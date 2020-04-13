@@ -10,6 +10,6 @@ echo "whoami? $(whoami)"
 
 printf "${YELLOW}GRUNDSTEIN${NC} npm install grundstein services.\n"
 
-npm install -g grundstein/gms grundstein/gas
+npm install -g grundstein/gms grundstein/gas grundstein/gps
 
 printf "${GREEN}GRUNDSTEIN${NC} npm install finished successfully.\n"

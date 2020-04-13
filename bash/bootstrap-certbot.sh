@@ -4,9 +4,6 @@ set -euf -o pipefail
 
 source /grundsteinlegung/bash/config.sh
 
-# install dependencies
-apt -y install software-properties-common python3-pip
-
 # prepare certbot install
 add-apt-repository -y universe
 add-apt-repository -y ppa:certbot/certbot

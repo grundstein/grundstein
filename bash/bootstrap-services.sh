@@ -10,7 +10,17 @@ echo "whoami? $(whoami)"
 
 printf "${YELLOW}GRUNDSTEIN${NC} git clone cloud.grundstein.it\n"
 
-git clone "git://github.com/grundstein/${GIT_CLOUD_REPO}" "/home/${USERNAME}/${GIT_CLOUD_REPO}"
+git clone "${GIT_URL}/${GIT_CLOUD_REPO}" "/home/${USERNAME}/${GIT_CLOUD_REPO}"
+
+cd "/home/${USERNAME}/${GIT_CLOUD_REPO}"
+
+npm install
+
+cd /
+
+printf "${GREEN}GRUNDSTEIN${NC} ${GIT_CLOUD_REPO} setup done."
+
+chown grundstein:grundstein -R /home/${USERNAME}/${GIT_CLOUD_REPO}
 
 printf "${YELLOW}GRUNDSTEIN${NC} npm install grundstein services.\n"
 

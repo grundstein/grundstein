@@ -39,7 +39,7 @@ this docker container will then be set up using grundsteinlegung.sh
 
 ```bash
 # run the test locally
-./test.sh
+./test/test.sh
 ```
 
 ### deploy

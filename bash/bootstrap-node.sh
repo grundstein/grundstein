@@ -10,8 +10,6 @@ echo "whoami? $(whoami)"
 
 printf "${YELLOW}GRUNDSTEIN${NC} installing nodejs.\n"
 
-export NVM_DIR="$USERHOME/.nvm"
-
 bash /grundsteinlegung/bash/nvm-install.sh
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

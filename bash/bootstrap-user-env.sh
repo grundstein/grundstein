@@ -12,11 +12,7 @@ printf "${YELLOW}GRUNDSTEIN${NC} installing nodejs.\n"
 
 export NVM_DIR="$USERHOME/.nvm"
 
-git clone https://github.com/nvm-sh/nvm.git $NVM_DIR
-cd $NVM_DIR
-git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
-
-source "/home/$USERNAME/.bashrc"
+bash /grundstein/legung/bash/nvm-install.sh
 
 nvm --version
 

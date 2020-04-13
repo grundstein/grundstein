@@ -10,6 +10,8 @@ export NODE_VERSION=13
 export NVM_DIR="$USERHOME/.nvm"
 export GIT_URL="git://github.com/grundstein"
 
+echo "START apt install"
+
 # update apt sources
 apt update
 
@@ -30,6 +32,8 @@ apt install -y git software-properties-common makepasswd curl nano
 # update packages
 # apt upgrade
 
+echo "START user setup"
+
 # remove user if it exists
 id -u "$USERNAME" &>/dev/null && userdel grundstein
 
@@ -38,6 +42,8 @@ PASSWORD=$(makepasswd --min 42 --max 42)
 useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 
 # switch to grundstein user
+
+echo "START grundstein setup"
 
 su - $USERNAME <<!
 echo "switched to $(whoami)"
@@ -66,8 +72,9 @@ cd $USERHOME/gas && git pull && npm install
 # create systemd startup files
 !
 
-echo "root again $(whoami)"
+echo "ROOT again $(whoami)"
 
+echo "START systemd setup"
 git clone $GIT_URL/legung /grundsteinlegung
 cp /grundsteinlegung/systemd/gas.service /lib/systemd/system/
 cp /grundsteinlegung/systemd/gms.service /lib/systemd/system/
@@ -76,19 +83,25 @@ cp /grundsteinlegung/systemd/gps.service /lib/systemd/system/
 # reload daemon to load new .service files
 systemctl daemon-reload
 
+echo "START systemd start services"
 # run services
+systemctl start gps
 systemctl start gms
 systemctl start gas
 # not built yet
 # systemctl start gul
 # systemctl start ghs
 
+echo "START systemd enable services"
 # enable services
+systemctl enable gps
 systemctl enable gms
 systemctl enable gas
 # systemctl enable gul
 # systemctl enable ghs
 
+
+echo "START iptables port forwarding"
 # iptables port forwards
 iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
 iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 4343

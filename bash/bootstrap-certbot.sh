@@ -2,7 +2,7 @@
 
 set -euf -o pipefail
 
-source bash/config.sh
+source /grundsteinlegung/bash/config.sh
 
 # install dependencies
 apt -y install software-properties-common python3-pip

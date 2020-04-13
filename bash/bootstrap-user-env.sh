@@ -2,7 +2,7 @@
 
 set -euf -o pipefail
 
-source bash/config.sh
+source /grundsteinlegung/bash/config.sh
 
 printf "${YELLOW}GRUNDSTEIN${NC} starting user env generation.\n"
 

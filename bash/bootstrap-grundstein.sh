@@ -55,8 +55,6 @@ printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung."
 
 git clone git://github.com/grundstein/legung /grundsteinlegung
 
-cd /grundsteinlegung
+su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-certbot.sh"
 
-su - "$USERNAME" -c "/usr/bin/env bash bash/bootrap-certbot.sh"
-
-# su - "$USERNAME" -c "/usr/bin/env bash bash/bootstrap-user-env.sh"
+# su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-user-env.sh"

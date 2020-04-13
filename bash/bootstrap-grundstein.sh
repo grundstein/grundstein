@@ -2,10 +2,15 @@
 
 set -euf -o pipefail
 
-source bash/config.sh
+# can not use config.sh in this file, will be fixed once this file gets generated.
+export TZ="Europe/Vienna"
+export USERNAME="grundstein"
+export USERHOME="/home/grundstein"
+export NODE_VERSION=13
+export NVM_DIR="$USERHOME/.nvm"
+export GIT_URL="git://github.com/grundstein"
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

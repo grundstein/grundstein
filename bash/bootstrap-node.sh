@@ -12,9 +12,6 @@ printf "${YELLOW}GRUNDSTEIN${NC} installing nodejs.\n"
 
 bash /grundsteinlegung/bash/nvm-install.sh
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
 printf "${YELLOW}GRUNDSTEIN${NC} install node ${NODE_VERSION} and use it as default"
 
 nvm install $NODE_VERSION

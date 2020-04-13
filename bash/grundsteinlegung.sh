@@ -45,7 +45,8 @@ useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 
 echo "START grundstein setup"
 
-su - $USERNAME <<!
+su "$USERNAME" <<!
+
 echo "switched to $(whoami)"
 
 export NVM_DIR="$USERHOME/.nvm" && (
@@ -73,8 +74,6 @@ cd $USERHOME/gms && git pull && npm install
 
 git clone $GIT_URL/gas $USERHOME/gas || echo "gas cloned already"
 cd $USERHOME/gas && git pull && npm install
-
-# create systemd startup files
 !
 
 echo "ROOT again $(whoami)"

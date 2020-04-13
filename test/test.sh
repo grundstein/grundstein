@@ -7,7 +7,9 @@ INSTALL_FILE="grundsteinlegung.sh"
 
 sudo docker build test --tag="$CONTAINER_NAME"
 
-sudo docker rm "$CONTAINER_NAME" -f
+if [[ $(sudo docker ps -q -f name=$CONTAINER_NAME) ]]; then
+   sudo docker rm "$CONTAINER_NAME" -f
+fi
 
 sudo docker run --rm -td --name="$CONTAINER_NAME" "$CONTAINER_NAME"
 

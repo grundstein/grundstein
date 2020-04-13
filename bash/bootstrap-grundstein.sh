@@ -53,3 +53,11 @@ useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\n"
 
 printf "${GREEN}GRUNDSTEIN${NC} bootstrap done\n"
+
+printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung."
+
+git clone git://github.com/grundstein/legung /grundsteinlegung
+
+cd /grundsteinlegung
+
+sudo su -c "/usr/bin/env bash bash/bootstrap-user-env.sh"

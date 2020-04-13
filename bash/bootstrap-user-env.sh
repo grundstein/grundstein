@@ -18,9 +18,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-nvm --version
+printf "${GRUNDSTEIN} install node ${NODE_VERSION} and use it as default"
 
-# install node 13 and use it as default
 nvm install $NODE_VERSION
 nvm use $NODE_VERSION
 

@@ -13,5 +13,5 @@ sudo docker run --rm -td --name="$CONTAINER_NAME" "$CONTAINER_NAME"
 
 sudo docker cp "./$INSTALL_FILE" "$CONTAINER_NAME:/"
 
-sudo docker exec -it "$CONTAINER_NAME" /bin/bash #/$INSTALL_FILE
+sudo docker exec -it "$CONTAINER_NAME" /bin/bash /$INSTALL_FILE
 

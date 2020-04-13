@@ -30,13 +30,10 @@ apt install -y git software-properties-common makepasswd curl nano
 # update packages
 # apt upgrade
 
-# autoremove unneeded packages
-# apt autoremove
-
-# add user. one should be fine. we do not need to know the password
-
+# remove user if it exists
 id -u "$USERNAME" &>/dev/null && userdel grundstein
 
+# add user. one should be fine for now. we do not need to know the password
 PASSWORD=$(makepasswd --min 42 --max 42)
 useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 
@@ -72,7 +69,9 @@ cd $USERHOME/gas && git pull && npm install
 echo "root again $(whoami)"
 
 git clone $GIT_URL/legung /grundsteinlegung
-cp /grundsteinlegung/systemd/* /lib/systemd/system
+cp /grundsteinlegung/systemd/gas.service /lib/systemd/system/
+cp /grundsteinlegung/systemd/gms.service /lib/systemd/system/
+cp /grundsteinlegung/systemd/gps.service /lib/systemd/system/
 
 # reload daemon to load new .service files
 systemctl daemon-reload

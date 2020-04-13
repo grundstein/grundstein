@@ -58,6 +58,6 @@ git clone git://github.com/grundstein/legung /grundsteinlegung
 
 chown grundstein:grundstein /grundsteinlegung/bash/nvm-install.sh
 
-su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-node.sh"
+/usr/bin/env bash /grundsteinlegung/bash/bootstrap-node.sh
 
 su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-services.sh"

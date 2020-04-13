@@ -12,7 +12,7 @@ printf "${YELLOW}GRUNDSTEIN${NC} installing nodejs.\n"
 
 export NVM_DIR="$USERHOME/.nvm"
 
-bash /grundstein/legung/bash/nvm-install.sh
+bash /grundsteinlegung/bash/nvm-install.sh
 
 nvm --version
 

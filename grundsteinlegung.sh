@@ -58,6 +58,11 @@ export NVM_DIR="$USERHOME/.nvm" && (
 nvm install $NODE_VERSION
 nvm use $NODE_VERSION
 
+# echo node versions
+nvm --version
+node --version
+npm --version
+
 # clone the cloud env
 git clone "$GIT_URL/cloud.grundstein.it" "$USERHOME/cloud.grundstein.it"
 
@@ -78,14 +83,12 @@ echo "START systemd setup"
 git clone $GIT_URL/legung /grundsteinlegung
 cp /grundsteinlegung/systemd/gas.service /lib/systemd/system/
 cp /grundsteinlegung/systemd/gms.service /lib/systemd/system/
-cp /grundsteinlegung/systemd/gps.service /lib/systemd/system/
 
 # reload daemon to load new .service files
 systemctl daemon-reload
 
 echo "START systemd start services"
 # run services
-systemctl start gps
 systemctl start gms
 systemctl start gas
 # not built yet
@@ -94,7 +97,6 @@ systemctl start gas
 
 echo "START systemd enable services"
 # enable services
-systemctl enable gps
 systemctl enable gms
 systemctl enable gas
 # systemctl enable gul

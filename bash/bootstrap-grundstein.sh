@@ -23,7 +23,10 @@ printf "${YELLOW}GRUNDSTEIN${NC} starting bootstrap\n"
 apt -y update
 
 # install git
-apt -y install git makepasswd
+
+# curl needed for nvm
+# makepasswd needed for user generation below
+apt -y install git makepasswd curl
 
 # update packages
 apt -y upgrade

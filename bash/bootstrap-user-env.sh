@@ -2,11 +2,7 @@
 
 set -euf -o pipefail
 
-export USERNAME="grundstein"
-export USERHOME="/home/grundstein"
-export NODE_VERSION=13
-export NVM_DIR="$USERHOME/.nvm"
-export GIT_URL="git://github.com/grundstein"
+source bash/config.sh
 
 export NVM_DIR="$USERHOME/.nvm" && (
   git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"

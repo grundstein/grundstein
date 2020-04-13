@@ -2,12 +2,10 @@
 
 set -euf -o pipefail
 
-export TZ="Europe/Vienna"
+source bash/config.sh
 
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-export USERNAME="grundstein"
-export USERHOME="/home/grundstein"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -60,4 +58,4 @@ git clone git://github.com/grundstein/legung /grundsteinlegung
 
 cd /grundsteinlegung
 
-sudo su -c "/usr/bin/env bash bash/bootstrap-user-env.sh"
+su -c "/usr/bin/env bash bash/bootstrap-user-env.sh"

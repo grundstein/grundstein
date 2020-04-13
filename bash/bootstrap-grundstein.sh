@@ -52,4 +52,6 @@ git clone git://github.com/grundstein/legung /grundsteinlegung
 
 # /usr/bin/env bash /grundsteinlegung/bash/bootstrap-certbot.sh
 
+chown grundstein:grundstein /grundsteinlegung/bash/nvm-install.sh
+
 su - "$USERNAME" -c "/usr/bin/env bash /grundsteinlegung/bash/bootstrap-user-env.sh"

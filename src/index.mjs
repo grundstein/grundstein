@@ -10,7 +10,10 @@ export const run = async () => {
   const cwd = process.cwd()
 
   if (is.empty(env) || is.empty(hosts) || is.empty(repos)) {
-    const err = error('E_CONFIG_BROKEN', 'the configuration is missing something. better debug coming soon, sorry.')
+    const err = error(
+      'E_CONFIG_BROKEN',
+      'the configuration is missing something. better debug coming soon, sorry.',
+    )
     log.error(err)
     process.exit(1)
   }

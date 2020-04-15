@@ -36,7 +36,7 @@ GREEN='\\033[0;32m'
 YELLOW='\\033[1;33m'
 NC='\\033[0m'
 
-printf '\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n'
+printf "\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n"
 
 # update apt sources
 apt -y update

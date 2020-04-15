@@ -6,8 +6,6 @@ source /grundsteinlegung/bash/config.sh
 
 printf "${YELLOW}GRUNDSTEIN${NC} starting grundstein service setup.\n"
 
-echo "whoami? $(whoami)"
-
 printf "${YELLOW}GRUNDSTEIN${NC} git clone cloud.grundstein.it\n"
 
 git clone "${GIT_URL}/${GIT_CLOUD_REPO}" "/home/${USERNAME}/${GIT_CLOUD_REPO}"

@@ -42,7 +42,7 @@ printf "${YELLOW}GRUNDSTEIN${NC} starting user generation\n"
 
 id -u "$USERNAME" &>/dev/null && userdel grundstein
 
-# add user. one should be fine for now. we do not need to know the password
+# add user. one should be fine for now. we do not need to know the password.
 PASSWORD=$(makepasswd --min 42 --max 42)
 useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 

@@ -6,10 +6,40 @@ import is from '@magic/types'
 
 import { log } from '@grundstein/commons'
 
-import { env, hosts, repos } from '@grundstein/hosts'
+import config from '@grundstein/hosts'
 
 export const run = async () => {
   const cwd = process.cwd()
+
+  const defaultEnv = {
+    TZ: 'Europe/Vienna',
+    USERNAME: 'grundstein"',
+    USERHOME: '$HOME/grundstein',
+    NODE_INSTALL_VERSION: '13',
+    GIT_URL: 'git://github.com/grundstein',
+    GIT_CLOUD_REPO: 'cloud.grundstein.it',
+    CONFIG_FILE: 'grundstein-config.sh',
+
+    RED: '\\033[0;31m',
+    GREEN: '\\033[0;32m',
+    YELLOW: '\\033[1;33m',
+    NC: '\\033[0m',
+  }
+
+  const env = {
+    ...defaultEnv,
+    ...config.env,
+  }
+
+  const bashConfig = Object.entries(env).map(([key, value]) =>
+    `export ${key}="${value}"`)
+    .join('\n')
+
+  const writeBashConfig = Object.entries(env).map(([key, value]) =>
+    `echo 'export ${key}="${value}"' >> /grundstein-config.sh`)
+    .join('\n')
+
+  const { hosts, repos } = config
 
   if (is.empty(env) || is.empty(hosts) || is.empty(repos)) {
     const err = error(
@@ -35,15 +65,19 @@ export const run = async () => {
 
 set -euf -o pipefail
 
-export TZ='${env.TZ}'
-export GIT_URL='git://github.com/grundstein'
+printf "GRUNDSTEIN writing config file\\n"
+
+${bashConfig}
+
+${writeBashConfig}
+
+printf "GRUNDSTEIN wrote /grundstein-config.sh file successfully\\n"
+
+printf "GRUNDSTEIN source config file to get it\'s content and make sure it works\\n"
+
+source /grundstein-config.sh
 
 ln -snf /usr/share/zoneinfo/${env.TZ} /etc/localtime && echo ${env.TZ} > /etc/timezone
-
-RED='\\033[0;31m'
-GREEN='\\033[0;32m'
-YELLOW='\\033[1;33m'
-NC='\\033[0m'
 
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n"
 
@@ -65,6 +99,7 @@ apt -y autoremove
 
 printf "\${GREEN}GRUNDSTEIN\${NC} apt installation done.\\n"
 
+
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting git clone of grundsteinlegung.\\n"
 
 git clone "$GIT_URL/legung" /grundsteinlegung
@@ -83,6 +118,9 @@ printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setu
 `.trimStart()
 
   await fs.writeFile(bootstrapFile, bootstrapScriptContents)
+
+  log(`Wrote ${bootstrapFile}.`)
+  log('use "npm run test:cli" to run a local docker testrun.')
 }
 
 export default run

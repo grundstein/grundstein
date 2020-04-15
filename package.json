@@ -30,6 +30,7 @@
     "url": "https://github.com/grundstein/legung/issues"
   },
   "dependencies": {
+    "@grundstein/commons": "github:grundstein/commons",
     "@grundstein/hosts": "github:grundstein/hosts",
     "@magic/cli": "0.0.24",
     "@magic/error": "0.0.5",

@@ -1,0 +1,54 @@
+{
+  "name": "grundstein",
+  "version": "0.0.1-alpha.0",
+  "author": "Wizards & Witches",
+  "homepage": "https://docs.grundstein.it/grundsteinlegung",
+  "license": "AGPL-3.0",
+  "description": "### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET! install this package to get started with grundstein. npm i -g grundstein",
+  "main": "src/index.mjs",
+  "private": true,
+  "engines": {
+    "node": ">=13.5.0"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "start": "src/bin.mjs",
+    "test": "t",
+    "test:cli": "test/bootstrap.sh",
+    "connect": "ssh root@grundstein 'bash -s' < src/bash/install.sh",
+    "test:install": "src/bash/install-test.sh",
+    "format": "f -w"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grundstein/legung.git"
+  },
+  "bugs": {
+    "url": "https://github.com/grundstein/legung/issues"
+  },
+  "dependencies": {
+    "@grundstein/hosts": "github:grundstein/hosts",
+    "@magic/cli": "0.0.24",
+    "@magic/error": "0.0.5",
+    "@magic/fs": "0.0.5",
+    "@magic/types": "0.1.11"
+  },
+  "devDependencies": {
+    "@magic/format": "0.0.8",
+    "@magic/test": "0.1.41"
+  },
+  "keywords": [
+    "grundstein",
+    "legung",
+    "server"
+  ],
+  "contributors": [
+    {
+      "name": "jascha ehrenreich",
+      "github": "jaeh"
+    }
+  ]
+}

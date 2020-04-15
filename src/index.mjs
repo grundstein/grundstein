@@ -4,6 +4,8 @@ import error from '@magic/error'
 import fs from '@magic/fs'
 import is from '@magic/types'
 
+import { log } from '@grundstein/commons'
+
 import { env, hosts, repos } from '@grundstein/hosts'
 
 export const run = async () => {
@@ -17,6 +19,10 @@ export const run = async () => {
     log.error(err)
     process.exit(1)
   }
+
+  log({ env })
+  log({ hosts })
+  log({ repos })
 
   const bootstrapDir = path.join(cwd, 'bootstrap')
 

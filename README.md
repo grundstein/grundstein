@@ -2,6 +2,16 @@
 
 ### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
 
+Grundstein (plural Grundsteine) [german]
+
+* A ceremonial stone set at the corner of a building.
+
+* By extension, that which is prominent, fundamental, noteworthy, or central.
+Exceptional service is the cornerstone of the hospitality industry.
+That is the cornerstone of any meaningful debate about budgets and projects, regulations and policies.
+
+via: [wiktionary](https://en.wiktionary.org/wiki/grundstein)
+
 ### grundstein installer bash scripts.
 
 expects ssh and bash on your server, all other dependencies get installed automagically.
@@ -12,17 +22,18 @@ expects ssh and bash on your server, all other dependencies get installed automa
 
 adds grundstein user(s)
 
-#### systemd init
-
-sets up grundstein systemd.service files
-
 #### installs all dependencies
 
 nodejs, git, makepasswd, curl
 
-##### certbot
+#### certbot
 
 generates letsencrypt certificates using certbot and certbot-dns-digitalocean
+
+#### systemd init
+
+sets up grundstein systemd.service files
+
 
 ### installation
 
@@ -40,16 +51,6 @@ this docker container will then be set up using grundsteinlegung.sh
 ```bash
 # run the test locally
 ./test/test.sh
-```
-
-### deploy
-
-before deploying, /etc/hosts has to get a `grundstein` entry.
-
-replace 127.0.0.1 with your ip address.
-
-```bash
-echo '127.0.0.1    grundstein' | sudo tee --append /etc/hosts
 ```
 
 ##### suggestion:

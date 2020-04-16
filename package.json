@@ -12,7 +12,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "start": "src/bin.mjs",
+    "start": "src/bin.mjs && /usr/bin/env bash bootstrap/dev.sh",
     "test": "npm run test:cli",
     "test:cli": "test/bootstrap.sh",
     "connect": "ssh root@grundstein 'bash -s' < src/bash/install.sh",

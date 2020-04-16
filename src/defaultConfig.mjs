@@ -5,6 +5,11 @@ export const env = {
   NVM_NODE_VERSION: 13,
   NVM_DIR: '$USERHOME/.nvm',
   GIT_URL: 'git://github.com/grundstein',
+
+  RED: '\\033[0;31m',
+  GREEN: '\\033[0;32m',
+  YELLOW: '\\033[1;33m',
+  NC: '\\033[0m',
 }
 
 // service config:

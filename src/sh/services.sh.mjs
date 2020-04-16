@@ -1,9 +1,12 @@
 import { log } from '@grundstein/commons'
 
-export const createHostBash = conf => {
-  log('Configure host:', conf.host)
+import { writeFile } from '../lib/index.mjs'
 
-  const { services, repositories } = conf.host
+export const createBash = async config => {
+  log('Configure host:', config.host)
+
+  const { dir, host } = config
+  const { name, services, repositories } = host
 
   const serviceList = Object.keys(services)
     .map(s => `grundstein/${s}`)
@@ -44,13 +47,7 @@ ${clone.trim()}
 cd /
     `.trim()
 
-  return sh
-}
-
-export default config => {
-  const hostConfigScript = config.hosts.map(host => createHostBash({ ...config, host }))
-
-  return `
+  const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
@@ -59,9 +56,15 @@ source /grundsteinlegung/bash/config.sh
 
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting grundstein service setup.\\n"
 
-${hostConfigScript}
+${sh}
 
 printf "\${GREEN}GRUNDSTEIN\${NC} service setup finished successfully.\\n"
 
 `.trimStart()
+
+  await writeFile({ config, contents, dir, name })
+
+  return contents
 }
+
+export default async c => await Promise.all(c.hosts.map(host => createBash({ ...c, host })))

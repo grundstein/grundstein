@@ -1,4 +1,12 @@
-export default config => {
+import { log } from '@grundstein/commons'
+
+import { writeFile } from '../lib/index.mjs'
+
+export default async config => {
+  log('Creating grundsteinlegung.sh', config)
+
+  const { dir } = config
+
   const bashConfig = Object.entries(config.env)
     .map(([key, value]) => `export ${key}="${value}"`)
     .join('\n')
@@ -9,14 +17,14 @@ export default config => {
 
   const { env } = config
 
-  return `
+  const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
 
 printf "GRUNDSTEIN writing config file\\n"
 
-${bashConfig}
+# ${bashConfig}
 
 ${writeBashConfig}
 
@@ -38,7 +46,7 @@ apt -y update
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
-apt -y install git makepasswd curl nano python software-properties-common python3-pip
+apt -y install git makepasswd curl nano python software-properties-common python3-pip ssh
 
 # update packages
 apt -y upgrade
@@ -63,4 +71,9 @@ printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setu
 
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
 `.trimStart()
+
+  await writeFile({ name: 'grundsteinlegung', config, contents, dir })
+
+  return contents
 }
+

@@ -11,7 +11,9 @@ export const createHostBash = conf => {
 
   const install = `npm install -g ${serviceList}`
 
-  const clone = Object.entries(repositories).map(([name, r]) =>
+  const clone = Object.entries(repositories)
+    .map(
+      ([name, r]) =>
         `
 printf "\${YELLOW}GRUNDSTEIN\${NC} - cloning page for ${name}
 

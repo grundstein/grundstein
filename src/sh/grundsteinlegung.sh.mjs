@@ -62,7 +62,5 @@ printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setu
 # /usr/bin/env bash /grundsteinlegung/bash/certbot.sh
 
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
-
-/usr/bin/env bash /grundsteinlegung/bash/services.sh
 `.trimStart()
 }

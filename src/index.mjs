@@ -8,6 +8,8 @@ import { log } from '@grundstein/commons'
 
 import { mergeConfig, writeFile } from './lib/index.mjs'
 
+import sh from './sh/index.mjs'
+
 export const run = async () => {
   const cwd = process.cwd()
 
@@ -17,9 +19,16 @@ export const run = async () => {
 
   await fs.mkdirp(dir)
 
-  await writeFile({ config, dir, name: 'grundsteinlegung' })
+  // this writes the bootstrap/grundsteinlegung.sh file
+  // this file gets executed on every host and installs all dependencies.
+  await sh.grundsteinlegung({ ...config, dir })
 
-  await writeFile({ config, dir, name: 'services' })
+  // this generates one file per host, including the services, this host should start.
+  await sh.services({ ...config, dir })
+
+  // this generates the bootstrap/dev.sh file,
+  // which can be used to simulate the grundstein cloud locally.
+  await sh.dev({ ...config, dir })
 }
 
 export default run

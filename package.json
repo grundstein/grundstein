@@ -13,7 +13,7 @@
   "engineStrict": true,
   "scripts": {
     "start": "src/bin.mjs",
-    "test": "t",
+    "test": "npm run test:cli",
     "test:cli": "test/bootstrap.sh",
     "connect": "ssh root@grundstein 'bash -s' < src/bash/install.sh",
     "test:install": "src/bash/install-test.sh",
@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@grundstein/commons": "github:grundstein/commons",
-    "@grundstein/hosts": "github:grundstein/hosts",
     "@magic/cli": "0.0.24",
     "@magic/error": "0.0.5",
     "@magic/fs": "0.0.5",

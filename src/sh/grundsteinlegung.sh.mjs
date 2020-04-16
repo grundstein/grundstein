@@ -1,5 +1,15 @@
-export default ({ env, bashConfig, writeBashConfig }) =>
-  `
+export default config => {
+  const bashConfig = Object.entries(config.env)
+    .map(([key, value]) => `export ${key}="${value}"`)
+    .join('\n')
+
+  const writeBashConfig = Object.entries(config.env)
+    .map(([key, value]) => `echo 'export ${key}="${value}"' >> /grundstein-config.sh`)
+    .join('\n')
+
+  const { env } = config
+
+  return `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
@@ -55,3 +65,4 @@ printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setu
 
 /usr/bin/env bash /grundsteinlegung/bash/services.sh
 `.trimStart()
+}

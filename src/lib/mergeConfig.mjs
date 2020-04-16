@@ -36,14 +36,6 @@ export const mergeConfig = async cwd => {
     process.exit(1)
   }
 
-  config.bashConfig = Object.entries(config.env)
-    .map(([key, value]) => `export ${key}="${value}"`)
-    .join('\n')
-
-  config.writeBashConfig = Object.entries(config.env)
-    .map(([key, value]) => `echo 'export ${key}="${value}"' >> /grundstein-config.sh`)
-    .join('\n')
-
   log('env', JSON.stringify(config.env, null, 2))
   log('hosts', JSON.stringify(config.hosts, null, 2))
 

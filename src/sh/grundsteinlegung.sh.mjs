@@ -46,7 +46,7 @@ apt -y update
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
-apt -y install git makepasswd curl nano python software-properties-common python3-pip ssh
+apt -y install git makepasswd curl nano python software-properties-common python3-pip
 
 # update packages
 apt -y upgrade

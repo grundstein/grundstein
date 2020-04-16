@@ -12,9 +12,17 @@ That is the cornerstone of any meaningful debate about budgets and projects, reg
 
 via: [wiktionary](https://en.wiktionary.org/wiki/grundstein)
 
+--------------------------------------------------
+
 ### grundstein installer bash scripts.
 
+#### requirements:
+
+##### server
 expects ssh and bash on your server, all other dependencies get installed automagically.
+
+##### client
+expects docker and nodejs to be installed on your computer.
 
 ### features:
 

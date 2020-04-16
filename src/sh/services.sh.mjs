@@ -1,12 +1,20 @@
+import path from 'path'
+
 import { log } from '@grundstein/commons'
+
+import fs from '@magic/fs'
 
 import { writeFile } from '../lib/index.mjs'
 
 export const createBash = async config => {
   log('Configure host:', config.host)
 
-  const { dir, host } = config
+  const { host } = config
   const { name, services, repositories } = host
+
+  const dir = path.join(config.dir, 'hosts')
+
+  await fs.mkdirp(dir)
 
   const serviceList = Object.keys(services)
     .map(s => `grundstein/${s}`)

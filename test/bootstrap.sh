@@ -12,7 +12,7 @@ INSTALL_FILE='grundsteinlegung.sh'
 
 printf "${YELLOW}GRUNDSTEIN${NC} - this script runs docker, it needs the root.\n"
 
-sudo docker build test --tag="$CONTAINER_NAME"
+sudo docker build dev --tag="$CONTAINER_NAME"
 
 if [[ $(sudo docker ps -q -f name=$CONTAINER_NAME) ]]; then
    sudo docker rm "$CONTAINER_NAME" -f

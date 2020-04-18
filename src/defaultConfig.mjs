@@ -37,9 +37,9 @@ export const hosts = [
     // the root dns identifier of this pod
     name: 'localhost',
 
-    // which ip address this server is reachable at. used by ssh to connect to the server.
+    // which ip addresses this server is reachable at. used by ssh to connect to the server.
     // this option will disappear once pods get provisioned through the api.
-    ip: '172.17.0.2',
+    ips: ['172.17.0.2'],
 
     // the hostnames this pod will serve.
     hostnames: ['localhost', 'localhorst'],

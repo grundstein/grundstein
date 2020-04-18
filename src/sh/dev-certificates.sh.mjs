@@ -27,7 +27,7 @@ export default async config => {
           `
 su - ${env.USERNAME} -c "mkdir -p ${certDir}/"
 
-chown -r ${env.USERNAME}:${env.USERNAME} ${certDir}
+printf "${YELLOW}writing certificate${NC}: ${certDir}/${name}\\n"
 
 openssl req -x509 -out ${certDir}/${name}.crt -keyout ${certDir}/${name}.key \
 -newkey rsa:2048 -nodes -sha256 \
@@ -49,7 +49,7 @@ printf "${YELLOW}generate certificates${NC}\\n\\n"
 
 ${hostCertificateGenerators}
 
-printf "dev env ${GREEN}started${NC}"
+printf "certificates: ${GREEN}generated${NC}"
 `.trimStart()
 
   await writeFile({ name: 'dev-certificates', config, contents, dir })

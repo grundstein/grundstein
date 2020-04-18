@@ -38,42 +38,44 @@ ln -snf /usr/share/zoneinfo/${env.TZ} /etc/localtime && echo ${env.TZ} > /etc/ti
 
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n"
 
-# update apt sources
-apt -y update
+echo "apt update"
+apt-get -y update > /dev/null
+echo "apt update finished"
 
-# install dependencies
+echo "install dependencies"
 
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
-apt -y install git makepasswd curl nano python software-properties-common python3-pip
+apt-get -qq -y install git makepasswd curl python software-properties-common python3-pip nano > /dev/null
 
-# update packages
-apt -y upgrade
+echo "apt upgrade"
+apt-get -qq -y upgrade > /dev/null
+echo "apt upgrade done"
 
 # cleanup unneeded packages
-apt -y autoremove
+echo "apt autoremove"
+apt-get -y autoremove > /dev/null
+echo "apt autoremove done"
 
 printf "\${GREEN}GRUNDSTEIN\${NC} apt installation done.\\n"
 
 
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting git clone of grundsteinlegung.\\n"
 
-git clone "$GIT_URL/legung" /grundsteinlegung
+git clone --quiet "$GIT_URL/legung" /grundsteinlegung
 
 printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setup\\n"
 
 # generate grundstein user
 /usr/bin/env bash /grundsteinlegung/bash/create-user.sh
 
-# install and setup certbot
-# /usr/bin/env bash /grundsteinlegung/bash/certbot.sh
-
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
+
+/usr/bin/env bash /grundsteinlegung/bash/certbot.sh
 `.trimStart()
 
   await writeFile({ name: 'grundsteinlegung', config, contents, dir })
 
   return contents
 }
-

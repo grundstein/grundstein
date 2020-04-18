@@ -4,10 +4,12 @@ import { log } from '@grundstein/commons'
 
 import fs from '@magic/fs'
 
-import { writeFile } from '../lib/index.mjs'
+import { colors, writeFile } from '../lib/index.mjs'
 
 export default async config => {
   const { dir, env } = config
+
+  const { YELLOW, GREEN, NC } = colors
 
   const containerName = 'grundstein-dev'
   const installFile = 'grundsteinlegung.sh'
@@ -33,9 +35,13 @@ sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basena
 
 set -euf -o pipefail
 
-printf "GRUNDSTEIN - running development environment.\\n"
+printf "${YELLOW}starting dev env${NC}\\n\\n"
+
+printf "${YELLOW}certificates${NC} - generate self-signed certificates\\n"
 
 ${hostInitScripts}
+
+printf "dev env ${GREEN}started${NC}"
 `.trimStart()
 
   await writeFile({ name: 'dev', config, contents, dir })

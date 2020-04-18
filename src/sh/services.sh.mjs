@@ -105,7 +105,9 @@ ${sh}
 printf "\${GREEN}GRUNDSTEIN\${NC} service setup finished successfully.\\n"
 `.trimStart()
 
-  await Promise.all(ips.map(async ip => await writeFile({ config, contents, dir: path.join(dir, ip), name })))
+  await Promise.all(
+    ips.map(async ip => await writeFile({ config, contents, dir: path.join(dir, ip), name })),
+  )
 
   return contents
 }

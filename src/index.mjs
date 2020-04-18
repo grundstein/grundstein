@@ -26,6 +26,9 @@ export const run = async () => {
   // this generates one file per host, including the services, this host should start.
   await sh.services({ ...config, dir })
 
+  // builds and runs the development docker builds
+  await sh.docker({ ...config, dir })
+
   // this generates the bootstrap/dev.sh file,
   // which can be used to simulate the grundstein cloud locally.
   await sh.dev({ ...config, dir })

@@ -17,14 +17,17 @@ export default async config => {
 
   const { env } = config
 
+  const RED = '\\033[0;31m'
+  const GREEN = '\\033[0;32m'
+  const YELLOW = '\\033[1;33m'
+  const NC = '\\033[0m'
+
   const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
 
 printf "GRUNDSTEIN writing config file\\n"
-
-# ${bashConfig}
 
 ${writeBashConfig}
 
@@ -36,7 +39,7 @@ source /grundstein-config.sh
 
 ln -snf /usr/share/zoneinfo/${env.TZ} /etc/localtime && echo ${env.TZ} > /etc/timezone
 
-printf "\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n"
+printf "${YELLOW}GRUNDSTEIN${NC} starting bootstrap\\n"
 
 echo "apt update"
 apt-get -y -qq update > /dev/null
@@ -72,17 +75,17 @@ echo "apt autoremove"
 apt-get -y autoremove > /dev/null
 echo "apt autoremove done"
 
-printf "\${GREEN}GRUNDSTEIN\${NC} apt installation done.\\n"
+printf "${GREEN}GRUNDSTEIN${NC} apt installation done.\\n"
 
 
-printf "\${YELLOW}GRUNDSTEIN\${NC} starting git clone of grundsteinlegung.\\n"
+printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung.\\n"
 
 git clone --quiet "$GIT_URL/legung" /grundsteinlegung
 
-printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setup\\n"
+printf "${GREEN}GRUNDSTEIN${NC} grundsteinlegung cloned. starting service setup\\n"
 
 # generate grundstein user
-printf "\${YELLOW}GRUNDSTEIN\${NC} starting user generation\\n"
+printf "${YELLOW}GRUNDSTEIN${NC} starting user generation\\n"
 
 # add user if it does not exist.
 # one should be fine for now.
@@ -92,7 +95,7 @@ id -u "$USERNAME" &>/dev/null || (
   useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
 )
 
-printf "\${GREEN}GRUNDSTEIN\${NC} user generated successfully.\\n"
+printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\\n"
 
 
 printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\n"

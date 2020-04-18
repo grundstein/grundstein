@@ -1,12 +1,12 @@
 [Unit]
-Description=gps - grundstein proxy service
-Documentation=https://docs.grundstein.it/gps
+Description=gas - grundstein api service
+Documentation=https://docs.grundstein.it/gas
 After=network.target
 
 [Service]
 Type=simple
 User=grundstein
-ExecStart=/home/grundstein/gas/src/bin.mjs
+ExecStart=/usr/bin/gas
 Restart=on-failure
 
 [Install]

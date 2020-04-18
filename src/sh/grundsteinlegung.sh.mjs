@@ -82,11 +82,36 @@ git clone --quiet "$GIT_URL/legung" /grundsteinlegung
 printf "\${GREEN}GRUNDSTEIN\${NC} grundsteinlegung cloned. starting service setup\\n"
 
 # generate grundstein user
-/usr/bin/env bash /grundsteinlegung/bash/create-user.sh
+printf "\${YELLOW}GRUNDSTEIN\${NC} starting user generation\\n"
 
+# add user if it does not exist.
+# one should be fine for now.
+# we do not need to know the password.
+id -u "$USERNAME" &>/dev/null || (
+  PASSWORD=$(makepasswd --min 42 --max 42)
+  useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
+)
+
+printf "\${GREEN}GRUNDSTEIN\${NC} user generated successfully.\\n"
+
+
+printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\n"
+
+add-apt-repository -y universe > /dev/null
+add-apt-repository -y ppa:certbot/certbot > /dev/null
+apt -y -qq update
+
+# actually install certbot
+apt -y install certbot > /dev/null
+
+# install certbot digitalocean plugin.
+pip3 install certbot-dns-digitalocean
+
+printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\n"
+
+# install nodejs
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
 
-/usr/bin/env bash /grundsteinlegung/bash/certbot.sh
 `.trimStart()
 
   await writeFile({ name: 'grundsteinlegung', config, contents, dir })

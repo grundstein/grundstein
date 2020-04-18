@@ -29,9 +29,13 @@ export const run = async () => {
   // builds and runs the development docker builds
   await sh.docker(config)
 
-  // this generates the bootstrap/dev.sh file,
+  // generate the bootstrap/dev.sh file,
   // which can be used to simulate the grundstein cloud locally.
   await sh.dev(config)
+
+  // generate the development certificate generator script
+  // this creates self-signed certificates for all hosts in the config
+  await sh.devCertificates(config)
 
   // generate the production shell script.
   // this script will scp the config files to the server,

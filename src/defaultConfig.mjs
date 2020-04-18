@@ -5,6 +5,7 @@ export const env = {
   NVM_NODE_VERSION: 13,
   NVM_DIR: '$USERHOME/.nvm',
   GIT_URL: 'git://github.com/grundstein',
+  SSH_USER: 'root',
 }
 
 // service config:
@@ -36,9 +37,9 @@ export const hosts = [
     // the root dns identifier of this pod
     name: 'localhost',
 
-    // which ip addresses this server is reachable at. used by ssh to connect to the server.
+    // which ip address this server is reachable at. used by ssh to connect to the server.
     // this option will disappear once pods get provisioned through the api.
-    ips: ['127.0.0.1'],
+    ip: '172.17.0.2',
 
     // the hostnames this pod will serve.
     hostnames: ['localhost', 'localhorst'],

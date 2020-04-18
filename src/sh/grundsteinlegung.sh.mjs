@@ -105,7 +105,7 @@ add-apt-repository -y ppa:certbot/certbot > /dev/null
 apt -y -qq update
 
 # actually install certbot
-apt -y install certbot > /dev/null
+TZ=${env.TZ} apt -y install certbot > /dev/null
 
 # install certbot digitalocean plugin.
 pip3 install certbot-dns-digitalocean

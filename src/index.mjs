@@ -15,23 +15,23 @@ export const run = async () => {
 
   const config = await mergeConfig(cwd)
 
-  const dir = path.join(cwd, 'bootstrap')
+  config.dir = path.join(cwd, 'bootstrap')
 
-  await fs.mkdirp(dir)
+  await fs.mkdirp(config.dir)
 
   // this writes the bootstrap/grundsteinlegung.sh file
   // this file gets executed on every host and installs all dependencies.
-  await sh.grundsteinlegung({ ...config, dir })
+  await sh.grundsteinlegung(config)
 
   // this generates one file per host, including the services, this host should start.
-  await sh.services({ ...config, dir })
+  await sh.services(config)
 
   // builds and runs the development docker builds
-  await sh.docker({ ...config, dir })
+  await sh.docker(config)
 
   // this generates the bootstrap/dev.sh file,
   // which can be used to simulate the grundstein cloud locally.
-  await sh.dev({ ...config, dir })
+  await sh.dev(config)
 }
 
 export default run

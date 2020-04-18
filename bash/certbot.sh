@@ -4,14 +4,15 @@ set -euf -o pipefail
 
 source /grundstein-config.sh
 
-# prepare certbot install
-add-apt-repository -y universe
-add-apt-repository -y ppa:certbot/certbot
-apt -y update
+printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\n"
+add-apt-repository -y universe > /dev/null
+add-apt-repository -y ppa:certbot/certbot > /dev/null
+apt -y -qq update
 
 # actually install certbot
-TZ=Europe/Vienna && apt -y install certbot
+apt -y install certbot > /dev/null
 
 # install certbot digitalocean plugin.
 pip3 install certbot-dns-digitalocean
 
+printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\n"

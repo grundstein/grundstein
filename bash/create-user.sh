@@ -1,6 +1,6 @@
 set -euf -o pipefail
 
-source /grundsteinlegung/bash/config.sh
+source /grundstein-config.sh
 
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting user generation\\n"
 

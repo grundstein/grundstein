@@ -2,7 +2,7 @@
 
 set -euf -o pipefail
 
-source /grundsteinlegung/bash/config.sh
+source /grundstein-config.sh
 
 # prepare certbot install
 add-apt-repository -y universe

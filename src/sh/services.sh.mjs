@@ -78,9 +78,10 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n"
         .join(' ')
 
       return `
-mkdir -p ${USERHOME}/logs
+mkdir -p ${USERHOME}/logs/${service}
 
-su - ${USERNAME} -c "${service} ${conf}" > ${USERHOME}/logs/${service}.log
+systemctl enable ${service}
+systemctl start ${service}
   `.trim()
     })
     .join('\n')
@@ -101,6 +102,8 @@ ${runServices}
 set -euf -o pipefail
 
 printf "starting grundstein service setup.\\n"
+
+cp /grundsteinlegung/src/systemd/*.service /etc/systemd/system/
 
 ${sh}
 

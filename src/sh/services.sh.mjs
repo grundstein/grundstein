@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
+import { is, log } from '@grundstein/commons'
 
 import fs from '@magic/fs'
 
@@ -9,10 +9,15 @@ import { writeFile } from '../lib/index.mjs'
 export const createBash = async config => {
   log('Configure host:', config.host)
 
-  const { host } = config
-  const { name, ip, services, repositories } = host
+  const { host, env } = config
+  const { name, services, repositories } = host
 
-  const userHome = `/home/${config.env.USERNAME}`
+  let { ips } = host
+  if (!is.array(ips)) {
+    ips = [ips]
+  }
+
+  const { USERNAME, USERHOME } = env
 
   const dir = path.join(config.dir, 'hosts')
 
@@ -29,7 +34,7 @@ export const createBash = async config => {
       `
 printf "\${YELLOW}GRUNDSTEIN\${NC} - cloning page for ${name}\\n"
 
-DIR="${userHome}/repositories/${name}"
+DIR="${USERHOME}/repositories/${name}"
 
 printf "writing repository to $DIR\\n"
 
@@ -71,7 +76,7 @@ printf "\${GREEN}GRUNDSTEIN\${NC} - page for ${name} cloned.\\n"
         .join(' ')
 
       return `
-su - ${config.env.USERNAME} -c ${service} ${conf}
+su - ${USERNAME} -c ${service} ${conf}
   `.trim()
     })
     .join('\n')
@@ -79,7 +84,7 @@ su - ${config.env.USERNAME} -c ${service} ${conf}
   const sh = `
 ${install}
 
-mkdir -p ${userHome}/repositories
+mkdir -p ${USERHOME}/repositories
 
 ${clone}
 
@@ -100,7 +105,7 @@ ${sh}
 printf "\${GREEN}GRUNDSTEIN\${NC} service setup finished successfully.\\n"
 `.trimStart()
 
-  await writeFile({ config, contents, dir: path.join(dir, ip), name })
+  await Promise.all(ips.map(async ip => await writeFile({ config, contents, dir: path.join(dir, ip), name })))
 
   return contents
 }

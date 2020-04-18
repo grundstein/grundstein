@@ -32,6 +32,11 @@ export const run = async () => {
   // this generates the bootstrap/dev.sh file,
   // which can be used to simulate the grundstein cloud locally.
   await sh.dev(config)
+
+  // generate the production shell script.
+  // this script will scp the config files to the server,
+  // then start the grundsteinlegung via ssh.
+  await sh.prod(config)
 }
 
 export default run

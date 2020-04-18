@@ -10,7 +10,7 @@ export const createBash = async config => {
   log('Configure host:', config.host)
 
   const { host } = config
-  const { name, services, repositories } = host
+  const { name, ip, services, repositories } = host
 
   const userHome = `/home/${config.env.USERNAME}`
 
@@ -71,7 +71,7 @@ printf "\${GREEN}GRUNDSTEIN\${NC} - page for ${name} cloned.\\n"
         .join(' ')
 
       return `
-${service} ${conf}
+su - ${config.env.USERNAME} -c ${service} ${conf}
   `.trim()
     })
     .join('\n')
@@ -100,7 +100,7 @@ ${sh}
 printf "\${GREEN}GRUNDSTEIN\${NC} service setup finished successfully.\\n"
 `.trimStart()
 
-  await writeFile({ config, contents, dir, name })
+  await writeFile({ config, contents, dir: path.join(dir, ip), name })
 
   return contents
 }

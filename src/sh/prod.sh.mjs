@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
+import { is, log } from '@grundstein/commons'
 
 import fs from '@magic/fs'
 
@@ -18,10 +18,15 @@ export default async config => {
   const { hosts } = config
 
   const hostInitScripts = hosts.map(host => {
-    console.log({ host })
-    return `
-    scp -r ${localHostDir} ${config.env.SSH_USER}@${config.env.HOST}:${remoteHostDir}
-  `.trim()
+    let { ips } = host
+
+    if (!is.array(ips)) {
+      ips = [ips]
+    }
+
+    return ips.map(ip => `
+    scp -r ${localHostDir} ${config.env.SSH_USER}@${ip}:${remoteHostDir}
+  `.trim()).join('\n')
   }).join('\n')
 
   const contents = `

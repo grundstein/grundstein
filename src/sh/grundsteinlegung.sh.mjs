@@ -1,51 +1,37 @@
 import { log } from '@grundstein/commons'
 
-import { writeFile } from '../lib/index.mjs'
+import { colors, writeFile } from '../lib/index.mjs'
 
 export default async config => {
   log('Creating grundsteinlegung.sh', config)
 
-  const { dir } = config
+  const { dir, env } = config
 
-  const bashConfig = Object.entries(config.env)
-    .map(([key, value]) => `export ${key}="${value}"`)
-    .join('\n')
-
-  const writeBashConfig = Object.entries(config.env)
-    .map(([key, value]) => `echo 'export ${key}="${value}"' >> /grundstein-config.sh`)
-    .join('\n')
-
-  const { env } = config
-
-  const RED = '\\033[0;31m'
-  const GREEN = '\\033[0;32m'
-  const YELLOW = '\\033[1;33m'
-  const NC = '\\033[0m'
+  const { GREEN, RED, YELLOW, NC } = colors
 
   const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
 
-printf "GRUNDSTEIN writing config file\\n"
-
-${writeBashConfig}
-
-printf "GRUNDSTEIN wrote /grundstein-config.sh file successfully\\n"
-
-printf "GRUNDSTEIN source config file to get it\'s content and make sure it works\\n"
-
-source /grundstein-config.sh
-
-ln -snf /usr/share/zoneinfo/${env.TZ} /etc/localtime && echo ${env.TZ} > /etc/timezone
-
-printf "${YELLOW}GRUNDSTEIN${NC} starting bootstrap\\n"
 
 echo "apt update"
 apt-get -y -qq update > /dev/null
 echo "apt update finished"
 
-echo "install dependencies"
+
+
+printf "${YELLOW}timezones${NC} - setup\\n"
+
+ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime
+
+apt-get install -y -qq tzdata > /dev/null
+
+dpkg-reconfigure -f noninteractive tzdata > /dev/null
+
+
+
+printf "${YELLOW}install${NC} dependencies\\n"
 
 # base dependencies first
 
@@ -66,25 +52,28 @@ python3-pip \
 nano \
 apt-utils > /dev/null
 
-echo "apt upgrade"
+printf "${YELLOW}apt upgrade${NC}\\n"
 apt-get -qq -y upgrade > /dev/null
-echo "apt upgrade done"
+printf "apt upgrade: ${GREEN}done${NC}\\n"
 
 # cleanup unneeded packages
-echo "apt autoremove"
+printf "${YELLOW}apt autoremove${NC}\\n"
+
 apt-get -y autoremove > /dev/null
-echo "apt autoremove done"
 
-printf "${GREEN}GRUNDSTEIN${NC} apt installation done.\\n"
+printf "apt autoremove ${GREEN}done${NC}\\n"
+
+printf "install dependencies: ${GREEN}done${NC}\\n"
 
 
-printf "${YELLOW}GRUNDSTEIN${NC} starting git clone of grundsteinlegung.\\n"
+printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
 
 git clone --quiet "$GIT_URL/legung" /grundsteinlegung
 
-printf "${GREEN}GRUNDSTEIN${NC} grundsteinlegung cloned. starting service setup\\n"
+printf "grundsteinlegung ${GREEN}cloned${NC}\\n"
 
-# generate grundstein user
+
+
 printf "${YELLOW}GRUNDSTEIN${NC} starting user generation\\n"
 
 # add user if it does not exist.
@@ -98,19 +87,20 @@ id -u "$USERNAME" &>/dev/null || (
 printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\\n"
 
 
-printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\n"
+
+printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\\n"
 
 add-apt-repository -y universe > /dev/null
 add-apt-repository -y ppa:certbot/certbot > /dev/null
-apt -y -qq update
+apt-get -y -qq update
 
 # actually install certbot
-TZ=${env.TZ} apt -y install certbot > /dev/null
+TZ=${env.TZ} apt-get -qq -y install certbot > /dev/null
 
 # install certbot digitalocean plugin.
-pip3 install certbot-dns-digitalocean
+TZ=${env.TZ} pip3 install certbot-dns-digitalocean
 
-printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\n"
+printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\\n"
 
 # install nodejs
 /usr/bin/env bash /grundsteinlegung/bash/node.sh

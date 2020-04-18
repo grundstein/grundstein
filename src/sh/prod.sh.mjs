@@ -7,13 +7,13 @@ import fs from '@magic/fs'
 import { writeFile } from '../lib/index.mjs'
 
 export default async config => {
-  const { dir } = config
+  const { dir, env } = config
 
   const containerName = 'grundstein-dev'
   const installFile = 'grundsteinlegung.sh'
 
   const localHostDir = path.join(dir, 'hosts')
-  const remoteHostDir = `/home/${config.env.USERNAME}/hosts`
+  const remoteHostDir = `/home/${env.USERNAME}/hosts`
 
   const { hosts } = config
 
@@ -28,8 +28,8 @@ export default async config => {
       return ips
         .map(ip =>
           `
-scp -r ${localHostDir}/${ip}/* ${config.env.SSH_USER}@${ip}:${remoteHostDir} && \
-ssh ${config.env.SSH_USER}@${ip} "/grundsteinlegung.sh" &
+scp -r ${localHostDir}/${ip}/* ${env.SSH_USER}@${ip}:${remoteHostDir} && \
+ssh ${env.SSH_USER}@${ip} "/grundsteinlegung.sh" &
 `.trim(),
         )
         .join('\n')
@@ -40,8 +40,6 @@ ssh ${config.env.SSH_USER}@${ip} "/grundsteinlegung.sh" &
 #!/usr/bin/env bash
 
 set -euf -o pipefail
-
-source ${env.CONFIG_FILE}
 
 printf "GRUNDSTEIN - running development environment.\\n"
 

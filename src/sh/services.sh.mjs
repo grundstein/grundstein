@@ -4,7 +4,7 @@ import { is, log } from '@grundstein/commons'
 
 import fs from '@magic/fs'
 
-import { writeFile } from '../lib/index.mjs'
+import { colors, writeFile } from '../lib/index.mjs'
 
 export const createBash = async config => {
   log('Configure host:', config.host)
@@ -19,6 +19,8 @@ export const createBash = async config => {
 
   const { USERNAME, USERHOME } = env
 
+  const { YELLOW, RED, GREEN, NC } = colors
+
   const dir = path.join(config.dir, 'hosts')
 
   await fs.mkdirp(dir)
@@ -32,7 +34,7 @@ export const createBash = async config => {
   const clone = Object.entries(repositories)
     .map(([name, r]) =>
       `
-printf "\${YELLOW}GRUNDSTEIN\${NC} - cloning page for ${name}\\n"
+printf "${YELLOW}GRUNDSTEIN${NC} - cloning page for ${name}\\n"
 
 DIR="${USERHOME}/repositories/${name}"
 
@@ -63,7 +65,7 @@ if [ -d "$DIR/api" ]; then
   cp -r ./api /var/www/api/${name}
 fi
 
-printf "\${GREEN}GRUNDSTEIN\${NC} - page for ${name} cloned.\\n"
+printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n"
 `.trim(),
     )
     .join('\n')
@@ -76,7 +78,9 @@ printf "\${GREEN}GRUNDSTEIN\${NC} - page for ${name} cloned.\\n"
         .join(' ')
 
       return `
-su - ${USERNAME} -c ${service} ${conf}
+mkdir -p ${USERHOME}/logs
+
+su - ${USERNAME} -c "${service} ${conf}" > ${USERHOME}/logs/${service}.log
   `.trim()
     })
     .join('\n')
@@ -96,13 +100,11 @@ ${runServices}
 
 set -euf -o pipefail
 
-source /grundsteinlegung/bash/config.sh
-
-printf "\${YELLOW}GRUNDSTEIN\${NC} starting grundstein service setup.\\n"
+printf "starting grundstein service setup.\\n"
 
 ${sh}
 
-printf "\${GREEN}GRUNDSTEIN\${NC} service setup finished successfully.\\n"
+printf "service setup ${GREEN}done${NC}\\n"
 `.trimStart()
 
   await Promise.all(

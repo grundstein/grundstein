@@ -7,14 +7,14 @@ import fs from '@magic/fs'
 import { writeFile } from '../lib/index.mjs'
 
 export default async config => {
-  const { dir } = config
+  const { dir, env } = config
 
   const containerName = 'grundstein-dev'
   const installFile = 'grundsteinlegung.sh'
 
   const hostScripts = await fs.getFiles(path.join(dir, 'hosts'))
 
-  const hostDir = `/home/${config.env.USERNAME}/hosts`
+  const hostDir = `/home/${env.USERNAME}/hosts`
 
   const hostInitScripts = hostScripts
     .map(script =>
@@ -32,8 +32,6 @@ sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basena
 #!/usr/bin/env bash
 
 set -euf -o pipefail
-
-source ${env.CONFIG_FILE}
 
 printf "GRUNDSTEIN - running development environment.\\n"
 

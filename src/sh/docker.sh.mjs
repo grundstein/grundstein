@@ -4,7 +4,7 @@ import { log } from '@grundstein/commons'
 
 import fs from '@magic/fs'
 
-import { writeFile } from '../lib/index.mjs'
+import { colors, writeFile } from '../lib/index.mjs'
 
 export default async config => {
   const { dir } = config
@@ -12,12 +12,14 @@ export default async config => {
   const containerName = 'grundstein-dev'
   const installFile = 'grundsteinlegung.sh'
 
+  const { YELLOW, RED, GREEN, NC } = colors
+
   const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
 
-printf "GRUNDSTEIN - this script builds and runs docker, it needs the root.\\n\\n\\n"
+printf "${YELLOW}GRUNDSTEIN${NC} - this script builds and runs docker, it needs the root.\\n\\n\\n"
 
 if [[ $(sudo docker ps -q -f name=${containerName}) ]]; then
   sudo docker rm -f "${containerName}"

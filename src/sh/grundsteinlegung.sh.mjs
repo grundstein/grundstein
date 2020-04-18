@@ -39,15 +39,29 @@ ln -snf /usr/share/zoneinfo/${env.TZ} /etc/localtime && echo ${env.TZ} > /etc/ti
 printf "\${YELLOW}GRUNDSTEIN\${NC} starting bootstrap\\n"
 
 echo "apt update"
-apt-get -y update > /dev/null
+apt-get -y -qq update > /dev/null
 echo "apt update finished"
 
 echo "install dependencies"
 
+# base dependencies first
+
+apt-get -qq -y install \
+software-properties-common \
+apt-utils > /dev/null
+
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
-apt-get -qq -y install git makepasswd curl python software-properties-common python3-pip nano > /dev/null
+apt-get -qq -y install \
+git \
+makepasswd \
+curl \
+python \
+software-properties-common \
+python3-pip \
+nano \
+apt-utils > /dev/null
 
 echo "apt upgrade"
 apt-get -qq -y upgrade > /dev/null

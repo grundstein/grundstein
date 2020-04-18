@@ -14,6 +14,7 @@ export default async config => {
 
 set -euf -o pipefail
 
+TERM=linux
 
 echo "apt update"
 apt-get -y -qq update > /dev/null
@@ -68,7 +69,7 @@ printf "install dependencies: ${GREEN}done${NC}\\n"
 
 printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
 
-git clone --quiet "$GIT_URL/legung" /grundsteinlegung
+git clone --quiet "${env.GIT_URL}/legung" /grundsteinlegung
 
 printf "grundsteinlegung ${GREEN}cloned${NC}\\n"
 
@@ -79,9 +80,9 @@ printf "${YELLOW}GRUNDSTEIN${NC} starting user generation\\n"
 # add user if it does not exist.
 # one should be fine for now.
 # we do not need to know the password.
-id -u "$USERNAME" &>/dev/null || (
+id -u "${env.USERNAME}" &>/dev/null || (
   PASSWORD=$(makepasswd --min 42 --max 42)
-  useradd -m -p "$PASSWORD" -d "$USERHOME" -s /bin/bash "$USERNAME"
+  useradd -m -p "$PASSWORD" -d "${env.USERHOME}" -s /bin/bash "${env.USERNAME}"
 )
 
 printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\\n"

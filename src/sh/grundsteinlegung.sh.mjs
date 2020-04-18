@@ -14,7 +14,7 @@ export default async config => {
 
 set -euf -o pipefail
 
-TERM=linux
+export DEBIAN_FRONTEND=noninteractive
 
 echo "apt update"
 apt-get -y -qq update > /dev/null
@@ -34,12 +34,6 @@ dpkg-reconfigure -f noninteractive tzdata > /dev/null
 
 printf "${YELLOW}install${NC} dependencies\\n"
 
-# base dependencies first
-
-apt-get -qq -y install \
-software-properties-common \
-apt-utils > /dev/null
-
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
@@ -51,7 +45,7 @@ python \
 software-properties-common \
 python3-pip \
 nano \
-apt-utils > /dev/null
+> /dev/null
 
 printf "${YELLOW}apt upgrade${NC}\\n"
 apt-get -qq -y upgrade > /dev/null

@@ -18,11 +18,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 
 
-echo "apt update"
+printf "${YELLOW}apt update${NC}\\n"
 
 apt-get -y -qq update > /dev/null
 
-echo "apt update finished"
+printf "apt update: ${GREEN}done${NC}\\n"
 
 
 
@@ -58,7 +58,7 @@ printf "${YELLOW}apt upgrade${NC}\\n"
 
 apt-get -qq -y upgrade > /dev/null
 
-printf "apt upgrade: ${GREEN}done${NC}\\n"
+printf "apt upgrade: ${GREEN}done${NC}\\n\\n"
 
 
 
@@ -66,9 +66,9 @@ printf "${YELLOW}apt autoremove${NC}\\n"
 
 apt-get -y autoremove > /dev/null
 
-printf "apt autoremove ${GREEN}done${NC}\\n"
+printf "apt autoremove ${GREEN}done${NC}\\n\\n"
 
-printf "install dependencies: ${GREEN}done${NC}\\n"
+printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 
 
 
@@ -76,11 +76,11 @@ printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
 
 git clone --quiet "${env.GIT_URL}/legung" /grundsteinlegung
 
-printf "grundsteinlegung ${GREEN}cloned${NC}\\n"
+printf "grundsteinlegung ${GREEN}cloned${NC}\\n\\n"
 
 
 
-printf "${YELLOW}GRUNDSTEIN${NC} starting user generation\\n"
+printf "${YELLOW}user generation${NC}\\n"
 
 # add user if it does not exist.
 # one should be fine for now.
@@ -90,11 +90,11 @@ id -u "${env.USERNAME}" &>/dev/null || (
   useradd -m -p "$PASSWORD" -d "${env.USERHOME}" -s /bin/bash "${env.USERNAME}"
 )
 
-printf "${GREEN}GRUNDSTEIN${NC} user generated successfully.\\n"
+printf "user generation: ${GREEN}done${NC}\\n\\n"
 
 
 
-printf "${YELLOW}GRUNDSTEIN${NC} - prepare certbot install\\n"
+printf "${YELLOW}certbot${NC} - install\\n"
 
 add-apt-repository -y universe > /dev/null
 add-apt-repository -y ppa:certbot/certbot > /dev/null
@@ -106,14 +106,14 @@ TZ=${env.TZ} apt-get -qq -y install certbot > /dev/null
 # install certbot digitalocean plugin.
 TZ=${env.TZ} pip3 install certbot-dns-digitalocean
 
-printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\\n"
+printf "certbot install: ${GREEN}done${NC}\\n\\n"
 
 
 printf "${YELLOW}install${NC} nodejs\\n"
 # install nodejs
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
 
-printf "nodejs install ${GREEN}done${NC}\\n"
+printf "nodejs install ${GREEN}done${NC}\\n\\n"
 
 `.trimStart()
 

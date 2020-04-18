@@ -8,8 +8,6 @@ Type=simple
 User=grundstein
 ExecStart=/usr/bin/gms
 Restart=on-failure
-StandardOutput=/var/log/gms/access.log
-StandardError=/var/log/gms/error.log
 
 [Install]
 WantedBy=multi-user.target

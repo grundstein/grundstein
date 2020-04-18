@@ -8,8 +8,6 @@ Type=simple
 User=grundstein
 ExecStart=/usr/bin/gas
 Restart=on-failure
-StandardOutput=/var/log/gas/access.log
-StandardError=/var/log/gas/error.log
 
 [Install]
 WantedBy=multi-user.target

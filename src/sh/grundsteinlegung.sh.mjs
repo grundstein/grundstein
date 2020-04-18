@@ -16,8 +16,12 @@ set -euf -o pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+
+
 echo "apt update"
+
 apt-get -y -qq update > /dev/null
+
 echo "apt update finished"
 
 
@@ -37,6 +41,7 @@ printf "${YELLOW}install${NC} dependencies\\n"
 # curl needed for nvm
 # makepasswd needed for user generation below
 # nano should later be removed from the list, convenience install for dev.
+
 apt-get -qq -y install \
 git \
 makepasswd \
@@ -47,11 +52,16 @@ python3-pip \
 nano \
 > /dev/null
 
+
+
 printf "${YELLOW}apt upgrade${NC}\\n"
+
 apt-get -qq -y upgrade > /dev/null
+
 printf "apt upgrade: ${GREEN}done${NC}\\n"
 
-# cleanup unneeded packages
+
+
 printf "${YELLOW}apt autoremove${NC}\\n"
 
 apt-get -y autoremove > /dev/null
@@ -59,6 +69,7 @@ apt-get -y autoremove > /dev/null
 printf "apt autoremove ${GREEN}done${NC}\\n"
 
 printf "install dependencies: ${GREEN}done${NC}\\n"
+
 
 
 printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
@@ -97,8 +108,12 @@ TZ=${env.TZ} pip3 install certbot-dns-digitalocean
 
 printf "${GREEN}GRUNDSTEIN${NC} - certbot install done\\n"
 
+
+printf "${YELLOW}install${NC} nodejs\\n"
 # install nodejs
 /usr/bin/env bash /grundsteinlegung/bash/node.sh
+
+printf "nodejs install ${GREEN}done${NC}\\n"
 
 `.trimStart()
 

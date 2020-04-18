@@ -78,8 +78,6 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n"
         .join(' ')
 
       return `
-mkdir -p ${USERHOME}/logs/${service}
-
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 
 systemctl enable ${service}

@@ -41,6 +41,8 @@ ssh ${config.env.SSH_USER}@${ip} "/grundsteinlegung.sh" &
 
 set -euf -o pipefail
 
+source ${env.CONFIG_FILE}
+
 printf "GRUNDSTEIN - running development environment.\\n"
 
 ${hostInitScripts}

@@ -33,6 +33,8 @@ sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basena
 
 set -euf -o pipefail
 
+source ${env.CONFIG_FILE}
+
 printf "GRUNDSTEIN - running development environment.\\n"
 
 ${hostInitScripts}

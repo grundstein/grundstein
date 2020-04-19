@@ -17,6 +17,7 @@ export const run = async () => {
 
   config.dir = path.join(cwd, 'bootstrap')
 
+  await fs.rmrf(config.dir)
   await fs.mkdirp(config.dir)
 
   // this writes the bootstrap/grundsteinlegung.sh file

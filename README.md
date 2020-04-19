@@ -1,4 +1,4 @@
-## @grundstein/legung
+## grundstein
 
 ### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
 
@@ -14,14 +14,24 @@ via: [wiktionary](https://en.wiktionary.org/wiki/grundstein)
 
 --------------------------------------------------
 
-### grundstein installer bash scripts.
+### grundstein installer.
 
 #### requirements:
 
 ##### server
-expects ssh and bash on your server, all other dependencies get installed automagically.
+
+tested on ubuntu.
+
+##### required:
+ssh, and bash on your server,
+
+grundsteinlegung.sh is a bash script and gets sent to the server via ssh,
+all other dependencies get installed automagically.
+
+might work on other linuxes, if systemd and apt exist there.
 
 ##### client
+
 expects docker and nodejs to be installed on your computer.
 
 ### features:
@@ -40,32 +50,38 @@ generates letsencrypt certificates using certbot and certbot-dns-digitalocean
 
 #### systemd init
 
-sets up grundstein systemd.service files
-
+sets up grundstein systemd.service files and starts and enables the services
 
 ### installation
 
 ```bash
-git clone git://github.com/grundstein/legung ./grundstein
-cd ./grundstein
+npm i -g grundstein
 ```
 
-### testing
+### custom configuration
 
-these tests will spawn a local docker container with ubuntu 18.04.
+grundstein needs a configuration to work.
 
-this docker container will then be set up using grundsteinlegung.sh
+the easiest way to get started is to perform a grundsteinlegung.
 
 ```bash
-# run the test locally
-./test/test.sh
+git clone git://github.com/grundstein/legung ./domain.com
+
+cd domain.com
+
+npm install
+
+# start dev server
+npm start
+
+# deploy to your own server (after editing /grundstein-config.mjs to add your ip)
+TBD
+
 ```
 
 ##### suggestion:
 
 we use a digitalocean floating ip, this will allow us to seamlessly change pods later,
-once there are updates.
+if there are updates to grundstein that require a reinstall.
 
-### connect your server
-./connect.sh
-```
+by leaving a number of old pods alive, we can also rollback easily.

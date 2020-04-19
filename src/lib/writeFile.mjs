@@ -5,7 +5,10 @@ import { fs } from '@magic/fs'
 import sh from '../sh/index.mjs'
 
 export const writeFile = async ({ dir, name, config, contents }) => {
-  const file = path.join(dir, `${name}.sh`)
+  if (!name.endsWith('.mjs') && !name.endsWith('.json') && !name.endsWith('.sh')) {
+    name = `${name}.sh`
+  }
+  const file = path.join(dir, name)
 
   const fileDir = path.dirname(file)
 

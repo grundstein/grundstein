@@ -29,7 +29,7 @@ fi
 
 sudo docker build dev --tag="${containerName}"
 
-sudo docker run -td -p 2350:2350 -p 2351:2351 -p 8080:8080 -p 4343:4343 --name="${containerName}" "${containerName}"
+sudo docker run -td -p 2350:2350 -p 2351:2351 -p 8080:80 -p 4343:443 --name="${containerName}" "${containerName}"
 
 sudo docker cp "./bootstrap/${installFile}" "${containerName}:/"
 

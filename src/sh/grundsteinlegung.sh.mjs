@@ -73,7 +73,7 @@ printf "apt autoremove ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
 
-git clone --quiet "${env.GIT_URL}/legung" /grundsteinlegung
+git clone --quiet "${env.GIT_URL}/cli" /grundsteinlegung
 
 printf "grundsteinlegung ${GREEN}cloned${NC}\\n\\n"
 

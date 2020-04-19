@@ -21,11 +21,15 @@ export default async config => {
   const hostInitScripts = hostScripts
     .map(script =>
       `
+printf "${YELLOW}add init script${NC}: ${script}\\n"
+
 sudo docker exec -it ${containerName} mkdir -p ${hostDir}
 
 sudo docker cp ${script} ${containerName}:${hostDir}/
 
 sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basename(script)}
+
+printf "add init script: ${GREEN}done${NC}\\n\\n"
 `.trim(),
     )
     .join('\n\n')
@@ -41,7 +45,7 @@ printf "${YELLOW}certificates${NC} - generate self-signed certificates\\n"
 
 ${hostInitScripts}
 
-printf "dev env ${GREEN}started${NC}"
+printf "dev env ${GREEN}started${NC}\\n\\n"
 `.trimStart()
 
   await writeFile({ name: 'dev', config, contents, dir })

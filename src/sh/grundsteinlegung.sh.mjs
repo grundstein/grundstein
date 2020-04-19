@@ -22,7 +22,7 @@ printf "${YELLOW}apt update${NC}\\n"
 
 apt-get -y -qq update > /dev/null
 
-printf "apt update: ${GREEN}done${NC}\\n"
+printf "apt update: ${GREEN}done${NC}\\n\\n"
 
 
 
@@ -34,7 +34,7 @@ apt-get install -y -qq tzdata > /dev/null
 
 dpkg-reconfigure -f noninteractive tzdata > /dev/null
 
-
+printf "timezones: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}install${NC} dependencies\\n"
 
@@ -52,6 +52,7 @@ python3-pip \
 nano \
 > /dev/null
 
+printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 
 
 printf "${YELLOW}apt upgrade${NC}\\n"
@@ -67,8 +68,6 @@ printf "${YELLOW}apt autoremove${NC}\\n"
 apt-get -y autoremove > /dev/null
 
 printf "apt autoremove ${GREEN}done${NC}\\n\\n"
-
-printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 
 
 
@@ -104,9 +103,10 @@ apt-get -y -qq update
 TZ=${env.TZ} apt-get -qq -y install certbot > /dev/null
 
 # install certbot digitalocean plugin.
-TZ=${env.TZ} pip3 install certbot-dns-digitalocean
+pip3 install certbot-dns-digitalocean > /dev/null
 
 printf "certbot install: ${GREEN}done${NC}\\n\\n"
+
 
 
 printf "${YELLOW}install${NC} nodejs\\n"

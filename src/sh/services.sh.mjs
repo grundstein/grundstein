@@ -10,7 +10,7 @@ export const createBash = async config => {
   log('Configure host:', config.host)
 
   const { host, env } = config
-  const { name, services, repositories } = host
+  const { services, repositories } = host
 
   let { ips } = host
   if (!is.array(ips)) {
@@ -34,7 +34,7 @@ export const createBash = async config => {
   const clone = Object.entries(repositories)
     .map(([name, r]) =>
       `
-printf "${YELLOW}GRUNDSTEIN${NC} - cloning page for ${name}\\n"
+printf "${YELLOW}cloning page:${NC} ${name}\\n"
 
 DIR="${USERHOME}/repositories/${name}"
 
@@ -65,7 +65,7 @@ if [ -d "$DIR/api" ]; then
   cp -r ./api /var/www/api/${name}
 fi
 
-printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n"
+printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
 `.trim(),
     )
     .join('\n')
@@ -101,15 +101,15 @@ ${runServices}
 
 set -euf -o pipefail
 
-printf "starting grundstein service setup.\\n"
+printf "${YELLOW}grundstein${NC} service setup.\\n"
 
 ${sh}
 
-printf "service setup ${GREEN}done${NC}\\n"
+printf "service setup ${GREEN}done${NC}\\n\\n"
 `.trimStart()
 
   await Promise.all(
-    ips.map(async ip => await writeFile({ config, contents, dir: path.join(dir, ip), name })),
+    ips.map(async name => await writeFile({ config, contents, dir, name })),
   )
 
   return contents

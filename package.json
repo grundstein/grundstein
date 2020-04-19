@@ -22,6 +22,9 @@
     "test:install": "src/bash/install-test.sh",
     "format": "f -w"
   },
+  "bin": {
+    "grundstein": "src/bin.mjs"
+  },
   "files": [
     "src"
   ],

@@ -1,0 +1,13 @@
+[Unit]
+Description=grs - grundstein redirection service (80 > 4343)
+Documentation=https://docs.grundstein.it/grs
+After=network.target
+
+[Service]
+Type=simple
+User=grundstein
+ExecStart=/usr/bin/grs
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

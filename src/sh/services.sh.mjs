@@ -82,11 +82,29 @@ cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 
 systemctl enable ${service}
 systemctl start ${service}
+
+printf "${service} setup - ${GREEN}done${NC}\\n\\n"
   `.trim()
     })
     .join('\n')
 
-  const sh = `
+  const contents = `
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+
+
+printf "${YELLOW}set hostname${NC} to ${host.name}"
+
+# hostnamectl set-hostname ${host.name}
+
+printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
+
+
+
+printf "${YELLOW}grundstein${NC} service setup.\\n"
+
 ${install}
 
 mkdir -p ${USERHOME}/repositories
@@ -94,23 +112,11 @@ mkdir -p ${USERHOME}/repositories
 ${clone}
 
 ${runServices}
-    `.trim()
-
-  const contents = `
-#!/usr/bin/env bash
-
-set -euf -o pipefail
-
-printf "${YELLOW}grundstein${NC} service setup.\\n"
-
-${sh}
 
 printf "service setup ${GREEN}done${NC}\\n\\n"
 `.trimStart()
 
-  await Promise.all(
-    ips.map(async name => await writeFile({ config, contents, dir, name })),
-  )
+  await Promise.all(ips.map(async name => await writeFile({ config, contents, dir, name })))
 
   return contents
 }

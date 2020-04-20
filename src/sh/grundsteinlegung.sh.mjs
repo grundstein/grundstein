@@ -36,6 +36,8 @@ dpkg-reconfigure -f noninteractive tzdata > /dev/null
 
 printf "timezones: ${GREEN}done${NC}\\n\\n"
 
+
+
 printf "${YELLOW}install${NC} dependencies\\n"
 
 # curl needed for nvm
@@ -49,10 +51,12 @@ curl \
 python \
 software-properties-common \
 python3-pip \
+ntp \
 nano \
 > /dev/null
 
 printf "install dependencies: ${GREEN}done${NC}\\n\\n"
+
 
 
 printf "${YELLOW}apt upgrade${NC}\\n"

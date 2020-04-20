@@ -35,7 +35,7 @@ sudo docker cp "./bootstrap/${installFile}" "${containerName}:/"
 
 sudo docker exec -it "${containerName}" /usr/bin/env bash /${installFile}
 
-printf "docker dev build: ${GREEN}done${NC}"
+printf "docker dev build: ${GREEN}done${NC}\\n\\n\\n"
 `.trimStart()
 
   await writeFile({ name: 'docker', config, contents, dir })

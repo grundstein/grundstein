@@ -18,12 +18,17 @@ export default async config => {
 
   const hostDir = `/home/${env.USERNAME}/hosts`
 
+  const configString = JSON.stringify(config, null, 2)
+  const configFile = await writeFile({ name: 'config.json', contents: configString, config, dir })
+
   const hostInitScripts = hostScripts
     .map(script =>
       `
 printf "${YELLOW}add init script${NC}: ${script}\\n"
 
 sudo docker exec -it ${containerName} mkdir -p ${hostDir}
+
+sudo docker cp ${configFile} ${containerName}:/
 
 sudo docker cp ${script} ${containerName}:${hostDir}/
 

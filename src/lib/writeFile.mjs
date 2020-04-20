@@ -22,4 +22,6 @@ export const writeFile = async ({ dir, name, config, contents }) => {
   }
 
   log.success('Wrote:', file)
+
+  return file
 }

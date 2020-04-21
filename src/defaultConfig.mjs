@@ -46,7 +46,7 @@ export const hosts = [
 
     // which services should be installed and started on this pod?
     services: {
-      // gps,
+      gps,
       grs,
       gms,
       gas,

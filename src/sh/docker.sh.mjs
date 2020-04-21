@@ -29,7 +29,8 @@ fi
 
 sudo docker build dev --tag="${containerName}"
 
-sudo docker run -td -p 2350:2350 -p 2351:2351 -p 80:8080 -p 443:4343 --name="${containerName}" "${containerName}"
+# TODO: change 2323:4343 to 443:4343 once the local certificates are being generated.
+sudo docker run -td -p 2350:2350 -p 2351:2351 -p 80:8080 -p 2323:4343 --name="${containerName}" "${containerName}"
 
 sudo docker cp "./bootstrap/${installFile}" "${containerName}:/"
 

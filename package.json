@@ -16,6 +16,7 @@
     "build": "src/bin.mjs",
     "dev": "/usr/bin/env bash bootstrap/dev.sh",
     "docker": "/usr/bin/env bash bootstrap/docker.sh",
+    "connect": "/usr/bin/env docker exec -it grundstein-dev /bin/bash",
     "test": "npm run test:cli",
     "format": "f -w"
   },

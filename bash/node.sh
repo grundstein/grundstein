@@ -226,7 +226,7 @@ fi
 
 print_status 'Adding the NodeSource signing key to your keyring...'
 
-exec_cmd 'cat ./nodesource-pgp.key | apt-key add -'
+exec_cmd 'cat /grundsteinlegung/bash/nodesource-pgp.key | apt-key add -'
 
 print_status "Creating apt sources list file for the NodeSource ${NODENAME} repo..."
 

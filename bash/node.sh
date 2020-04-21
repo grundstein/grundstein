@@ -79,80 +79,8 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 
-node_deprecation_warning() {
-    if [[ "X${NODENAME}" == "Xio.js 1.x" ||
-          "X${NODENAME}" == "Xio.js 2.x" ||
-          "X${NODENAME}" == "Xio.js 3.x" ||
-          "X${NODENAME}" == "XNode.js 0.10" ||
-          "X${NODENAME}" == "XNode.js 0.12" ||
-          "X${NODENAME}" == "XNode.js 4.x LTS Argon" ||
-          "X${NODENAME}" == "XNode.js 5.x" ||
-          "X${NODENAME}" == "XNode.js 6.x LTS Boron" ||
-          "X${NODENAME}" == "XNode.js 7.x" ||
-          "X${NODENAME}" == "XNode.js 8.x LTS Carbon" ||
-          "X${NODENAME}" == "XNode.js 9.x" ||
-          "X${NODENAME}" == "XNode.js 11.x" ]]; then
-
-        print_bold \
-"                            DEPRECATION WARNING                            " "\
-${bold}${NODENAME} is no longer actively supported!${normal}
-
-  ${bold}You will not receive security or critical stability updates${normal} for this version.
-
-  You should migrate to a supported version of Node.js as soon as possible.
-  Use the installation script that corresponds to the version of Node.js you
-  wish to install. e.g.
-
-   * ${green}https://deb.nodesource.com/setup_10.x — Node.js 10 LTS \"Dubnium\"${normal} (recommended)
-   * ${green}https://deb.nodesource.com/setup_12.x — Node.js 12 LTS \"Erbium\"${normal}
-
-  Please see ${bold}https://github.com/nodejs/Release${normal} for details about which
-  version may be appropriate for you.
-
-  The ${bold}NodeSource${normal} Node.js distributions repository contains
-  information both about supported versions of Node.js and supported Linux
-  distributions. To learn more about usage, see the repository:
-    ${bold}https://github.com/nodesource/distributions${normal}
-"
-        echo
-        echo "Continuing in 20 seconds ..."
-        echo
-        sleep 20
-    fi
-}
-
-script_deprecation_warning() {
-    if [ "X${SCRSUFFIX}" == "X" ]; then
-        print_bold \
-"                         SCRIPT DEPRECATION WARNING                         " "\
-This script, located at ${bold}https://deb.nodesource.com/setup${normal}, used to
-  install Node.js 0.10, is deprecated and will eventually be made inactive.
-
-  You should use the script that corresponds to the version of Node.js you
-  wish to install. e.g.
-
-   * ${green}https://deb.nodesource.com/setup_10.x — Node.js 10 LTS \"Dubnium\"${normal} (recommended)
-   * ${green}https://deb.nodesource.com/setup_12.x — Node.js 12 LTS \"Erbium\"${normal}
-  Please see ${bold}https://github.com/nodejs/Release${normal} for details about which
-  version may be appropriate for you.
-
-  The ${bold}NodeSource${normal} Node.js Linux distributions GitHub repository contains
-  information about which versions of Node.js and which Linux distributions
-  are supported and how to use the install scripts.
-    ${bold}https://github.com/nodesource/distributions${normal}
-"
-
-        echo
-        echo "Continuing in 20 seconds (press Ctrl-C to abort) ..."
-        echo
-        sleep 20
-    fi
-}
 
 setup() {
-
-script_deprecation_warning
-node_deprecation_warning
 
 print_status "Installing the NodeSource ${NODENAME} repo..."
 
@@ -298,22 +226,18 @@ fi
 
 print_status 'Adding the NodeSource signing key to your keyring...'
 
-if [ -x /usr/bin/curl ]; then
-    exec_cmd 'curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -'
-else
-    exec_cmd 'wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -'
-fi
+exec_cmd 'cat ./nodesource-pgp.key | apt-key add -'
 
 print_status "Creating apt sources list file for the NodeSource ${NODENAME} repo..."
 
 exec_cmd "echo 'deb https://deb.nodesource.com/${NODEREPO} ${DISTRO} main' > /etc/apt/sources.list.d/nodesource.list"
 exec_cmd "echo 'deb-src https://deb.nodesource.com/${NODEREPO} ${DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list"
 
-print_status 'Running `apt-get update` for you...'
+print_status 'Running `apt-get update`'
 
-exec_cmd 'apt-get update'
+exec_cmd 'apt-get update --qq -y > /dev/null'
 
-exec_cmd 'apt-get install -y nodejs'
+exec_cmd 'apt-get install -qq -y nodejs > /dev/null'
 }
 
 ## Defer setup until we have the complete script

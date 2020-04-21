@@ -17,9 +17,6 @@
     "dev": "/usr/bin/env bash bootstrap/dev.sh",
     "docker": "/usr/bin/env bash bootstrap/docker.sh",
     "test": "npm run test:cli",
-    "test:cli": "test/bootstrap.sh",
-    "connect": "ssh root@grundstein 'bash -s' < src/bash/install.sh",
-    "test:install": "src/bash/install-test.sh",
     "format": "f -w"
   },
   "bin": {

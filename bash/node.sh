@@ -149,7 +149,7 @@ exec_cmd "echo 'deb-src https://deb.nodesource.com/${NODEREPO} ${DISTRO} main' >
 
 print_status 'Running `apt-get update`'
 
-exec_cmd 'apt-get update --qq -y > /dev/null'
+exec_cmd 'apt-get update -y > /dev/null'
 
 exec_cmd 'apt-get install -qq -y nodejs > /dev/null'
 }

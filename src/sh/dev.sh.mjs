@@ -26,11 +26,11 @@ export default async config => {
       `
 printf "${YELLOW}add init script${NC}: ${script}\\n"
 
-sudo docker exec -it ${containerName} mkdir -p ${hostDir}
+sudo docker exec -it ${containerName} mkdir -p "${hostDir}"
 
-sudo docker cp ${configFile} ${containerName}:/
+sudo docker cp "${configFile}" "${containerName}:/"
 
-sudo docker cp ${script} ${containerName}:${hostDir}/
+sudo docker cp "${script}" "${containerName}:${hostDir}/"
 
 sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basename(script)}
 

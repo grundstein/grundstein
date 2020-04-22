@@ -55,11 +55,13 @@ npm test
 
 npm run build
 
+# copy docs directory, if it exists
 if [ -d "$DIR/docs" ]; then
   mkdir -p /var/www/html/
   cp -r ./docs /var/www/html/${name}
 fi
 
+# copy api directory, if it exists
 if [ -d "$DIR/api" ]; then
   mkdir -p /var/www/api
   cp -r ./api /var/www/api/${name}

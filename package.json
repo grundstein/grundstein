@@ -17,7 +17,7 @@
     "dev": "/usr/bin/env bash bootstrap/dev.sh",
     "docker": "/usr/bin/env bash bootstrap/docker.sh",
     "connect": "/usr/bin/env docker exec -it grundstein-dev /bin/bash",
-    "test": "npm run test:cli",
+    "test": "t",
     "format": "f -w"
   },
   "bin": {
@@ -41,8 +41,8 @@
     "@magic/types": "0.1.11"
   },
   "devDependencies": {
-    "@magic/format": "0.0.8",
-    "@magic/test": "0.1.41"
+    "@magic/format": "0.0.9",
+    "@magic/test": "0.1.43"
   },
   "keywords": [
     "grundstein",

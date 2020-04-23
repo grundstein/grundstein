@@ -48,9 +48,7 @@ apt-get -qq -y install \
 git \
 makepasswd \
 curl \
-python \
 software-properties-common \
-python3-pip \
 ntp \
 nano \
 > /dev/null
@@ -104,7 +102,11 @@ add-apt-repository -y ppa:certbot/certbot > /dev/null
 apt-get -y -qq update
 
 # actually install certbot
-TZ=${env.TZ} apt-get -qq -y install certbot > /dev/null
+TZ=${env.TZ} apt-get -qq -y install \
+python \
+python3-pip \
+certbot \
+> /dev/null
 
 # install certbot digitalocean plugin.
 pip3 install certbot-dns-digitalocean > /dev/null

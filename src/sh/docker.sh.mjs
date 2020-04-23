@@ -23,7 +23,7 @@ printf "${YELLOW}GRUNDSTEIN DEV DOCKER${NC} \\n\\n"
 
 printf "this script builds and runs docker, it needs the root.\\n\\n\\n"
 
-if [[ $(sudo docker ps -q -f name=${containerName}) ]]; then
+if [[ $(sudo docker ps -aq -f name=${containerName}) ]]; then
   sudo docker rm -f "${containerName}"
 fi
 

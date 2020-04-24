@@ -36,6 +36,14 @@ export const mergeConfig = async cwd => {
     process.exit(1)
   }
 
+  let { INSTALL_LOG = '/grundstein' } = config.env
+
+  if (!INSTALL_LOG.startsWith('/var/logs/')) {
+    INSTALL_LOG = `/var/logs/${INSTALL_LOG}`.replace(/\/\//g, '/')
+  }
+
+  config.env.INSTALL_LOG = INSTALL_LOG
+
   log('env', JSON.stringify(config.env, null, 2))
   log('hosts', JSON.stringify(config.hosts, null, 2))
 

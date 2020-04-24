@@ -38,8 +38,8 @@ export const mergeConfig = async cwd => {
 
   let { LOG_DIR = '/grundstein' } = config.env
 
-  if (!LOG_DIR.startsWith('/var/logs/')) {
-    LOG_DIR = `/var/logs/${LOG_DIR}/`.replace(/\/\//g, '/')
+  if (!LOG_DIR.startsWith('/var/log/')) {
+    LOG_DIR = `/var/log/${LOG_DIR}/`.replace(/\/\//g, '/')
   }
 
   config.env.LOG_DIR = LOG_DIR

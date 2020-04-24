@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { cli, fs, log } from '@grundstein/commons'
 
 import { getAllHostnames } from './getAllHostnames.mjs'

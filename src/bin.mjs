@@ -31,7 +31,6 @@ const doIt = async () => {
   const isProd = is.defined(args.prod)
   const isForced = is.defined(args.force)
 
-
   if (isForced && isProd) {
     log.warn('SERVER INSTALL', 'This will force installation on your production server!')
 

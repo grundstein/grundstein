@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
@@ -9,6 +11,10 @@ export default async config => {
 
   const { GREEN, RED, YELLOW, NC } = colors
 
+  const { INSTALL_LOG } = env
+
+  const logDir = path.dirname(INSTALL_LOG);
+
   const contents = `
 #!/usr/bin/env bash
 
@@ -18,9 +24,17 @@ export DEBIAN_FRONTEND=noninteractive
 
 
 
+printf "${YELLOW}log dir${NC} - mkdir ${logDir}\\n\\n"
+
+mkdir -p ${logDir}
+
+printf "${logDir} ${GREEN}created${NC}\\n\\n"
+
+
+
 printf "${YELLOW}apt update${NC}\\n"
 
-apt-get -y -qq update > /dev/null
+apt-get -y update > ${INSTALL_LOG}
 
 printf "apt update: ${GREEN}done${NC}\\n\\n"
 
@@ -30,9 +44,9 @@ printf "${YELLOW}timezones${NC} - setup\\n"
 
 ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime
 
-apt-get install -y -qq tzdata > /dev/null
+apt-get install -y tzdata > ${INSTALL_LOG}
 
-dpkg-reconfigure -f noninteractive tzdata > /dev/null
+dpkg-reconfigure -f noninteractive tzdata > ${INSTALL_LOG}
 
 printf "timezones: ${GREEN}done${NC}\\n\\n"
 
@@ -51,7 +65,7 @@ curl \
 software-properties-common \
 ntp \
 nano \
-> /dev/null
+> ${INSTALL_LOG}
 
 printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 
@@ -59,7 +73,7 @@ printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt upgrade${NC}\\n"
 
-apt-get -qq -y upgrade > /dev/null
+apt-get -qq -y upgrade > ${INSTALL_LOG}
 
 printf "apt upgrade: ${GREEN}done${NC}\\n\\n"
 
@@ -67,7 +81,7 @@ printf "apt upgrade: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt autoremove${NC}\\n"
 
-apt-get -y autoremove > /dev/null
+apt-get -y autoremove > ${INSTALL_LOG}
 
 printf "apt autoremove ${GREEN}done${NC}\\n\\n"
 
@@ -75,7 +89,7 @@ printf "apt autoremove ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}git clone${NC} grundsteinlegung.\\n"
 
-git clone --quiet "${env.GIT_URL}/cli" /grundsteinlegung
+git clone  "${env.GIT_URL}/cli" /grundsteinlegung > ${INSTALL_LOG}
 
 printf "grundsteinlegung ${GREEN}cloned${NC}\\n\\n"
 
@@ -97,19 +111,19 @@ printf "user generation: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}certbot${NC} - install\\n"
 
-add-apt-repository -y universe > /dev/null
-add-apt-repository -y ppa:certbot/certbot > /dev/null
-apt-get -y -qq update
+add-apt-repository -y universe > ${INSTALL_LOG}
+add-apt-repository -y ppa:certbot/certbot > ${INSTALL_LOG}
+apt-get -y update > ${INSTALL_LOG}
 
 # actually install certbot
-TZ=${env.TZ} apt-get -qq -y install \
+TZ=${env.TZ} apt-get -y install \
 python \
 python3-pip \
 certbot \
-> /dev/null
+> ${INSTALL_LOG}
 
 # install certbot digitalocean plugin.
-pip3 install certbot-dns-digitalocean > /dev/null
+pip3 install certbot-dns-digitalocean > ${INSTALL_LOG}
 
 printf "certbot install: ${GREEN}done${NC}\\n\\n"
 
@@ -117,7 +131,7 @@ printf "certbot install: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}install${NC} nodejs\\n"
 # install nodejs
-/usr/bin/env bash /grundsteinlegung/bash/node.sh
+/usr/bin/env bash /grundsteinlegung/bash/node.sh > ${INSTALL_LOG}
 
 printf "nodejs install ${GREEN}done${NC}\\n\\n"
 

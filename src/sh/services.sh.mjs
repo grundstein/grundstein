@@ -12,6 +12,8 @@ export const createBash = async config => {
   const { host, env } = config
   const { services, repositories } = host
 
+  const { INSTALL_LOG } = env
+
   let { ips } = host
   if (!is.array(ips)) {
     ips = [ips]
@@ -41,10 +43,10 @@ DIR="${USERHOME}/repositories/${name}"
 printf "writing repository to $DIR\\n"
 
 if [ ! -d "$DIR" ] ; then
-  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR > /dev/null
+  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR > ${INSTALL_LOG}
 else
   cd "$DIR"
-  git pull origin ${r.branch} > /dev/null
+  git pull origin ${r.branch} > ${INSTALL_LOG}
 fi
 
 cd "$DIR"

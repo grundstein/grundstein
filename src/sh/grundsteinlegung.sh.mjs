@@ -11,7 +11,7 @@ export default async config => {
 
   const { GREEN, RED, YELLOW, NC } = colors
 
-  const { ERROR_LOG, INSTALL_LOG } = env
+  const { INSTALL_LOG } = env
 
   const logDir = path.dirname(INSTALL_LOG)
 
@@ -45,7 +45,7 @@ printf " - ${GREEN}created${NC}\\n\\n"
 
 printf "${YELLOW}apt update${NC}"
 
-apt-get -y update >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+apt-get -y update >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -55,9 +55,9 @@ printf "${YELLOW}timezones${NC} - setup"
 
 ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime
 
-apt-get install -y tzdata >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+apt-get install -y tzdata >> ${INSTALL_LOG} 2>&1
 
-dpkg-reconfigure -f noninteractive tzdata >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+dpkg-reconfigure -f noninteractive tzdata >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -76,7 +76,7 @@ curl \
 software-properties-common \
 ntp \
 nano \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -84,7 +84,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt upgrade${NC}"
 
-apt-get -qq -y upgrade >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+apt-get -qq -y upgrade >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -92,7 +92,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt autoremove${NC}"
 
-apt-get -y autoremove >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+apt-get -y autoremove >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -100,7 +100,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}git clone${NC} grundsteinlegung"
 
-git clone  "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+git clone  "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}cloned${NC}\\n\\n"
 
@@ -121,7 +121,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}install${NC} nodejs"
 
-/usr/bin/env bash /grundsteinlegung/bash/node.sh >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+/usr/bin/env bash /grundsteinlegung/bash/node.sh >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

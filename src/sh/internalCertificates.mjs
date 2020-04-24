@@ -7,7 +7,7 @@ import { colors, getAllHostnames, writeFile } from '../lib/index.mjs'
 export default config => {
   const { YELLOW, GREEN, NC } = colors
 
-  const { ERROR_LOG, INSTALL_LOG } = config
+  const { INSTALL_LOG } = config
 
   const certDir = `/root/ca`
   const intermediateDir = `${certDir}/intermediate`
@@ -63,7 +63,8 @@ chmod 444 ${certDir}/certs/ca.cert.pem
 
 printf "${YELLOW}root certificate${NC} - test\\n\\n"
 
-openssl x509 -noout -text -in ${certDir}/certs/ca.cert.pem
+openssl x509 -noout -text -in ${certDir}/certs/ca.cert.pem  \
+>> ${INSTALL_LOG} 2>&1
 
 printf "root ca certificate setup - ${GREEN}done${NC}\\n\\n"
 
@@ -105,7 +106,7 @@ openssl genrsa \
 -out ${intermediateDir}/private/intermediate.key.pem \
 -passout pass:\${INTERMEDIATE_PASSWORD} \
 4096 \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 chmod 400 ${intermediateDir}/private/intermediate.key.pem
 
@@ -121,14 +122,18 @@ openssl req \
 -sha512 \
 -key ${intermediateDir}/private/intermediate.key.pem \
 -out ${intermediateDir}/csr/intermediate.csr.pem \
+-batch \
 -passin pass:\${INTERMEDIATE_PASSWORD} \
--passout pass:\${INTERMEDIATE_PASSWORD}
+-passout pass:\${INTERMEDIATE_PASSWORD} \
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein" \
+>> ${INSTALL_LOG} 2>&1
+
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
 
 
-printf "${YELLOW}openssl${NC} - intermediate req"
+printf "${YELLOW}openssl${NC} - intermediate ca"
 
 openssl ca \
 -config ${certDir}/openssl.cnf \
@@ -138,9 +143,10 @@ openssl ca \
 -md sha512 \
 -in ${intermediateDir}/csr/intermediate.csr.pem \
 -out ${intermediateDir}/certs/intermediate.cert.pem \
--passin pass:\${INTERMEDIATE_PASSWORD} \
+-passin pass:\${PASSWORD} \
+-batch \
 -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein" \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 chmod 444 ${intermediateDir}/certs/intermediate.cert.pem
 
@@ -150,23 +156,23 @@ printf "${YELLOW}intermediate certificate${NC} - verify\\n\\n"
 
 openssl x509 -noout -text \
 -in ${intermediateDir}/certs/intermediate.cert.pem \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 openssl verify -CAfile ${certDir}/ca.cert.pem \
 ${intermediateDir}/certs/intermediate.cert.pem \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 printf "${YELLOW}certificate chain${NC} - generate\\n"
 
 cat ${intermediateDir}/certs/intermediate.cert.pem \
 ${certDir}certs/ca.cert.pem > ${intermediateDir}/certs/ca-chain.cert.pem \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 chmod 444 ${intermediateDir}/certs/ca-chain.cert.pem
 
 printf "intermediate certificate - ${GREEN}checked${NC}\\n\\n"
 
-printf "intermediate ca setup - ${GREEN}done${NC}\\n\\\n"
+printf "intermediate ca setup - ${GREEN}done${NC}\\n\\n"
 
 
 

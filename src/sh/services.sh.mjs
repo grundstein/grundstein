@@ -19,7 +19,7 @@ export const createBash = async config => {
 
   const hostnames = getHostnamesForHost(host)
 
-  const { ERROR_LOG, INSTALL_LOG, USERNAME, USERHOME } = env
+  const { INSTALL_LOG, USERNAME, USERHOME } = env
 
   const { YELLOW, RED, GREEN, NC } = colors
 
@@ -31,7 +31,7 @@ export const createBash = async config => {
     .map(s => `grundstein/${s}`)
     .join(' ')
 
-  const install = `npm install -g ${serviceList} >> ${INSTALL_LOG} 2>> ${ERROR_LOG}`
+  const install = `npm install -g ${serviceList} >> ${INSTALL_LOG} 2>&1`
 
   const clone = Object.entries(repositories)
     .map(
@@ -44,19 +44,19 @@ DIR="${USERHOME}/repositories/${name}"
 printf "writing repository to $DIR\\n"
 
 if [ ! -d "$DIR" ] ; then
-  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG} 2>&1
 else
   cd "$DIR"
-  git pull origin ${r.branch} >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+  git pull origin ${r.branch} >> ${INSTALL_LOG} 2>&1
 fi
 
 cd "$DIR"
 
-npm install >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+npm install >> ${INSTALL_LOG} 2>&1
 
-npm test >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+npm test >> ${INSTALL_LOG} 2>&1
 
-npm run build >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+npm run build >> ${INSTALL_LOG} 2>&1
 
 # copy docs directory, if it exists
 if [ -d "$DIR/docs" ]; then
@@ -100,19 +100,19 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
     certificateScripts += `
 printf "${YELLOW}certbot${NC} - install\\n"
 
-add-apt-repository -y universe >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
-add-apt-repository -y ppa:certbot/certbot >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
-apt-get -y update >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+add-apt-repository -y universe >> ${INSTALL_LOG} 2>&1
+add-apt-repository -y ppa:certbot/certbot >> ${INSTALL_LOG} 2>&1
+apt-get -y update >> ${INSTALL_LOG} 2>&1
 
 # actually install certbot
 TZ=${env.TZ} apt-get -y install \
 python \
 python3-pip \
 certbot \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+>> ${INSTALL_LOG} 2>&1
 
 # install certbot digitalocean plugin.
-pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>&1
 
 printf "certbot install: ${GREEN}done${NC}\\n\\n"
 
@@ -139,9 +139,16 @@ set -euf -o pipefail
 
 
 
-printf "${YELLOW}set hostname${NC} to ${host.name}"
+printf "${YELLOW}set hostname${NC} to ${host.name}\\n"
 
-# hostnamectl set-hostname ${host.name}
+HOST_FILE_CONTENT=$(tail -n +1 /etc/hosts)
+
+NEW_HOST_FILE_CONTENT="${host.ips[0]} ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n"
+
+echo "\${NEW_HOST_FILE_CONTENT}"
+
+echo "\${NEW_HOST_FILE_CONTENT}" > /etc/hosts
+
 
 printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
 

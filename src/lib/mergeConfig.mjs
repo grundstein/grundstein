@@ -4,8 +4,12 @@ import { is, log } from '@grundstein/commons'
 
 import defaultConfig from '../defaultConfig.mjs'
 
-export const mergeConfig = async cwd => {
-  let config = defaultConfig
+export const mergeConfig = async ({ cwd, args }) => {
+  let config = {
+    ...defaultConfig,
+    cwd,
+    args,
+  }
 
   try {
     const { default: npmConfig } = await import('@grundstein/hosts')

@@ -144,7 +144,7 @@ printf "${YELLOW}set hostname${NC} to ${host.name}\\n"
 # tail wants +2 to remove the first line.
 HOST_FILE_CONTENT=$(tail -n +2 /etc/hosts)
 
-NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n"
+NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT} localhost\n"
 
 echo "\${NEW_HOST_FILE_CONTENT}"
 

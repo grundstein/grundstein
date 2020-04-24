@@ -97,6 +97,30 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
   // this should scale for quite some time though, it's just the proxy.
   // this will likely be a high-mem, high cpu instance later.
   if (serviceList.includes('grundstein/gps')) {
+
+    let createLetsencryptCertificates
+
+    if (config.args.prod) {
+      const secretFile = '/root/.secrets/digitalocean.ini'
+      createLetsencryptCertificates = `
+
+
+if test -f "${secretFile}"; then
+
+  printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}\\n"
+
+  certbot certonly \
+    --dns-digitalocean \
+    --dns-digitalocean-credentials ~/.secrets/digitalocean.ini \
+    --dns-digitalocean-propagation-seconds 60 \
+    ${hostnames.join(' -d ')}
+
+  printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
+fi
+
+`
+    }
+
     certificateScripts += `
 printf "${YELLOW}certbot${NC} - install\\n"
 
@@ -119,11 +143,7 @@ printf "certbot install: ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}certbot${NC} - generate certificates\\n\\n"
 
-# certbot certonly \
-#  --dns-digitalocean \
-#  --dns-digitalocean-credentials ~/.secrets/digitalocean.ini \
-#  --dns-digitalocean-propagation-seconds 60 \
-#  ${hostnames.join(' -d ')}
+${createLetsencryptCertificates}
 
 printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
@@ -172,6 +192,7 @@ printf "service setup ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}removing /grundstein.lock${NC}"
 
+# this file got touch'ed in grundsteinlegung.sh
 rm /grundstein.lock
 
 printf "- ${GREEN}done${NC}\\n\\n"

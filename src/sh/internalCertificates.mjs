@@ -18,21 +18,21 @@ export default config => {
 
 
 
-printf "${YELLOW}openssl genrsa${NC} - generate certificate for ${hostname}"
+printf "${YELLOW}openssl genrsa${NC} - generate priv key for ${hostname}"
 
 openssl genrsa \
-  -out ${intermediateDir}/private/${hostname}.key.pem 2048 \
-  -passin pass:\${INTERMEDIATE_PASSWORD}
+  -out ${intermediateDir}/private/${hostname}.key.pem \
+  2048
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
 
 
-printf "${YELLOW}openssl genrsa${NC} - generate certificate for ${hostname}"
+printf "${YELLOW}openssl req${NC} - gen certificate request for ${hostname}"
 
 openssl req \
   -config ${intermediateDir}/openssl.cnf \
-  -key ${intermediateDir}/private/{hostname}.com.key.pem \
+  -key ${intermediateDir}/private/${hostname}.com.key.pem \
   -new -sha256 -out ${intermediateDir}/csr/${hostname}.csr.pem \
   -passin pass:\${INTERMEDIATE_PASSWORD} \
   -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=${hostname}"
@@ -47,11 +47,12 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}openssl ca${NC} - sign certificate for ${hostname}"
 
-openssl ca -config intermediate/openssl.cnf \
+openssl ca -config ${intermediateDir}openssl.cnf \
       -extensions server_cert -days 375 -notext -md sha256 \
-      -in intermediate/csr/www.example.com.csr.pem \
-      -out intermediate/certs/www.example.com.cert.pem
-# chmod 444 intermediate/certs/www.example.com.cert.pem
+      -in ${intermediateDir}csr/${hostname}.csr.pem \
+      -out ${intermediateDir}certs/${hostname}.cert.pem
+
+chmod 444 ${intermediateDir}certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -59,20 +60,16 @@ printf " - ${GREEN}done${NC}\\n\\n"
 printf "${YELLOW}openssl${NC} - verify certificate for ${hostname}"
 
 openssl x509 -noout -text \
-  -in intermediate/certs/${hostname}.cert.pem
-
-printf " - ${GREEN}done${NC}\\n\\n"
+  -in ${intermediateDir}certs/${hostname}.cert.pem
 
 openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \
-  ${intermediateDir}/certs/www.example.com.cert.pem
+  ${intermediateDir}/certs/${hostname}.cert.pem
+
+printf " - ${GREEN}done${NC}\\n\\n"
 
 `).join('\n\n\n')
 
   const contents = `
-
-#!/usr/bin/env bash
-
-set -euf -o pipefail
 
 printf "${YELLOW}generate certificates${NC}\\n\\n"
 
@@ -212,15 +209,22 @@ openssl x509 -noout -text \
   -in ${intermediateDir}/certs/intermediate.cert.pem \
 >> ${INSTALL_LOG} 2>&1
 
-openssl verify -CAfile ${certDir}/ca.cert.pem \
+printf "x509 ${GREEN}passed${NC}\\n\\n"
+
+openssl verify \
+  -CAfile ${certDir}/certs/ca.cert.pem \
   ${intermediateDir}/certs/intermediate.cert.pem \
->> ${INSTALL_LOG} 2>&1
+# >> ${INSTALL_LOG} 2>&1
+
+printf "verify ${GREEN}passed${NC}\\n\\n"
+
 
 printf "${YELLOW}certificate chain${NC} - generate\\n"
 
-cat ${intermediateDir}/certs/intermediate.cert.pem \
-${certDir}certs/ca.cert.pem > ${intermediateDir}/certs/ca-chain.cert.pem \
->> ${INSTALL_LOG} 2>&1
+cat \
+  ${intermediateDir}/certs/intermediate.cert.pem \
+  ${certDir}/certs/ca.cert.pem \
+> ${intermediateDir}/certs/ca-chain.cert.pem
 
 chmod 444 ${intermediateDir}/certs/ca-chain.cert.pem
 

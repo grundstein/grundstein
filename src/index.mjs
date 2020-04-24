@@ -6,10 +6,10 @@ import { mergeConfig, writeFile, writeEtcHosts } from './lib/index.mjs'
 
 import sh from './sh/index.mjs'
 
-export const run = async () => {
+export const run = async args => {
   const cwd = process.cwd()
 
-  const config = await mergeConfig(cwd)
+  const config = await mergeConfig({ cwd, args })
 
   config.dir = path.join(cwd, 'bootstrap')
 

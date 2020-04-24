@@ -129,7 +129,7 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
     `.trim()
 
-    certificateScripts += await internalCertificates(config)
+    certificateScripts += internalCertificates(config)
   }
 
   const contents = `

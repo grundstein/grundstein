@@ -90,7 +90,10 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
     .join('\n')
 
   const maybeCreateCertificates = () => {
-    if (serviceList.includes('grundstein/gca')) {
+    // this assumes only one gps server.
+    // this should scale for quite some time though, it's just the proxy.
+    // this will likely be a high-mem, high cpu instance later.
+    if (serviceList.includes('grundstein/gps')) {
       return `
 printf "${YELLOW}certbot${NC} - install\\n"
 

@@ -1,8 +1,6 @@
 import path from 'path'
 
-import { is, log } from '@grundstein/commons'
-
-import fs from '@magic/fs'
+import { fs, is, log } from '@grundstein/commons'
 
 import { writeFile } from '../lib/index.mjs'
 
@@ -13,7 +11,7 @@ export default async config => {
   const installFile = 'grundsteinlegung.sh'
 
   const localHostDir = path.join(dir, 'hosts')
-  const remoteHostDir = `/home/${env.USERNAME}/hosts`
+  const remoteHostDir = `/home/${env.USERNAME}/`
 
   const { hosts } = config
 
@@ -28,7 +26,7 @@ export default async config => {
       return ips
         .map(ip =>
           `
-scp -r ${localHostDir}/${ip}/* ${env.SSH_USER}@${ip}:${remoteHostDir} && \
+scp -r ${localHostDir}/${ip}.sh ${env.SSH_USER}@${ip}:${remoteHostDir}/init.sh && \
 ssh ${env.SSH_USER}@${ip} "/grundsteinlegung.sh" &
 `.trim(),
         )

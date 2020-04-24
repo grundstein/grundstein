@@ -78,11 +78,11 @@ commonName                      = Common Name
 emailAddress                    = Email Address
 
 # Optionally, specify some defaults.
-countryName_default             = GB
-stateOrProvinceName_default     = England
-localityName_default            =
-0.organizationName_default      = Alice Ltd
-organizationalUnitName_default  =
+countryName_default             = UT
+stateOrProvinceName_default     = Utopia
+localityName_default            = The Net
+0.organizationName_default      = Grundstein DAO
+organizationalUnitName_default  = Wizards and Witches
 emailAddress_default            =
 
 [ v3_ca ]

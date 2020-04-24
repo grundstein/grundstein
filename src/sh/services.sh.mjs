@@ -1,8 +1,6 @@
 import path from 'path'
 
-import { is, log } from '@grundstein/commons'
-
-import fs from '@magic/fs'
+import { is, fs, log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 
@@ -32,8 +30,9 @@ export const createBash = async config => {
   const install = `npm install -g ${serviceList} >> ${INSTALL_LOG} 2>> ${ERROR_LOG}`
 
   const clone = Object.entries(repositories)
-    .map(([name, r]) =>
-      `
+    .map(
+      ([name, r]) =>
+        `
 printf "${YELLOW}cloning page:${NC} ${name}\\n"
 
 DIR="${USERHOME}/repositories/${name}"
@@ -68,7 +67,7 @@ if [ -d "$DIR/api" ]; then
 fi
 
 printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
-`.trim(),
+`,
     )
     .join('\n')
 
@@ -88,6 +87,44 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
     )
     .join('\n')
 
+  const maybeCreateCertificates = () => {
+    if (serviceList.includes('grundstein/gca')) {
+      return `
+printf "${YELLOW}certbot${NC} - install\\n"
+
+add-apt-repository -y universe >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+add-apt-repository -y ppa:certbot/certbot >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+apt-get -y update >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+
+# actually install certbot
+TZ=${env.TZ} apt-get -y install \
+python \
+python3-pip \
+certbot \
+> ${INSTALL_LOG}
+
+# install certbot digitalocean plugin.
+pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+
+printf "certbot install: ${GREEN}done${NC}\\n\\n"
+
+
+printf "${YELLOW}certbot${NC} - generate certificates\\n\\n"
+
+# certbot certonly \
+#  --dns-digitalocean \
+#  --dns-digitalocean-credentials ~/.secrets/digitalocean.ini \
+#  --dns-digitalocean-propagation-seconds 60 \
+#  ${host.hostnames.join(' -d ')}
+
+printf "certificate generation ${GREEN}done${NC}\\n\\n"
+
+      `.trim()
+    }
+
+    return ''
+  }
+
   const contents = `
 #!/usr/bin/env bash
 
@@ -100,6 +137,10 @@ printf "${YELLOW}set hostname${NC} to ${host.name}"
 # hostnamectl set-hostname ${host.name}
 
 printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
+
+
+
+${maybeCreateCertificates()}
 
 
 

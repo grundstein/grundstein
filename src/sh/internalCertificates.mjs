@@ -122,8 +122,7 @@ openssl req \
 -key ${intermediateDir}/private/intermediate.key.pem \
 -out ${intermediateDir}/csr/intermediate.csr.pem \
 -passin pass:\${INTERMEDIATE_PASSWORD} \
--passout pass:\${INTERMEDIATE_PASSWORD} \
->> ${INSTALL_LOG} 2>> ${ERROR_LOG}
+-passout pass:\${INTERMEDIATE_PASSWORD}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

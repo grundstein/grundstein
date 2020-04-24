@@ -2,7 +2,7 @@ import path from 'path'
 
 import { is, fs, log } from '@grundstein/commons'
 
-import { colors, writeFile } from '../lib/index.mjs'
+import { colors, getHostnamesForHost, writeFile } from '../lib/index.mjs'
 
 export const createBash = async config => {
   log('Configure host:', config.host)
@@ -14,6 +14,8 @@ export const createBash = async config => {
   if (!is.array(ips)) {
     ips = [ips]
   }
+
+  const hostnames = getHostnamesForHost(host)
 
   const { ERROR_LOG, INSTALL_LOG, USERNAME, USERHOME } = env
 
@@ -115,7 +117,7 @@ printf "${YELLOW}certbot${NC} - generate certificates\\n\\n"
 #  --dns-digitalocean \
 #  --dns-digitalocean-credentials ~/.secrets/digitalocean.ini \
 #  --dns-digitalocean-propagation-seconds 60 \
-#  ${host.hostnames.join(' -d ')}
+#  ${hostnames.join(' -d ')}
 
 printf "certificate generation ${GREEN}done${NC}\\n\\n"
 

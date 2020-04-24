@@ -4,23 +4,19 @@ import { fs, log } from '@grundstein/commons'
 
 import { colors, getAllHostnames, writeFile } from '../lib/index.mjs'
 
-export default async config => {
-  const { dir, env } = config
-
+export default config => {
   const { YELLOW, GREEN, NC } = colors
-
-  const containerName = 'grundstein-dev'
-  const installFile = 'grundsteinlegung.sh'
-
-  const hostScripts = await fs.getFiles(path.join(dir, 'hosts'))
-
-  const hostDir = `/home/${env.USERNAME}/hosts`
 
   const certDir = `/root/ca`
 
   const hostnames = getAllHostnames(config)
 
-  const createRoot = `
+  const contents = `
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+printf "${YELLOW}generate certificates${NC}\\n\\n"
 
 printf "${YELLOW}root ca${NC} - generate\\n\\n"
 
@@ -59,21 +55,9 @@ printf "${YELLOW}root certificate${NC} - test\\n\\n"
 openssl x509 -noout -text -in certs/ca.cert.pem
 
 printf "root ca certificate setup - ${GREEN}done${NC}\\n\\n"
-`
-
-  const contents = `
-#!/usr/bin/env bash
-
-set -euf -o pipefail
-
-printf "${YELLOW}generate certificates${NC}\\n\\n"
-
-${createRoot}
 
 printf "certificates: ${GREEN}generated${NC}"
 `.trimStart()
-
-  await writeFile({ name: 'internal-certificates', config, contents, dir })
 
   return contents
 }

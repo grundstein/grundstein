@@ -65,7 +65,7 @@ curl \
 software-properties-common \
 ntp \
 nano \
-> ${INSTALL_LOG}
+>> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
 printf "install dependencies: ${GREEN}done${NC}\\n\\n"
 

@@ -12,10 +12,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "start": "npm run build && npm run docker && npm run dev",
-    "build": "src/bin.mjs",
-    "dev": "/usr/bin/env bash bootstrap/dev.sh",
-    "docker": "/usr/bin/env bash bootstrap/docker.sh",
+    "start": "src/bin.mjs",
     "connect": "/usr/bin/env docker exec -it grundstein-dev /bin/bash",
     "test": "t",
     "format": "f -w"

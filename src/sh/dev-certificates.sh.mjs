@@ -1,8 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
-
-import fs from '@magic/fs'
+import { fs, log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 
@@ -34,6 +32,10 @@ openssl req -x509 -out ${certDir}/${name}.crt -keyout ${certDir}/${name}.key \
 -subj '/CN=${name}' -extensions EXT -config <( \
 printf "[dn]\nCN=${name}\\n[req]\\ndistinguished_name = dn\\n[EXT]\\n\
 subjectAltName=DNS:${name}\\nkeyUsage=digitalSignature\\nextendedKeyUsage=serverAuth")
+
+printf "root certificate ${GREEN}generated${NC}\\n\\n"
+
+
   `.trim(),
         )
         .join('\n'),

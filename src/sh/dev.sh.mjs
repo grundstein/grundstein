@@ -1,8 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
-
-import fs from '@magic/fs'
+import { fs, log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 
@@ -45,8 +43,6 @@ printf "add init script: ${GREEN}done${NC}\\n\\n"
 set -euf -o pipefail
 
 printf "${YELLOW}starting dev env${NC}\\n\\n"
-
-printf "${YELLOW}certificates${NC} - generate self-signed certificates\\n"
 
 ${hostInitScripts}
 

@@ -1,8 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
-
-import fs from '@magic/fs'
+import { fs, log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 

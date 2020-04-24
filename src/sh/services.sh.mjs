@@ -106,7 +106,7 @@ TZ=${env.TZ} apt-get -y install \
 python \
 python3-pip \
 certbot \
-> ${INSTALL_LOG}
+>> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
 # install certbot digitalocean plugin.
 pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>> ${ERROR_LOG}

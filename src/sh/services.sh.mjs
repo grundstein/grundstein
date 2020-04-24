@@ -12,14 +12,12 @@ export const createBash = async config => {
   const { host, env } = config
   const { services, repositories } = host
 
-  const { INSTALL_LOG } = env
-
   let { ips } = host
   if (!is.array(ips)) {
     ips = [ips]
   }
 
-  const { USERNAME, USERHOME } = env
+  const { ERROR_LOG, INSTALL_LOG, USERNAME, USERHOME } = env
 
   const { YELLOW, RED, GREEN, NC } = colors
 
@@ -31,7 +29,7 @@ export const createBash = async config => {
     .map(s => `grundstein/${s}`)
     .join(' ')
 
-  const install = `npm install -g ${serviceList} >> ${INSTALL_LOG}`
+  const install = `npm install -g ${serviceList} >> ${INSTALL_LOG} 2>> ${ERROR_LOG}`
 
   const clone = Object.entries(repositories)
     .map(([name, r]) =>
@@ -43,19 +41,19 @@ DIR="${USERHOME}/repositories/${name}"
 printf "writing repository to $DIR\\n"
 
 if [ ! -d "$DIR" ] ; then
-  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG}
+  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 else
   cd "$DIR"
-  git pull origin ${r.branch} >> ${INSTALL_LOG}
+  git pull origin ${r.branch} >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 fi
 
 cd "$DIR"
 
-npm install >> ${INSTALL_LOG}
+npm install >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
-npm test >> ${INSTALL_LOG}
+npm test >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
-npm run build >> ${INSTALL_LOG}
+npm run build >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
 # copy docs directory, if it exists
 if [ -d "$DIR/docs" ]; then

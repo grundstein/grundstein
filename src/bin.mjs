@@ -45,8 +45,6 @@ const doIt = async () => {
   await run(args)
 
   if (!isProd) {
-    await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/docker.sh'])
-
     await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/dev.sh'])
   } else {
     log.error('PROD_NOT_IMPLEMENTED', 'production mode is not implemented. yet.')

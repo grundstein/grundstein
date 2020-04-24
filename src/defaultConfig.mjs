@@ -36,17 +36,23 @@ export const gas = { port: 2324, name: 'grundstein api server' }
 export const hosts = [
   {
     // the root dns identifier of this pod
-    name: 'localhost',
+    name: 'grund.stein',
 
     // which ip addresses this server is reachable at. used by ssh to connect to the server.
     // this option will disappear once pods get provisioned through the api.
     ips: ['172.17.0.2'],
 
-    // the hostnames this pod will serve.
-    hostnames: ['localhost', 'localhorst'],
+    // the hostnames this pod will serve,
+    // this is in addition to the hosts in the repositories list below
+    hostnames: [],
+
+    // is this
+    isInternalCertificateAuthority: true,
 
     // which services should be installed and started on this pod?
     services: {
+      // this service should run on only one pod.
+      // last to be decentralized, it is the certificate root until grundstein/gca exists.
       gps,
       grs,
       gms,
@@ -60,13 +66,13 @@ export const hosts = [
     // these repositories will be watched and rebuilt when pushed to.
     // in the future, the staging branch will also be served.
     repositories: {
-      localhost: {
+      'grund.stein': {
         host: 'github.com',
         org: 'magic-examples',
         repo: 'magic-examples.github.io',
         branch: 'dev',
       },
-      localhorst: {
+      'magic.local': {
         host: 'github.com',
         org: 'magic-modules',
         repo: 'magic-modules.github.io',

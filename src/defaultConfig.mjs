@@ -35,14 +35,14 @@ export const gas = { port: 2324, name: 'grundstein api server' }
 
 export const hosts = [
   {
-    // the root dns identifier of this pod
+    // the (internal!) root dns identifier of this pod
     name: 'grund.stein',
 
     // which ip addresses this server is reachable at. used by ssh to connect to the server.
     // this option will disappear once pods get provisioned through the api.
     ips: ['172.17.0.2'],
 
-    // the hostnames this pod will serve,
+    // the hostnames this pod will serve publicly,
     // this is in addition to the hosts in the repositories list below
     hostnames: [],
 

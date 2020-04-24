@@ -32,9 +32,9 @@ export const run = async () => {
   // which can be used to simulate the grundstein cloud locally.
   await sh.dev(config)
 
-  // generate the development certificate generator script
+  // generate the intenal certificate generator script
   // this creates self-signed certificates for all hosts in the config
-  await sh.devCertificates(config)
+  await sh.internalCertificates(config)
 
   // generate the production shell script.
   // this script will scp the config files to the server,

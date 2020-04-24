@@ -82,24 +82,15 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
         .join(' ')
 
       return `
-printf "${YELLOW}${service}${NC} setup\\n\\n"
+printf "${YELLOW}@grundstein/${service}${NC} setup\\n\\n"
 
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 
-printf "${YELLOW}${service}${NC} enable\\n\\n"
-
 systemctl enable ${service}
-
-printf "${service} enable ${GREEN}done${NC}\\n\\n"
-
-
-printf "${YELLOW}${service}${NC} start\\n\\n"
 
 systemctl start ${service}
 
-printf "${service} start ${GREEN}done${NC}\\n\\n"
-
-printf "${service} setup - ${GREEN}done${NC}\\n\\n"
+printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
   `
     })
     .join('\n')

@@ -160,6 +160,13 @@ ${certificateScripts}
 ${runServices}
 
 printf "service setup ${GREEN}done${NC}\\n\\n"
+
+printf "${YELLOW}removing /grundstein.lock${NC}"
+
+rm /grundstein.lock
+
+printf "- ${GREEN}done${NC}\\n\\n"
+
 `.trimStart()
 
   await Promise.all(ips.map(async name => await writeFile({ config, contents, dir, name })))

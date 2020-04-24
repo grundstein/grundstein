@@ -22,7 +22,18 @@ set -euf -o pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+printf "${YELLOW}touch${NC} /grundstein.lock"
 
+if test -f "/grundstein.lock"; then
+  printf "/grundstein.lock exists.\\n"
+  printf "there is an installation running or a past installation failed.\\n"
+  printf "to force reinstallation, add the --force flag to the grundstein command.\\n"
+  exit 1
+fi
+
+touch /grundstein.lock
+
+printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}log dir${NC} - mkdir ${logDir}"
 

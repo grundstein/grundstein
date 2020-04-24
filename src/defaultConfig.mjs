@@ -6,6 +6,7 @@ export const env = {
   NVM_DIR: '$USERHOME/.nvm',
   GIT_URL: 'git://github.com/grundstein',
   SSH_USER: 'root',
+  INSTALL_LOG: '/var/logs/grundstein/install.log',
 }
 
 // service config:

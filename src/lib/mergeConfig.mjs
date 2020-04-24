@@ -36,13 +36,16 @@ export const mergeConfig = async cwd => {
     process.exit(1)
   }
 
-  let { INSTALL_LOG = '/grundstein' } = config.env
+  let { LOG_DIR = '/grundstein' } = config.env
 
-  if (!INSTALL_LOG.startsWith('/var/logs/')) {
-    INSTALL_LOG = `/var/logs/${INSTALL_LOG}`.replace(/\/\//g, '/')
+  if (!LOG_DIR.startsWith('/var/logs/')) {
+    LOG_DIR = `/var/logs/${LOG_DIR}/`.replace(/\/\//g, '/')
   }
 
-  config.env.INSTALL_LOG = INSTALL_LOG
+  config.env.LOG_DIR = LOG_DIR
+
+  config.env.INSTALL_LOG = LOG_DIR + 'install.log'
+  config.env.ERROR_LOG = LOG_DIR + 'error.log'
 
   log('env', JSON.stringify(config.env, null, 2))
   log('hosts', JSON.stringify(config.hosts, null, 2))

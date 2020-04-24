@@ -37,6 +37,7 @@ export const hosts = [
   {
     // the (internal!) root dns identifier of this pod
     name: 'grund.stein',
+    fqdn: 'cloud.grund.stein',
 
     // which ip addresses this server is reachable at. used by ssh to connect to the server.
     // this option will disappear once pods get provisioned through the api.

@@ -4,6 +4,8 @@ import { is, fs, log } from '@grundstein/commons'
 
 import { colors, getHostnamesForHost, writeFile } from '../lib/index.mjs'
 
+import internalCertificates from './internalCertificates.mjs'
+
 export const createBash = async config => {
   log('Configure host:', config.host)
 
@@ -89,12 +91,13 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
     )
     .join('\n')
 
-  const maybeCreateCertificates = () => {
-    // this assumes only one gps server.
-    // this should scale for quite some time though, it's just the proxy.
-    // this will likely be a high-mem, high cpu instance later.
-    if (serviceList.includes('grundstein/gps')) {
-      return `
+  let certificateScripts = ''
+
+  // this assumes only one gps server.
+  // this should scale for quite some time though, it's just the proxy.
+  // this will likely be a high-mem, high cpu instance later.
+  if (serviceList.includes('grundstein/gps')) {
+    certificateScripts += `
 printf "${YELLOW}certbot${NC} - install\\n"
 
 add-apt-repository -y universe >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
@@ -124,10 +127,9 @@ printf "${YELLOW}certbot${NC} - generate certificates\\n\\n"
 
 printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
-      `.trim()
-    }
+    `.trim()
 
-    return ''
+    certificateScripts += await internalCertificates(config)
   }
 
   const contents = `
@@ -145,10 +147,6 @@ printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
 
 
 
-${maybeCreateCertificates()}
-
-
-
 printf "${YELLOW}grundstein${NC} service setup.\\n"
 
 ${install}
@@ -156,6 +154,8 @@ ${install}
 mkdir -p ${USERHOME}/repositories
 
 ${clone}
+
+${certificateScripts}
 
 ${runServices}
 

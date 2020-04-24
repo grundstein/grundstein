@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import cli from '@magic/cli'
+import { cli } from '@grundstein/commons'
 
 import run from './index.mjs'
 

@@ -1,6 +1,5 @@
 import path from 'path'
-import { log } from '@grundstein/commons'
-import { fs } from '@magic/fs'
+import { fs, log } from '@grundstein/commons'
 
 import sh from '../sh/index.mjs'
 

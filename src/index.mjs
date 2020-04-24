@@ -1,12 +1,8 @@
 import path from 'path'
-import cli from '@magic/cli'
-import error from '@magic/error'
-import fs from '@magic/fs'
-import is from '@magic/types'
 
-import { log } from '@grundstein/commons'
+import { cli, fs, is, log } from '@grundstein/commons'
 
-import { mergeConfig, writeFile } from './lib/index.mjs'
+import { mergeConfig, writeFile, writeEtcHosts } from './lib/index.mjs'
 
 import sh from './sh/index.mjs'
 
@@ -19,6 +15,8 @@ export const run = async () => {
 
   await fs.rmrf(config.dir)
   await fs.mkdirp(config.dir)
+
+  await writeEtcHosts(config)
 
   // this writes the bootstrap/grundsteinlegung.sh file
   // this file gets executed on every host and installs all dependencies.

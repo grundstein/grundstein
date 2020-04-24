@@ -73,13 +73,8 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
     .join('\n')
 
   const runServices = Object.entries(services)
-    .map(([service, config]) => {
-      const conf = Object.entries(config)
-        .filter(([k]) => k !== 'name')
-        .map(([k, v]) => `--${k}="${v}"`)
-        .join(' ')
-
-      return `
+    .map(
+      ([service, config]) => `
 printf "${YELLOW}@grundstein/${service}${NC} setup\\n\\n"
 
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
@@ -89,8 +84,8 @@ systemctl enable ${service}
 systemctl start ${service}
 
 printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
-  `
-    })
+  `,
+    )
     .join('\n')
 
   const contents = `

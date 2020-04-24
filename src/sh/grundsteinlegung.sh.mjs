@@ -13,7 +13,7 @@ export default async config => {
 
   const { ERROR_LOG, INSTALL_LOG } = env
 
-  const logDir = path.dirname(INSTALL_LOG);
+  const logDir = path.dirname(INSTALL_LOG)
 
   const contents = `
 #!/usr/bin/env bash

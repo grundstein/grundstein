@@ -31,7 +31,7 @@ export const createBash = async config => {
     .map(s => `grundstein/${s}`)
     .join(' ')
 
-  const install = `npm install -g ${serviceList}`
+  const install = `npm install -g ${serviceList} > ${INSTALL_LOG}`
 
   const clone = Object.entries(repositories)
     .map(([name, r]) =>
@@ -51,11 +51,11 @@ fi
 
 cd "$DIR"
 
-npm install
+npm install > ${INSTALL_LOG}
 
-npm test
+npm test > ${INSTALL_LOG}
 
-npm run build
+npm run build > ${INSTALL_LOG}
 
 # copy docs directory, if it exists
 if [ -d "$DIR/docs" ]; then
@@ -83,8 +83,6 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
 
       return `
 printf "${YELLOW}${service}${NC} setup\\n\\n"
-
-ls -l /grundsteinlegung/src/systemd
 
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 

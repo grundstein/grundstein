@@ -57,7 +57,7 @@ openssl req \
 -out ${certDir}/certs/ca.cert.pem \
 -passin pass:\${PASSWORD} \
 -passout pass:\${PASSWORD} \
--subj "/C=AT/ST=Vienna/L=Vienna/O=Grundstein DAO/OU=IT Department/CN=grund.stein"
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein"
 
 chmod 444 ${certDir}/certs/ca.cert.pem
 
@@ -139,6 +139,7 @@ openssl ca \
 -in ${intermediateDir}/csr/intermediate.csr.pem \
 -out ${intermediateDir}/certs/intermediate.cert.pem \
 -passin pass:\${INTERMEDIATE_PASSWORD} \
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein" \
 >> ${INSTALL_LOG} 2>> ${ERROR_LOG}
 
 chmod 444 ${intermediateDir}/certs/intermediate.cert.pem

@@ -141,14 +141,16 @@ set -euf -o pipefail
 
 printf "${YELLOW}set hostname${NC} to ${host.name}\\n"
 
-HOST_FILE_CONTENT=$(tail -n +1 /etc/hosts)
+# tail wants +2 to remove the first line.
+HOST_FILE_CONTENT=$(tail -n +2 /etc/hosts)
 
-NEW_HOST_FILE_CONTENT="${host.ips[0]} ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n"
+NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n"
 
 echo "\${NEW_HOST_FILE_CONTENT}"
 
 echo "\${NEW_HOST_FILE_CONTENT}" > /etc/hosts
 
+echo "${host.name}" > /etc/hostname
 
 printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
 

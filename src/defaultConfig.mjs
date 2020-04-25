@@ -47,9 +47,6 @@ export const hosts = [
     // this is in addition to the hosts in the repositories list below
     hostnames: [],
 
-    // is this
-    isInternalCertificateAuthority: true,
-
     // which services should be installed and started on this pod?
     services: {
       // this service should run on only one pod.

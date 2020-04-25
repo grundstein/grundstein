@@ -27,16 +27,46 @@ export const createBash = async config => {
 
   await fs.mkdirp(dir)
 
-  const serviceList = Object.keys(services)
-    .map(s => `grundstein/${s}`)
-    .join(' ')
+  const serviceRootDir = `${USERHOME}/services`
 
-  const install = `npm install -g ${serviceList} >> ${INSTALL_LOG} 2>&1`
+  const serviceNames = Object.keys(services)
+
+  const install = serviceNames
+    .map(service => {
+      const serviceDir = `${serviceRootDir}/${service}`
+
+      return `
+
+
+printf "${YELLOW}@grundstein/${service}${NC} install"
+
+mkdir -p ${serviceRootDir}
+
+git clone git://github.com/grundstein/${service} ${serviceDir} >> ${INSTALL_LOG} 2>&1
+
+cd ${serviceDir}
+
+npm install >> ${INSTALL_LOG} 2>&1
+
+npm test >> ${INSTALL_LOG} 2>&1
+
+npm link >> ${INSTALL_LOG} 2>&1
+
+cd /
+
+printf " - ${YELLOW}done${NC}\\n\\n"
+
+
+`
+    })
+    .join('')
 
   const clone = Object.entries(repositories)
     .map(
       ([name, r]) =>
         `
+
+
 printf "${YELLOW}cloning page:${NC} ${name}\\n"
 
 DIR="${USERHOME}/repositories/${name}"
@@ -71,6 +101,8 @@ if [ -d "$DIR/api" ]; then
 fi
 
 printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
+
+
 `,
     )
     .join('\n')
@@ -78,6 +110,8 @@ printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
   const runServices = Object.entries(services)
     .map(
       ([service, config]) => `
+
+
 printf "${YELLOW}@grundstein/${service}${NC} setup\\n\\n"
 
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
@@ -87,7 +121,9 @@ systemctl enable ${service}
 systemctl start ${service}
 
 printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
-  `,
+
+
+`,
     )
     .join('\n')
 
@@ -96,9 +132,8 @@ printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
   // this assumes only one gps server.
   // this should scale for quite some time though, it's just the proxy.
   // this will likely be a high-mem, high cpu instance later.
-  if (serviceList.includes('grundstein/gps')) {
-
-    let createLetsencryptCertificates
+  if (serviceNames.includes('gps')) {
+    let createLetsencryptCertificates = ''
 
     if (config.args.prod) {
       const secretFile = '/root/.secrets/digitalocean.ini'
@@ -118,10 +153,15 @@ if test -f "${secretFile}"; then
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi
 
+
+
 `
     }
 
     certificateScripts += `
+
+
+
 printf "${YELLOW}certbot${NC} - install\\n"
 
 add-apt-repository -y universe >> ${INSTALL_LOG} 2>&1
@@ -147,7 +187,9 @@ ${createLetsencryptCertificates}
 
 printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
-    `.trim()
+
+
+`
 
     certificateScripts += internalCertificates(config)
   }
@@ -195,7 +237,7 @@ printf "${YELLOW}removing /grundstein.lock${NC}"
 # this file got touch'ed in grundsteinlegung.sh
 rm /grundstein.lock
 
-printf "- ${GREEN}done${NC}\\n\\n"
+printf " - ${GREEN}done${NC}\\n\\n"
 
 `.trimStart()
 

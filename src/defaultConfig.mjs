@@ -67,7 +67,7 @@ export const hosts = [
     // these repositories will be watched and rebuilt when pushed to.
     // in the future, the staging branch will also be served.
     repositories: {
-      'grund.stein': {
+      'grundstein.local': {
         host: 'github.com',
         org: 'magic-examples',
         repo: 'magic-examples.github.io',

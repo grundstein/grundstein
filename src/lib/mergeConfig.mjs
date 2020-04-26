@@ -51,8 +51,5 @@ export const mergeConfig = async ({ cwd, args }) => {
   config.env.INSTALL_LOG = LOG_DIR + 'install.log'
   config.env.ERROR_LOG = LOG_DIR + 'error.log'
 
-  log('env', JSON.stringify(config.env, null, 2))
-  log('hosts', JSON.stringify(config.hosts, null, 2))
-
   return config
 }

@@ -5,8 +5,6 @@ import { log } from '@grundstein/commons'
 import { colors, writeFile } from '../lib/index.mjs'
 
 export default async config => {
-  log('Creating grundsteinlegung.sh', config)
-
   const { dir, env } = config
 
   const { GREEN, RED, YELLOW, NC } = colors

@@ -7,6 +7,7 @@ export const writeFile = async ({ dir, name, config, contents }) => {
   if (!name.endsWith('.mjs') && !name.endsWith('.json') && !name.endsWith('.sh')) {
     name = `${name}.sh`
   }
+
   const file = path.join(dir, name)
 
   const fileDir = path.dirname(file)
@@ -19,8 +20,6 @@ export const writeFile = async ({ dir, name, config, contents }) => {
     log.error('E_WRITE_FILE', e)
     process.exit(1)
   }
-
-  log.success('Wrote:', file)
 
   return file
 }

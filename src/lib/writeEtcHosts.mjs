@@ -15,8 +15,6 @@ export const writeEtcHosts = async config => {
 
   const missingHostnames = hostnames.filter(host => !hostContent.includes(host))
 
-  console.log({ hostnames })
-
   if (missingHostnames.length) {
     const hostFileData = `
 ${START_LABEL}
@@ -55,8 +53,7 @@ just copy the lines above into your /etc/hosts file manually.
     } else {
       log.warn(
         'MISSING_DNS',
-        `
-please add the following to your /etc/hosts file:
+        `please add the following to your /etc/hosts file:
 
 ${hostFileData}
 `,

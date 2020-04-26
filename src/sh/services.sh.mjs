@@ -7,8 +7,6 @@ import { colors, getHostnamesForHost, writeFile } from '../lib/index.mjs'
 import internalCertificates from './internalCertificates.mjs'
 
 export const createBash = async config => {
-  log('Configure host:', config.host)
-
   const { host, env } = config
   const { services, repositories } = host
 

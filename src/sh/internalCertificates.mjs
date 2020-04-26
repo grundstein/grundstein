@@ -307,6 +307,8 @@ ${generateHostCertificates(config)}
 
 ${generateServiceCertificates(config)}
 
+chown ${USERNAME}:root -R ${USERHOME}/ca
+
 printf "certificates: ${GREEN}generated${NC}"
 `.trimStart()
 

@@ -12,17 +12,17 @@ export default config => {
   const certDir = `/root/ca`
   const intermediateDir = `${certDir}/intermediate`
 
-  const hostnames = getAllHostnames(config)
-
-  const generateHostCertificates = hostnames.map(hostname => `
-
+  const generateHostCertificates = config =>
+    getAllHostnames(config)
+      .map(
+        hostname => `
 
 
 printf "${YELLOW}openssl genrsa${NC} - generate priv key for ${hostname}"
 
-openssl genrsa \
-  -out ${intermediateDir}/private/${hostname}.key.pem \
-  2048
+openssl genrsa \\
+-out ${intermediateDir}/private/${hostname}.key.pem \\
+2048
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -30,12 +30,12 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}openssl req${NC} - gen certificate request for ${hostname}"
 
-openssl req \
-  -config ${intermediateDir}/openssl.cnf \
-  -key ${intermediateDir}/private/${hostname}.com.key.pem \
-  -new -sha256 -out ${intermediateDir}/csr/${hostname}.csr.pem \
-  -passin pass:\${INTERMEDIATE_PASSWORD} \
-  -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=${hostname}"
+openssl req \\
+-config ${intermediateDir}/openssl.cnf \\
+-key ${intermediateDir}/private/${hostname}.key.pem \\
+-new -sha256 -out ${intermediateDir}/csr/${hostname}.csr.pem \\
+-passin pass:\${INTERMEDIATE_PASSWORD} \\
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards and Witches/CN=${hostname}"
 
 # -aes256 should be added once we can handle passwords
 
@@ -47,27 +47,95 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}openssl ca${NC} - sign certificate for ${hostname}"
 
-openssl ca -config ${intermediateDir}openssl.cnf \
-      -extensions server_cert -days 375 -notext -md sha256 \
-      -in ${intermediateDir}csr/${hostname}.csr.pem \
-      -out ${intermediateDir}certs/${hostname}.cert.pem
+openssl ca -config ${intermediateDir}/openssl.cnf \\
+-extensions server_cert -days 375 -notext -md sha256 \\
+-in ${intermediateDir}/csr/${hostname}.csr.pem \\
+-out ${intermediateDir}/certs/${hostname}.cert.pem \\
+-passin pass:\${INTERMEDIATE_PASSWORD} \
+-batch
 
-chmod 444 ${intermediateDir}certs/${hostname}.cert.pem
+chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
 
 printf "${YELLOW}openssl${NC} - verify certificate for ${hostname}"
 
-openssl x509 -noout -text \
-  -in ${intermediateDir}certs/${hostname}.cert.pem
+openssl x509 -noout -text \\
+-in ${intermediateDir}/certs/${hostname}.cert.pem
 
-openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \
+openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
   ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
-`).join('\n\n\n')
+`,
+      )
+      .join('\n\n\n')
+
+  const generateServiceCertificates = config => {
+    const { name, services } = config.host
+    const serviceSubdomains = Object.keys(config.host.services)
+
+    return serviceSubdomains.map(subdomain => {
+      const hostname = `${subdomain}.${name}`
+
+      return `
+
+printf "${YELLOW}openssl genrsa${NC} - generate priv key for ${hostname}"
+
+openssl genrsa \\
+-out ${intermediateDir}/private/${hostname}.key.pem \\
+2048
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
+printf "${YELLOW}openssl req${NC} - gen certificate request for ${hostname}"
+
+openssl req \\
+-config ${intermediateDir}/openssl.cnf \\
+-key ${intermediateDir}/private/${hostname}.key.pem \\
+-new -sha256 -out ${intermediateDir}/csr/${hostname}.csr.pem \\
+-passin pass:\${INTERMEDIATE_PASSWORD} \\
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards and Witches/CN=${hostname}"
+
+# -aes256 should be added once we can handle passwords
+
+chmod 400 ${intermediateDir}/private/${hostname}.key.pem
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
+printf "${YELLOW}openssl ca${NC} - sign certificate for ${hostname}"
+
+openssl ca -config ${intermediateDir}/openssl.cnf \\
+-extensions server_cert -days 375 -notext -md sha256 \\
+-in ${intermediateDir}/csr/${hostname}.csr.pem \\
+-out ${intermediateDir}/certs/${hostname}.cert.pem \\
+-passin pass:\${INTERMEDIATE_PASSWORD} \
+-batch
+
+chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+printf "${YELLOW}openssl${NC} - verify certificate for ${hostname}"
+
+openssl x509 -noout -text \\
+-in ${intermediateDir}/certs/${hostname}.cert.pem
+
+openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
+  ${intermediateDir}/certs/${hostname}.cert.pem
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+`
+    }).join('')
+  }
 
   const contents = `
 
@@ -97,24 +165,24 @@ chmod 400 ${certDir}/private/ca.key.pem
 
 printf "${YELLOW}root certificate${NC} - generate\\n\\n"
 
-openssl req \
-  -config ${certDir}/openssl.cnf \
-  -key ${certDir}/private/ca.key.pem \
-  -new \
-  -x509 \
-  -days 7300 \
-  -sha512 \
-  -extensions v3_ca \
-  -out ${certDir}/certs/ca.cert.pem \
-  -passin pass:\${PASSWORD} \
-  -passout pass:\${PASSWORD} \
-  -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein"
+openssl req \\
+-config ${certDir}/openssl.cnf \\
+-key ${certDir}/private/ca.key.pem \\
+-new \\
+-x509 \\
+-days 7300 \\
+-sha512 \\
+-extensions v3_ca \\
+-out ${certDir}/certs/ca.cert.pem \\
+-passin pass:\${PASSWORD} \\
+-passout pass:\${PASSWORD} \\
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards and Witches/CN=grund.stein"
 
 chmod 444 ${certDir}/certs/ca.cert.pem
 
 printf "${YELLOW}root certificate${NC} - test\\n\\n"
 
-openssl x509 -noout -text -in ${certDir}/certs/ca.cert.pem  \
+openssl x509 -noout -text -in ${certDir}/certs/ca.cert.pem  \\
 >> ${INSTALL_LOG} 2>&1
 
 printf "root ca certificate setup - ${GREEN}done${NC}\\n\\n"
@@ -127,11 +195,11 @@ printf "${YELLOW}generate intermediary ca${NC}\\n\\n"
 mkdir ${intermediateDir}
 
 
-mkdir \
-${intermediateDir}/certs \
-${intermediateDir}/crl \
-${intermediateDir}/csr \
-${intermediateDir}/newcerts \
+mkdir \\
+${intermediateDir}/certs \\
+${intermediateDir}/crl \\
+${intermediateDir}/csr \\
+${intermediateDir}/newcerts \\
 ${intermediateDir}/private
 
 
@@ -152,11 +220,11 @@ cp /grundsteinlegung/bash/intermediate-openssl.cnf ${intermediateDir}/openssl.cn
 
 printf "${YELLOW}openssl${NC} - intermediate genrsa"
 
-openssl genrsa \
-  -aes256 \
-  -out ${intermediateDir}/private/intermediate.key.pem \
-  -passout pass:\${INTERMEDIATE_PASSWORD} \
-4096 \
+openssl genrsa \\
+-aes256 \\
+-out ${intermediateDir}/private/intermediate.key.pem \\
+-passout pass:\${INTERMEDIATE_PASSWORD} \\
+4096 \\
 >> ${INSTALL_LOG} 2>&1
 
 chmod 400 ${intermediateDir}/private/intermediate.key.pem
@@ -167,16 +235,16 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}openssl${NC} - intermediate req"
 
-openssl req \
-  -config ${intermediateDir}/openssl.cnf \
-  -new \
-  -sha512 \
-  -key ${intermediateDir}/private/intermediate.key.pem \
-  -out ${intermediateDir}/csr/intermediate.csr.pem \
-  -batch \
-  -passin pass:\${INTERMEDIATE_PASSWORD} \
-  -passout pass:\${INTERMEDIATE_PASSWORD} \
-  -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein" \
+openssl req \\
+-config ${intermediateDir}/openssl.cnf \\
+-new \\
+-sha512 \\
+-key ${intermediateDir}/private/intermediate.key.pem \\
+-out ${intermediateDir}/csr/intermediate.csr.pem \\
+-batch \\
+-passin pass:\${INTERMEDIATE_PASSWORD} \\
+-passout pass:\${INTERMEDIATE_PASSWORD} \\
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards and Witches/CN=grund.stein" \\
 >> ${INSTALL_LOG} 2>&1
 
 
@@ -186,17 +254,17 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}openssl${NC} - intermediate ca"
 
-openssl ca \
-  -config ${certDir}/openssl.cnf \
-  -extensions v3_intermediate_ca \
-  -days 3650 \
-  -notext \
-  -md sha512 \
-  -in ${intermediateDir}/csr/intermediate.csr.pem \
-  -out ${intermediateDir}/certs/intermediate.cert.pem \
-  -passin pass:\${PASSWORD} \
-  -batch \
-  -subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards & Witches/CN=grund.stein" \
+openssl ca \\
+-config ${certDir}/openssl.cnf \\
+-extensions v3_intermediate_ca \\
+-days 3650 \\
+-notext \\
+-md sha512 \\
+-in ${intermediateDir}/csr/intermediate.csr.pem \\
+-out ${intermediateDir}/certs/intermediate.cert.pem \\
+-passin pass:\${PASSWORD} \\
+-batch \\
+-subj "/C=UT/ST=Utopia/L=The Net/O=Grundstein DAO/OU=Wizards and Witches/CN=grund.stein" \\
 >> ${INSTALL_LOG} 2>&1
 
 chmod 444 ${intermediateDir}/certs/intermediate.cert.pem
@@ -205,15 +273,15 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}intermediate certificate${NC} - verify\\n\\n"
 
-openssl x509 -noout -text \
-  -in ${intermediateDir}/certs/intermediate.cert.pem \
+openssl x509 -noout -text \\
+-in ${intermediateDir}/certs/intermediate.cert.pem \\
 >> ${INSTALL_LOG} 2>&1
 
 printf "x509 ${GREEN}passed${NC}\\n\\n"
 
-openssl verify \
-  -CAfile ${certDir}/certs/ca.cert.pem \
-  ${intermediateDir}/certs/intermediate.cert.pem \
+openssl verify \\
+-CAfile ${certDir}/certs/ca.cert.pem \\
+${intermediateDir}/certs/intermediate.cert.pem \\
 # >> ${INSTALL_LOG} 2>&1
 
 printf "verify ${GREEN}passed${NC}\\n\\n"
@@ -221,9 +289,9 @@ printf "verify ${GREEN}passed${NC}\\n\\n"
 
 printf "${YELLOW}certificate chain${NC} - generate\\n"
 
-cat \
-  ${intermediateDir}/certs/intermediate.cert.pem \
-  ${certDir}/certs/ca.cert.pem \
+cat \\
+  ${intermediateDir}/certs/intermediate.cert.pem \\
+  ${certDir}/certs/ca.cert.pem \\
 > ${intermediateDir}/certs/ca-chain.cert.pem
 
 chmod 444 ${intermediateDir}/certs/ca-chain.cert.pem
@@ -232,7 +300,10 @@ printf "intermediate certificate - ${GREEN}checked${NC}\\n\\n"
 
 printf "intermediate ca setup - ${GREEN}done${NC}\\n\\n"
 
-${generateHostCertificates}
+${generateHostCertificates(config)}
+
+
+${generateServiceCertificates(config)}
 
 printf "certificates: ${GREEN}generated${NC}"
 `.trimStart()

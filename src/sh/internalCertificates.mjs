@@ -9,6 +9,8 @@ export default config => {
 
   const { INSTALL_LOG } = config
 
+  const { USERNAME, USERHOME } = config.env
+
   const certDir = `/root/ca`
   const intermediateDir = `/home/grundstein/ca`
 
@@ -68,6 +70,8 @@ openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
   ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
+
+cat ${intermediateDir}/ca-chain.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 `,
       )
@@ -133,6 +137,8 @@ openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
   ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
+
+cat ${intermediateDir}/ca-chain.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 `
       })

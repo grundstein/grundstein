@@ -192,6 +192,8 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
     certificateScripts += internalCertificates(config)
   }
 
+  const serviceEtcHosts = `127.0.0.1 ${Object.keys(services).map(s => `${s}.${host.name}`).join(' ')}`
+
   const contents = `
 #!/usr/bin/env bash
 
@@ -204,7 +206,7 @@ printf "${YELLOW}set hostname${NC} to ${host.name}\\n"
 # tail wants +2 to remove the first line.
 HOST_FILE_CONTENT=$(tail -n +2 /etc/hosts)
 
-NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT} localhost\n"
+NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n\n${serviceEtcHosts}"
 
 echo "\${NEW_HOST_FILE_CONTENT}"
 

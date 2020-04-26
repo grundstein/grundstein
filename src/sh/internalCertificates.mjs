@@ -10,7 +10,7 @@ export default config => {
   const { INSTALL_LOG } = config
 
   const certDir = `/root/ca`
-  const intermediateDir = `${certDir}/intermediate`
+  const intermediateDir = `/home/grundstein/ca`
 
   const generateHostCertificates = config =>
     getAllHostnames(config)
@@ -77,10 +77,11 @@ printf " - ${GREEN}done${NC}\\n\\n"
     const { name, services } = config.host
     const serviceSubdomains = Object.keys(config.host.services)
 
-    return serviceSubdomains.map(subdomain => {
-      const hostname = `${subdomain}.${name}`
+    return serviceSubdomains
+      .map(subdomain => {
+        const hostname = `${subdomain}.${name}`
 
-      return `
+        return `
 
 printf "${YELLOW}openssl genrsa${NC} - generate priv key for ${hostname}"
 
@@ -134,7 +135,8 @@ openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
 printf " - ${GREEN}done${NC}\\n\\n"
 
 `
-    }).join('')
+      })
+      .join('')
   }
 
   const contents = `

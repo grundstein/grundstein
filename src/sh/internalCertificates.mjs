@@ -53,10 +53,10 @@ openssl ca -config ${intermediateDir}/openssl.cnf \\
 -extensions server_cert -days 375 -notext -md sha256 \\
 -in ${intermediateDir}/csr/${hostname}.csr.pem \\
 -out ${intermediateDir}/certs/${hostname}.cert.pem \\
--passin pass:\${INTERMEDIATE_PASSWORD} \
+-passin pass:\${INTERMEDIATE_PASSWORD} \\
 -batch
 
-cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
+# cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
 
@@ -125,7 +125,7 @@ openssl ca -config ${intermediateDir}/openssl.cnf \\
 -passin pass:\${INTERMEDIATE_PASSWORD} \
 -batch
 
-cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
+# cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
 

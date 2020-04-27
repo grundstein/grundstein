@@ -10,10 +10,7 @@ export const createBash = async config => {
   const { host, env } = config
   const { services, repositories } = host
 
-  let { ips } = host
-  if (!is.array(ips)) {
-    ips = [ips]
-  }
+  let { ip } = host
 
   const hostnames = getHostnamesForHost(host)
 
@@ -243,7 +240,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 `.trimStart()
 
-  await Promise.all(ips.map(async name => await writeFile({ config, contents, dir, name })))
+  await writeFile({ config, contents, dir, name: ip })
 
   return contents
 }

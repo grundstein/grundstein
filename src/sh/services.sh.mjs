@@ -192,7 +192,9 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
     certificateScripts += internalCertificates(config)
   }
 
-  const serviceEtcHosts = `127.0.0.1 ${Object.keys(services).map(s => `${s}.${host.name}`).join(' ')}`
+  const serviceEtcHosts = `127.0.0.1 ${Object.keys(services)
+    .map(s => `${s}.${host.name}`)
+    .join(' ')}`
 
   const contents = `
 #!/usr/bin/env bash

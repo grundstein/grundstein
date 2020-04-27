@@ -56,9 +56,12 @@ openssl ca -config ${intermediateDir}/openssl.cnf \\
 -passin pass:\${INTERMEDIATE_PASSWORD} \
 -batch
 
+cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
+
 chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
+
 
 
 printf "${YELLOW}openssl${NC} - verify certificate for ${hostname}"
@@ -70,8 +73,6 @@ openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
   ${intermediateDir}/certs/${hostname}.cert.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
-
-cat ${intermediateDir}/ca-chain.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 `,
       )
@@ -108,6 +109,7 @@ openssl req \\
 
 # -aes256 should be added once we can handle passwords
 
+
 chmod 400 ${intermediateDir}/private/${hostname}.key.pem
 
 printf " - ${GREEN}done${NC}\\n\\n"
@@ -122,6 +124,8 @@ openssl ca -config ${intermediateDir}/openssl.cnf \\
 -out ${intermediateDir}/certs/${hostname}.cert.pem \\
 -passin pass:\${INTERMEDIATE_PASSWORD} \
 -batch
+
+cat ${intermediateDir}/certs/intermediate.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 chmod 444 ${intermediateDir}/certs/${hostname}.cert.pem
 
@@ -138,7 +142,6 @@ openssl verify -CAfile ${intermediateDir}/certs/ca-chain.cert.pem \\
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
-cat ${intermediateDir}/ca-chain.cert.pem >> ${intermediateDir}/certs/${hostname}.cert.pem
 
 `
       })

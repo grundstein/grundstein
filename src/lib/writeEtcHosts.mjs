@@ -1,10 +1,14 @@
 import path from 'path'
 
-import { cli, fs, log } from '@grundstein/commons'
+import { cli, fs, is, log } from '@grundstein/commons'
 
 import { getAllHostnames } from './getAllHostnames.mjs'
 
 export const writeEtcHosts = async config => {
+  if (is.defined(config.args.prod)) {
+    return
+  }
+
   const START_LABEL = '# grundstein local hosts start'
   const END_LABEL = '# grundstein local hosts end'
   const labelRegex = new RegExp(`${START_LABEL}(.*)${END_LABEL}`, 'gim')

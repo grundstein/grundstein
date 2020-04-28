@@ -32,7 +32,8 @@ const doIt = async () => {
   const isForced = is.defined(args.force)
 
   if (isForced && isProd) {
-    log.warn('SERVER INSTALL', 'This will force installation on your production server!')
+    log.warn('SERVER INSTALL', 'This will force (re?)installation on your production server!')
+    log.info('all services should keep working and restart automatically. it is prod though!')
 
     const yesNo = await cli.prompt('Are you sure? (y/N)', { yesNo: true })
 
@@ -47,8 +48,7 @@ const doIt = async () => {
   if (!isProd) {
     await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/dev.sh'])
   } else {
-    log.error('PROD_NOT_IMPLEMENTED', 'production mode is not implemented. yet.')
-    process.exit()
+    await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/prod.sh'])
   }
 }
 

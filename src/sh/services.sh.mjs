@@ -171,12 +171,9 @@ apt-get -y update >> ${INSTALL_LOG} 2>&1
 # actually install certbot
 TZ=${env.TZ} apt-get -y install \
 python \
-python3-pip \
+python3-certbot-dns-digitalocean
 certbot \
 >> ${INSTALL_LOG} 2>&1
-
-# install certbot digitalocean plugin.
-pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

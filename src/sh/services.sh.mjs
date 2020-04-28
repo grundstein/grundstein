@@ -37,7 +37,14 @@ printf "${YELLOW}@grundstein/${service}${NC} install"
 
 mkdir -p ${serviceRootDir}
 
-git clone git://github.com/grundstein/${service} ${serviceDir} >> ${INSTALL_LOG} 2>&1
+
+if [ ! -d "${serviceDir}" ] ; then
+  git clone git://github.com/grundstein/${service} ${serviceDir} >> ${INSTALL_LOG} 2>&1
+else
+  cd "${serviceDir}"
+  git pull origin master >> ${INSTALL_LOG} 2>&1
+fi
+
 
 cd ${serviceDir}
 
@@ -198,25 +205,6 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
 set -euf -o pipefail
 
-
-
-printf "${YELLOW}set hostname${NC} to ${host.name}\\n"
-
-# tail wants +2 to remove the first line.
-HOST_FILE_CONTENT=$(tail -n +2 /etc/hosts)
-
-NEW_HOST_FILE_CONTENT="127.0.0.1  ${host.fqdn} ${host.name}\n\${HOST_FILE_CONTENT}\n\n${serviceEtcHosts}"
-
-echo "\${NEW_HOST_FILE_CONTENT}"
-
-echo "\${NEW_HOST_FILE_CONTENT}" > /etc/hosts
-
-echo "${host.name}" > /etc/hostname
-
-printf "\\n\\nhostname: \$(hostname) fqdn: \$(hostname -f)\\n\\n"
-
-
-
 printf "${YELLOW}grundstein${NC} service setup.\\n"
 
 ${install}
@@ -224,8 +212,6 @@ ${install}
 mkdir -p ${USERHOME}/repositories
 
 ${clone}
-
-${certificateScripts}
 
 ${runServices}
 

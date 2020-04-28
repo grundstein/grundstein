@@ -16,6 +16,10 @@ export const mergeConfig = async ({ cwd, args }) => {
 
     config = npmConfig
   } catch (e) {
+    if (e.code !== 'ERR_MODULE_NOT_FOUND') {
+      throw e
+    }
+
     log.warn('NO_NPM_CONFIG', '@grundstein/hosts not installed. using local config.')
   }
 
@@ -29,6 +33,10 @@ export const mergeConfig = async ({ cwd, args }) => {
       ...localConfig,
     }
   } catch (e) {
+    if (e.code !== 'ERR_MODULE_NOT_FOUND') {
+      throw e
+    }
+
     log.warn('NO_LOCAL_CONFIG', `${localConfigFile} could not be found. using default config.`)
   }
 

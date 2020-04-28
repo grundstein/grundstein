@@ -112,7 +112,7 @@ printf " - ${GREEN}done${NC}.\\n\\n"
       ([service, config]) => `
 
 
-printf "${YELLOW}@grundstein/${service}${NC} setup\\n\\n"
+printf "${YELLOW}@grundstein/${service}${NC} setup"
 
 cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 
@@ -120,7 +120,7 @@ systemctl enable ${service}
 
 systemctl start ${service}
 
-printf "@grundstein/${service} setup - ${GREEN}done${NC}\\n\\n"
+printf " - ${GREEN}done${NC}\\n\\n"
 
 
 `,
@@ -213,8 +213,6 @@ ${clone}
 
 ${runServices}
 
-printf "service setup ${GREEN}done${NC}\\n\\n"
-
 printf "${YELLOW}removing /grundstein.lock${NC}"
 
 # this file got touch'ed in grundsteinlegung.sh
@@ -224,6 +222,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 echo "${YELLOW}GRUNDSTEIN${NC} - install finished." >> ${INSTALL_LOG}
 
+printf "${GREEN}INSTALL FINISHED.${NC}\\n"
 `.trimStart()
 
   await writeFile({ config, contents, dir, name: ip })

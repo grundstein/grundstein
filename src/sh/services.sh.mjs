@@ -73,8 +73,6 @@ printf "${YELLOW}cloning page:${NC} ${name}\\n"
 
 DIR="${USERHOME}/repositories/${name}"
 
-printf "writing repository to $DIR\\n"
-
 if [ ! -d "$DIR" ] ; then
   git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG} 2>&1
 else
@@ -102,7 +100,7 @@ if [ -d "$DIR/api" ]; then
   cp -r ./api /var/www/api/${name}
 fi
 
-printf "${GREEN}GRUNDSTEIN${NC} - page for ${name} cloned.\\n\\n"
+printf " - ${GREEN}done${NC}.\\n\\n"
 
 
 `,

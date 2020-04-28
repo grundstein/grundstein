@@ -112,7 +112,7 @@ if [ ! -d "/grundsteinlegung" ] ; then
   git clone "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>&1
 else
   cd /grundsteinlegung
-  git pull origin master
+  git pull origin master >> ${INSTALL_LOG} 2>&1
   cd /
 fi
 

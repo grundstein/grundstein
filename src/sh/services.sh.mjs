@@ -56,7 +56,7 @@ npm link >> ${INSTALL_LOG} 2>&1
 
 cd /
 
-printf " - ${YELLOW}done${NC}\\n\\n"
+printf " - ${GREEN}done${NC}\\n\\n"
 
 
 `
@@ -69,7 +69,7 @@ printf " - ${YELLOW}done${NC}\\n\\n"
         `
 
 
-printf "${YELLOW}cloning page:${NC} ${name}\\n"
+printf "${YELLOW}cloning page:${NC} ${name}"
 
 DIR="${USERHOME}/repositories/${name}"
 
@@ -162,7 +162,7 @@ fi
 
 
 
-printf "${YELLOW}certbot${NC} - install\\n"
+printf "${YELLOW}certbot${NC} - install"
 
 add-apt-repository -y universe >> ${INSTALL_LOG} 2>&1
 add-apt-repository -y ppa:certbot/certbot >> ${INSTALL_LOG} 2>&1
@@ -178,14 +178,14 @@ certbot \
 # install certbot digitalocean plugin.
 pip3 install certbot-dns-digitalocean >> ${INSTALL_LOG} 2>&1
 
-printf "certbot install: ${GREEN}done${NC}\\n\\n"
+printf " - ${GREEN}done${NC}\\n\\n"
 
 
-printf "${YELLOW}certbot${NC} - generate certificates\\n\\n"
+printf "${YELLOW}certbot${NC} - generate certificates"
 
 ${createLetsencryptCertificates}
 
-printf "certificate generation ${GREEN}done${NC}\\n\\n"
+printf " - ${GREEN}done${NC}\\n\\n"
 
 
 

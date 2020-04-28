@@ -196,19 +196,29 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
   const iptables = Object.keys(services).includes('gps')
     ? `
-    apt-get install iptables-persistent
 
+printf "${YELLOW}iptables${NC} - setup"
+
+apt-get -y install iptables-persistent >> ${INSTALL_LOG} 2>&1
+
+iptables -F
+
+iptables -I INPUT 1 -i lo -j ACCEPT
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-iptables -I INPUT 1 -i lo -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp --dport 4343 -j ACCEPT
+iptables -A INPUT -p tcp --dport 2350 -j ACCEPT
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8080
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j REDIRECT --to-port 4343
 iptables -A INPUT -j DROP
 
-netfilter-persistent save
-netfilter-persistent reload
+netfilter-persistent save >> ${INSTALL_LOG} 2>&1
+netfilter-persistent reload >> ${INSTALL_LOG} 2>&1
+
+printf " - ${GREEN}done${NC}\\n\\n"
 
 `
     : ''

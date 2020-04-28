@@ -15,14 +15,12 @@ export default async config => {
 
   const { hosts } = config
 
-  const hostInitScripts = hosts
-    .map(
-      host => `
-scp -r ${localHostDir}/${host.ip}.sh ${env.SSH_USER}@${ip}:${remoteHostDir}/init.sh && \
+  const createHostInitScript = host => `
+scp -r ${localHostDir}/${host.ip}.sh ${env.SSH_USER}@${host.ip}:${remoteHostDir}/init.sh && \
 ssh ${env.SSH_USER}@${host.ip} "/grundsteinlegung.sh" &
-`,
-    )
-    .join('\n\n\n')
+`
+
+  const hostInitScripts = hosts.map(createHostInitScript).join('\n\n\n')
 
   const contents = `
 #!/usr/bin/env bash

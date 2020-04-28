@@ -49,7 +49,7 @@ printf " - ${GREEN}created${NC}\\n\\n"
 
 mkdir -p ${LOG_DIR}
 
-echo "" > ${INSTALL_LOG}
+echo "GRUNDSTEIN - starting install.\\n\\n" > ${INSTALL_LOG}
 
 printf "${YELLOW}apt update${NC}"
 

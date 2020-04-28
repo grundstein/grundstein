@@ -222,7 +222,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 echo "${YELLOW}GRUNDSTEIN${NC} - install finished." >> ${INSTALL_LOG}
 
-printf "${GREEN}INSTALL FINISHED.${NC}\\n"
+printf "INSTALL FINISHED.\\n"
 `.trimStart()
 
   await writeFile({ config, contents, dir, name: ip })

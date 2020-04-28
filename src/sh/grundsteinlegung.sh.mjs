@@ -13,10 +13,9 @@ export default async config => {
 
   const logDir = path.dirname(INSTALL_LOG)
 
-  const lockFileHandling =
-    is.defined(config.args.force)
-      ? 'rm -f /grundstein.lock'
-      : `
+  const lockFileHandling = is.defined(config.args.force)
+    ? 'rm -f /grundstein.lock'
+    : `
 if test -f "/grundstein.lock"; then
   printf "/grundstein.lock exists.\\n"
   printf "there is an installation running or a past installation failed.\\n"

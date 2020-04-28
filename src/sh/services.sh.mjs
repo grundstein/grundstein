@@ -135,8 +135,8 @@ printf " - ${GREEN}done${NC}\\n\\n"
   if (serviceNames.includes('gps')) {
     let createLetsencryptCertificates = ''
 
-    if (config.args.prod) {
-      const secretFile = '/root/.secrets/digitalocean.ini'
+    if (is.defined(config.args.prod)) {
+      const secretFile = '/.secrets/digitalocean.ini'
       createLetsencryptCertificates = `
 
 
@@ -245,9 +245,9 @@ set -euf -o pipefail
 
 printf "${YELLOW}grundstein${NC} service setup.\\n"
 
-${install}
-
 ${certificateScripts}
+
+${install}
 
 mkdir -p ${USERHOME}/repositories
 

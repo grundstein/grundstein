@@ -148,7 +148,7 @@ if test -f "${secretFile}"; then
     --dns-digitalocean \\
     --dns-digitalocean-credentials ~/.secrets/digitalocean.ini \\
     --dns-digitalocean-propagation-seconds 60 \\
-    ${hostnames.map(h => `-d ${h}`).join(' ')}
+    ${hostnames.map(h => `-d *.${h}`).join(' ')}
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi

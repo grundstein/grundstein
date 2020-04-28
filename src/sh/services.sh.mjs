@@ -194,8 +194,10 @@ printf " - ${GREEN}done${NC}\\n\\n"
     // certificateScripts += internalCertificates(config)
   }
 
-  const iptables = Object.keys(services).includes('gps')
-    ? `
+  let iptables = ''
+
+  if (Object.keys(services).includes('gps')) {
+    iptables = `
 
 
 
@@ -236,16 +238,16 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 
 `
-    : ''
+  }
 
   const contents = `
 #!/usr/bin/env bash
 
 set -euf -o pipefail
 
-printf "${YELLOW}grundstein${NC} service setup.\\n"
-
 ${certificateScripts}
+
+printf "${YELLOW}grundstein${NC} service setup.\\n"
 
 ${install}
 

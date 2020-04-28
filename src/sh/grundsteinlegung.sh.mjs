@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { log } from '@grundstein/commons'
+import { is, log } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 
@@ -9,9 +9,23 @@ export default async config => {
 
   const { GREEN, RED, YELLOW, NC } = colors
 
-  const { INSTALL_LOG } = env
+  const { INSTALL_LOG, LOG_DIR } = env
 
   const logDir = path.dirname(INSTALL_LOG)
+
+  console.log({ force: config.args.force, args: config.args })
+
+  const lockFileHandling =
+    is.defined(config.args.force)
+      ? 'rm -f /grundstein.lock'
+      : `
+if test -f "/grundstein.lock"; then
+  printf "/grundstein.lock exists.\\n"
+  printf "there is an installation running or a past installation failed.\\n"
+  printf "to force reinstallation, add the --force flag to the grundstein command.\\n"
+  exit 1
+fi
+`
 
   const contents = `
 #!/usr/bin/env bash
@@ -22,12 +36,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 printf "${YELLOW}touch${NC} /grundstein.lock"
 
-if test -f "/grundstein.lock"; then
-  printf "/grundstein.lock exists.\\n"
-  printf "there is an installation running or a past installation failed.\\n"
-  printf "to force reinstallation, add the --force flag to the grundstein command.\\n"
-  exit 1
-fi
+${lockFileHandling}
 
 touch /grundstein.lock
 
@@ -40,6 +49,7 @@ mkdir -p ${logDir}
 printf " - ${GREEN}created${NC}\\n\\n"
 
 
+mkdir -p ${LOG_DIR}
 
 printf "${YELLOW}apt update${NC}"
 
@@ -98,7 +108,13 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}git clone${NC} grundsteinlegung"
 
-git clone  "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>&1
+if [ ! -d "/grundsteinlegung" ] ; then
+  git clone "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>&1
+else
+  cd /grundsteinlegung
+  git pull origin master
+  cd /
+fi
 
 printf " - ${GREEN}cloned${NC}\\n\\n"
 

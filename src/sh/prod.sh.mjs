@@ -17,7 +17,7 @@ export default async config => {
 
   const createHostInitScript = host => `
 if test -f ".secrets/digitalocean.ini"; then
-  ssh root@${host.ip} 'mkdir /.secrets'
+  ssh root@${host.ip} 'mkdir -f /.secrets'
   scp .secrets/digitalocean.ini root@${host.ip}:/.secrets/digitalocean.ini
   ssh root@${host.ip} 'chmod 600 /.secrets/digitalocean.ini'
 fi

@@ -32,7 +32,7 @@ ssh root@${host.ip} bash -s < bootstrap/hosts/${host.ip}.sh
 
 set -euf -o pipefail
 
-printf "GRUNDSTEIN - running development environment.\\n"
+printf "GRUNDSTEIN - pushing to production.\\n"
 
 ${hostInitScripts}
 `.trimStart()

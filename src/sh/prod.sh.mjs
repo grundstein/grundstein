@@ -16,6 +16,11 @@ export default async config => {
   const { hosts } = config
 
   const createHostInitScript = host => `
+if test -f ".secrets/digitalocean.ini"; then
+  scp .secrets/digitalocean.ini root@${host.ip}:/.secrets/digitalocean.ini
+  ssh root@${host.ip} chmod 600 /.secrets/digitalocean.ini
+fi
+
 ssh root@${host.ip} bash -s < bootstrap/grundsteinlegung.sh
 ssh root@${host.ip} bash -s < bootstrap/hosts/${host.ip}.sh
 `

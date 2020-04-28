@@ -191,7 +191,7 @@ printf "certificate generation ${GREEN}done${NC}\\n\\n"
 
 `
 
-    certificateScripts += internalCertificates(config)
+    // certificateScripts += internalCertificates(config)
   }
 
   const serviceEtcHosts = `127.0.0.1 ${Object.keys(services)
@@ -206,6 +206,8 @@ set -euf -o pipefail
 printf "${YELLOW}grundstein${NC} service setup.\\n"
 
 ${install}
+
+${certificateScripts}
 
 mkdir -p ${USERHOME}/repositories
 

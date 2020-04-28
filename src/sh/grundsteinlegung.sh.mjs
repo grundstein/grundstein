@@ -13,8 +13,6 @@ export default async config => {
 
   const logDir = path.dirname(INSTALL_LOG)
 
-  console.log({ force: config.args.force, args: config.args })
-
   const lockFileHandling =
     is.defined(config.args.force)
       ? 'rm -f /grundstein.lock'

@@ -49,6 +49,8 @@ printf " - ${GREEN}created${NC}\\n\\n"
 
 mkdir -p ${LOG_DIR}
 
+echo "" > ${INSTALL_LOG}
+
 printf "${YELLOW}apt update${NC}"
 
 apt-get -y update >> ${INSTALL_LOG} 2>&1

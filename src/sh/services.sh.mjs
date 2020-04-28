@@ -224,6 +224,8 @@ rm /grundstein.lock
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
+echo "${YELLOW}GRUNDSTEIN${NC} - install finished." >> ${INSTALL_LOG}
+
 `.trimStart()
 
   await writeFile({ config, contents, dir, name: ip })

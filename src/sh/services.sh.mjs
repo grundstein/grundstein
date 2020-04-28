@@ -221,8 +221,10 @@ iptables -A INPUT -p tcp --dport 4343 -j ACCEPT
 iptables -A INPUT -p tcp --dport 2350 -j ACCEPT
 
 # port redirects
+
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8080
 iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j REDIRECT --to-port 4343
+
 iptables -A INPUT -j DROP
 
 # save

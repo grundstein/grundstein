@@ -105,7 +105,9 @@ printf " - ${GREEN}done${NC}.\\n\\n"
     )
     .join('\n')
 
-  const runServices = services.map(service => `
+  const runServices = services
+    .map(
+      service => `
 
 
 printf "${YELLOW}@grundstein/${service}${NC} setup"
@@ -114,7 +116,7 @@ cp /grundsteinlegung/src/systemd/${service}.service /etc/systemd/system/
 
 systemctl enable ${service}
 
-systemctl start ${service}
+systemctl restart ${service}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -138,8 +140,29 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
       const hostnameString = apexNames.map(name => `*.${name},${name}`).join(',')
 
-      createLetsencryptCertificates = `
+      const certificateList = apexNames
+        .map(name => `*.${name},${name}`)
+        .map(
+          hosts => `
+printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}"
 
+  certbot certonly \
+-n \
+--dns-digitalocean \
+--dns-digitalocean-credentials ${secretFile} \
+--dns-digitalocean-propagation-seconds 10 \
+--agree-tos \
+--cert-name ${host.name} \
+--email grundstein@jaeh.at \
+-d ${hosts}
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+      `,
+        )
+        .join('\\n\\n\\n')
+
+      createLetsencryptCertificates = `
 
 if test -f "${secretFile}"; then
 
@@ -161,19 +184,8 @@ if test -f "${secretFile}"; then
 
   printf "${YELLOW}certbot${NC} - generate certificates"
 
-  printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}"
+  ${certificateList}
 
-  certbot certonly \
--n \
---dns-digitalocean \
---dns-digitalocean-credentials ${secretFile} \
---dns-digitalocean-propagation-seconds 10 \
---agree-tos \
---cert-name ${host.name} \
---email grundstein@jaeh.at \
--d ${hostnameString}
-
-  printf " - ${GREEN}done${NC}\\n\\n"
 
   chown grundstein:root -R /etc/letsencrypt/archive /etc/letsencrypt/live
 fi

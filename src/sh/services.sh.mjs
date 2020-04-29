@@ -150,8 +150,9 @@ if test -f "${secretFile}"; then
 --dns-digitalocean-credentials ${secretFile} \
 --dns-digitalocean-propagation-seconds 10 \
 --agree-tos \
+--cert-name ${host.name} \
 --email grundstein@jaeh.at \
--d ${hostnames.map(n => `*.${n}`).join(',')}
+${hostnames.map(n => `-d *.${n} -d ${n}`).join(' ')}
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi

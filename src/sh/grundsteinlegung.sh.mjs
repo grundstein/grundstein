@@ -47,6 +47,14 @@ printf " - ${GREEN}created${NC}\\n\\n"
 
 echo "GRUNDSTEIN - starting.\\n\\n" > ${INSTALL_LOG}
 
+printf "${YELLOW}apt update${NC}"
+
+apt-get -y update ${redirectLog}
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
 printf "${YELLOW}language${NC} - setup"
 
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -71,15 +79,6 @@ dpkg-reconfigure -f noninteractive tzdata ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
-
-
-
-
-printf "${YELLOW}apt update${NC}"
-
-apt-get -y update ${redirectLog}
-
-printf " - ${GREEN}done${NC}\\n\\n"
 
 
 

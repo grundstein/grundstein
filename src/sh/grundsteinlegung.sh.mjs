@@ -58,6 +58,17 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 
 
+printf "${YELLOW}language${NC} - setup"
+
+echo 'LANG=en_US\\nLANGUAGE=en_US:en' > /etc/default/locale
+
+export LANG=en_US
+export LANGUAGE=en_US:en
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
 printf "${YELLOW}timezones${NC} - setup"
 
 ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime

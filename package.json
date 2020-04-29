@@ -16,7 +16,8 @@
     "connect": "/usr/bin/env docker exec -it grundstein-dev /bin/bash",
     "install-log": "/usr/bin/env docker exec -it grundstein-dev tail -f /var/log/grundstein/install.log",
     "test": "t",
-    "format": "f -w"
+    "format": "f -w",
+    "calls": "calls"
   },
   "bin": {
     "grundstein": "src/bin.mjs"

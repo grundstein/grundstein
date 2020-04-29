@@ -105,9 +105,7 @@ printf " - ${GREEN}done${NC}.\\n\\n"
     )
     .join('\n')
 
-  const runServices = Object.entries(services)
-    .map(
-      ([service, config]) => `
+  const runServices = services.map(service => `
 
 
 printf "${YELLOW}@grundstein/${service}${NC} setup"
@@ -201,7 +199,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
   let iptables = ''
 
-  if (Object.keys(services).includes('gps')) {
+  if (services.includes('gps')) {
     iptables = `
 
 

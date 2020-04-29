@@ -148,10 +148,9 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}nodejs${NC}"
 
-command -v node >/dev/null 2>&1 && NODE_VERSION=$($NODE_EXEC --version) || NODE_VERSION=0
+command -v node >/dev/null 2>&1 && NODE_VERSION=$(node --version) || NODE_VERSION="0"
 
 if (test "$NODE_VERSION" != "v13.*") then
-
   printf " - install - "
 
   /usr/bin/env bash /grundsteinlegung/bash/node.sh ${redirectLog}

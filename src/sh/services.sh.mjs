@@ -211,6 +211,7 @@ apt-get -y install iptables-persistent >> ${INSTALL_LOG} 2>&1
 
 # flush rules
 iptables -F
+iptables -t nat -F
 
 # internal
 iptables -I INPUT 1 -i lo -j ACCEPT

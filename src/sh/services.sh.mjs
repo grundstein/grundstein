@@ -143,7 +143,25 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 if test -f "${secretFile}"; then
 
-  printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}\\n"
+  # add-apt-repository -y universe
+
+  # add-apt-repository -y ppa:certbot/certbot
+
+  # apt-get -y update
+
+  # actually install certbot
+  apt-get -y install \\
+  python \\
+  python3-certbot-dns-digitalocean \\
+  certbot \\
+  ${redirectLog}
+
+  printf " - ${GREEN}done${NC}\\n\\n"
+
+
+  printf "${YELLOW}certbot${NC} - generate certificates"
+
+  printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}"
 
   certbot certonly \
 -n \
@@ -155,44 +173,16 @@ if test -f "${secretFile}"; then
 --email grundstein@jaeh.at \
 -d ${hostnameString}
 
-  printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
+  printf " - ${GREEN}done${NC}\\n\\n"
+
+  chown grundstein:root -R /etc/letsencrypt/archive /etc/letsencrypt/live
 fi
 
 
 `
     }
 
-    certificateScripts += `
-
-
-
-printf "${YELLOW}certbot${NC} - install"
-
-add-apt-repository -y universe ${redirectLog}
-add-apt-repository -y ppa:certbot/certbot ${redirectLog}
-apt-get -y update ${redirectLog}
-
-# actually install certbot
-TZ=${env.TZ} apt-get -y install \\
-python \\
-python3-certbot-dns-digitalocean \\
-certbot \\
-${redirectLog}
-
-printf " - ${GREEN}done${NC}\\n\\n"
-
-
-printf "${YELLOW}certbot${NC} - generate certificates"
-
-${createLetsencryptCertificates}
-
-chown grundstein:root -R /etc/letsencrypt/archive /etc/letsencrypt/live
-
-printf " - ${GREEN}done${NC}\\n\\n"
-
-
-
-`
+    certificateScripts += createLetsencryptCertificates
 
     // certificateScripts += internalCertificates(config)
   }

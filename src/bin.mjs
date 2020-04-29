@@ -35,7 +35,7 @@ const doIt = async () => {
     log.warn('SERVER INSTALL', 'This will force (re?)installation on your production server!')
     log.info('all services should keep working and restart automatically. it is prod though!')
 
-    const yesNo = await cli.prompt('Are you sure? (y/N)', { yesNo: true })
+    const yesNo = await cli.prompt('Are you sure?', { yesNo: true })
 
     if (!yesNo) {
       log('Aborting.')

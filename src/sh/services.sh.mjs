@@ -46,6 +46,8 @@ fi
 
 cd ${serviceRootDir}/${service}
 
+rm -r node_modules package-lock.json ${redirectLog}
+
 npm install ${redirectLog}
 
 npm test ${redirectLog}
@@ -138,28 +140,27 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
       const apexNames = [...new Set(hostnames.map(h => h.split('.').slice(-2).join('.')))]
 
-      const hostnameString = apexNames.map(name => `*.${name},${name}`).join(',')
-
       const certificateList = apexNames
         .map(
           name => `
-printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}"
+  printf "${YELLOW}certbot certonly${NC} - generate certificates for ${name}"
 
-  certbot certonly \
--n \
---dns-digitalocean \
---dns-digitalocean-credentials ${secretFile} \
---dns-digitalocean-propagation-seconds 10 \
---agree-tos \
---cert-name ${name} \
---email grundstein@jaeh.at \
--d *.${name}, ${name}
+  certbot certonly \\
+    -n \\
+    --dns-digitalocean \\
+    --dns-digitalocean-credentials ${secretFile} \\
+    --dns-digitalocean-propagation-seconds 10 \\
+    --agree-tos \\
+    --cert-name ${name} \\
+    --email grundstein@jaeh.at \\
+    -d *.${name} -d ${name} \\
+    ${redirectLog}
 
-printf " - ${GREEN}done${NC}\\n\\n"
+  printf " - ${GREEN}done${NC}\\n\\n"
 
       `,
         )
-        .join('\\n\\n\\n')
+        .join('\n\n\n')
 
       createLetsencryptCertificates = `
 

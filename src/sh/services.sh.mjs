@@ -26,13 +26,9 @@ export const createBash = async config => {
 
   const serviceRootDir = `${USERHOME}/services`
 
-  const serviceNames = Object.keys(services)
-
-  const install = serviceNames
-    .map(service => {
-      const serviceDir = `${serviceRootDir}/${service}`
-
-      return `
+  const install = services
+    .map(
+      service => `
 
 
 printf "${YELLOW}@grundstein/${service}${NC} install"
@@ -40,15 +36,15 @@ printf "${YELLOW}@grundstein/${service}${NC} install"
 mkdir -p ${serviceRootDir}
 
 
-if [ ! -d "${serviceDir}" ] ; then
-  git clone git://github.com/grundstein/${service} ${serviceDir} ${redirectLog}
+if [ ! -d "${serviceRootDir}/${service}" ] ; then
+  git clone git://github.com/grundstein/${service} ${serviceRootDir}/${service} ${redirectLog}
 else
-  cd "${serviceDir}"
+  cd "${serviceRootDir}/${service}"
   git pull origin master ${redirectLog}
 fi
 
 
-cd ${serviceDir}
+cd ${serviceRootDir}/${service}
 
 npm install ${redirectLog}
 
@@ -61,8 +57,8 @@ cd /
 printf " - ${GREEN}done${NC}\\n\\n"
 
 
-`
-    })
+`,
+    )
     .join('')
 
   const clone = Object.entries(repositories)
@@ -134,7 +130,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
   // this assumes only one gps server.
   // this should scale for quite some time though, it's just the proxy.
   // this will likely be a high-mem, high cpu instance later.
-  if (serviceNames.includes('gps')) {
+  if (services.includes('gps')) {
     let createLetsencryptCertificates = ''
 
     if (is.defined(config.args.prod)) {

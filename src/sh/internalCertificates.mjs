@@ -78,13 +78,10 @@ printf " - ${GREEN}done${NC}\\n\\n"
       )
       .join('\n\n\n')
 
-  const generateServiceCertificates = config => {
-    const { name, services } = config.host
-    const serviceSubdomains = Object.keys(config.host.services)
-
-    return serviceSubdomains
+  const generateServiceCertificates = config =>
+    config.host.services
       .map(subdomain => {
-        const hostname = `${subdomain}.${name}`
+        const hostname = `${subdomain}.${config.host.name}`
 
         return `
 
@@ -146,7 +143,6 @@ printf " - ${GREEN}done${NC}\\n\\n"
 `
       })
       .join('')
-  }
 
   const contents = `
 

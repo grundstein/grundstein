@@ -141,9 +141,8 @@ printf " - ${GREEN}done${NC}\\n\\n"
       const hostnameString = apexNames.map(name => `*.${name},${name}`).join(',')
 
       const certificateList = apexNames
-        .map(name => `*.${name},${name}`)
         .map(
-          hosts => `
+          name => `
 printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}"
 
   certbot certonly \
@@ -152,9 +151,9 @@ printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.j
 --dns-digitalocean-credentials ${secretFile} \
 --dns-digitalocean-propagation-seconds 10 \
 --agree-tos \
---cert-name ${host.name} \
+--cert-name ${name} \
 --email grundstein@jaeh.at \
--d ${hosts}
+-d *.${name}, ${name}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

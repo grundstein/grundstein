@@ -148,7 +148,7 @@ if test -f "${secretFile}"; then
 -n \
 --dns-digitalocean \
 --dns-digitalocean-credentials ${secretFile} \
---dns-digitalocean-propagation-seconds 60 \
+--dns-digitalocean-propagation-seconds 10 \
 --agree-tos \
 --email grundstein@jaeh.at \
 -d ${hostnames.join(',')}

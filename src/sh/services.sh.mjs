@@ -228,8 +228,8 @@ iptables -A INPUT -p tcp --dport 2350 -j ACCEPT
 
 # port redirects
 
-iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 8080
-iptables -t nat -A OUTPUT -o lo -p tcp --dport 443 -j REDIRECT --to-port 4343
+iptables -t nat -A PREROUTING -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 4343
+iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080
 
 iptables -A INPUT -j DROP
 

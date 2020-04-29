@@ -149,9 +149,9 @@ exec_cmd "echo 'deb-src https://deb.nodesource.com/${NODEREPO} ${DISTRO} main' >
 
 print_status 'Running `apt-get update`'
 
-exec_cmd 'apt-get update -y >> /var/log/grundstein/node-install.log 2>&1'
+exec_cmd 'apt-get update -y'
 
-exec_cmd 'apt-get install -qq -y nodejs >> /var/log/grundstein/node-install.log 2>&1'
+exec_cmd 'apt-get install -qq -y nodejs'
 }
 
 ## Defer setup until we have the complete script

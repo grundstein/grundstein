@@ -138,7 +138,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
     if (is.defined(config.args.prod)) {
       const secretFile = '/.secrets/digitalocean.ini'
 
-      const hostnameString = hostnames.map(n => `*.${n}`).join(',')
+      const hostnameString = hostnames.map(n => `*.${n},${n}`).join(',')
 
       createLetsencryptCertificates = `
 
@@ -159,7 +159,6 @@ if test -f "${secretFile}"; then
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi
-
 
 
 `
@@ -188,6 +187,8 @@ printf " - ${GREEN}done${NC}\\n\\n"
 printf "${YELLOW}certbot${NC} - generate certificates"
 
 ${createLetsencryptCertificates}
+
+chown grundstein:root -R /etc/letsencrypt/archive /etc/letsencrypt/live
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

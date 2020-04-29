@@ -11,6 +11,8 @@ export default async config => {
 
   const { INSTALL_LOG, LOG_DIR } = env
 
+  const redirectLog = `>> ${INSTALL_LOG} 2>&1`
+
   const lockFileHandling = is.defined(config.args.force)
     ? 'rm -f /grundstein.lock'
     : `
@@ -49,7 +51,7 @@ printf "${YELLOW}language${NC} - setup"
 
 sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 
-locale-gen >> ${INSTALL_LOG} 2>&1
+locale-gen ${redirectLog}
 
 export LANG='en_US.UTF-8'
 export LANGUAGE='en_US:en'
@@ -61,11 +63,11 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}timezones${NC} - setup"
 
-apt-get install -y tzdata ntp >> ${INSTALL_LOG} 2>&1
+apt-get install -y tzdata ntp ${redirectLog}
 
 ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime
 
-dpkg-reconfigure -f noninteractive tzdata >> ${INSTALL_LOG} 2>&1
+dpkg-reconfigure -f noninteractive tzdata ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -75,7 +77,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt update${NC}"
 
-apt-get -y update >> ${INSTALL_LOG} 2>&1
+apt-get -y update ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -93,7 +95,7 @@ makepasswd \
 curl \
 software-properties-common \
 nano \
->> ${INSTALL_LOG} 2>&1
+${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -101,7 +103,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt upgrade${NC}"
 
-apt-get -qq -y upgrade >> ${INSTALL_LOG} 2>&1
+apt-get -qq -y upgrade ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -109,7 +111,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}apt autoremove${NC}"
 
-apt-get -y autoremove >> ${INSTALL_LOG} 2>&1
+apt-get -y autoremove ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -118,10 +120,10 @@ printf " - ${GREEN}done${NC}\\n\\n"
 printf "${YELLOW}git clone${NC} grundsteinlegung"
 
 if [ ! -d "/grundsteinlegung" ] ; then
-  git clone "${env.GIT_URL}/cli" /grundsteinlegung >> ${INSTALL_LOG} 2>&1
+  git clone "${env.GIT_URL}/cli" /grundsteinlegung ${redirectLog}
 else
   cd /grundsteinlegung
-  git pull origin master >> ${INSTALL_LOG} 2>&1
+  git pull origin master ${redirectLog}
   cd /
 fi
 
@@ -152,7 +154,7 @@ if (test "$NODE_VERSION" != "v13.*") then
 
   printf " - install - "
 
-  /usr/bin/env bash /grundsteinlegung/bash/node.sh >> ${INSTALL_LOG} 2>&1
+  /usr/bin/env bash /grundsteinlegung/bash/node.sh ${redirectLog}
 
   printf " - ${GREEN}done${NC}\\n\\n"
 else

@@ -16,6 +16,8 @@ export const createBash = async config => {
 
   const { INSTALL_LOG, USERNAME, USERHOME } = env
 
+  const redirectLog = `>> ${INSTALL_LOG} 2>&1`
+
   const { YELLOW, RED, GREEN, NC } = colors
 
   const dir = path.join(config.dir, 'hosts')
@@ -39,20 +41,20 @@ mkdir -p ${serviceRootDir}
 
 
 if [ ! -d "${serviceDir}" ] ; then
-  git clone git://github.com/grundstein/${service} ${serviceDir} >> ${INSTALL_LOG} 2>&1
+  git clone git://github.com/grundstein/${service} ${serviceDir} ${redirectLog}
 else
   cd "${serviceDir}"
-  git pull origin master >> ${INSTALL_LOG} 2>&1
+  git pull origin master ${redirectLog}
 fi
 
 
 cd ${serviceDir}
 
-npm install >> ${INSTALL_LOG} 2>&1
+npm install ${redirectLog}
 
-npm test >> ${INSTALL_LOG} 2>&1
+npm test ${redirectLog}
 
-npm link >> ${INSTALL_LOG} 2>&1
+npm link ${redirectLog}
 
 cd /
 
@@ -74,19 +76,19 @@ printf "${YELLOW}cloning page:${NC} ${name}"
 DIR="${USERHOME}/repositories/${name}"
 
 if [ ! -d "$DIR" ] ; then
-  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR >> ${INSTALL_LOG} 2>&1
+  git clone -b ${r.branch} git://${r.host}/${r.org}/${r.repo} $DIR ${redirectLog}
 else
   cd "$DIR"
-  git pull origin ${r.branch} >> ${INSTALL_LOG} 2>&1
+  git pull origin ${r.branch} ${redirectLog}
 fi
 
 cd "$DIR"
 
-npm install >> ${INSTALL_LOG} 2>&1
+npm install ${redirectLog}
 
-npm test >> ${INSTALL_LOG} 2>&1
+npm test ${redirectLog}
 
-npm run build >> ${INSTALL_LOG} 2>&1
+npm run build ${redirectLog}
 
 # copy docs directory, if it exists
 if [ -d "$DIR/docs" ]; then
@@ -172,16 +174,16 @@ fi
 
 printf "${YELLOW}certbot${NC} - install"
 
-add-apt-repository -y universe >> ${INSTALL_LOG} 2>&1
-add-apt-repository -y ppa:certbot/certbot >> ${INSTALL_LOG} 2>&1
-apt-get -y update >> ${INSTALL_LOG} 2>&1
+add-apt-repository -y universe ${redirectLog}
+add-apt-repository -y ppa:certbot/certbot ${redirectLog}
+apt-get -y update ${redirectLog}
 
 # actually install certbot
 TZ=${env.TZ} apt-get -y install \\
 python \\
 python3-certbot-dns-digitalocean \\
 certbot \\
->> ${INSTALL_LOG} 2>&1
+${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -210,7 +212,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}iptables${NC} - setup"
 
-apt-get -y install iptables-persistent >> ${INSTALL_LOG} 2>&1
+apt-get -y install iptables-persistent ${redirectLog}
 
 # flush rules
 iptables -F
@@ -238,8 +240,8 @@ iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 80
 iptables -A INPUT -j DROP
 
 # save
-netfilter-persistent save >> ${INSTALL_LOG} 2>&1
-netfilter-persistent reload >> ${INSTALL_LOG} 2>&1
+netfilter-persistent save ${redirectLog}
+netfilter-persistent reload ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

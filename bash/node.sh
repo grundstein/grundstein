@@ -151,7 +151,7 @@ print_status 'Running `apt-get update`'
 
 exec_cmd 'apt-get update -y'
 
-exec_cmd 'apt-get install -qq -y nodejs'
+exec_cmd 'apt-get install -y nodejs'
 }
 
 ## Defer setup until we have the complete script

@@ -7,8 +7,10 @@ Grundstein (plural Grundsteine) [german]
 * A ceremonial stone set at the corner of a building.
 
 * By extension, that which is prominent, fundamental, noteworthy, or central.
-Exceptional service is the cornerstone of the hospitality industry.
-That is the cornerstone of any meaningful debate about budgets and projects, regulations and policies.
+
+*Exceptional service is the cornerstone of the hospitality industry.*
+
+*That is the cornerstone of any meaningful debate about budgets and projects, regulations and policies.*
 
 via: [wiktionary](https://en.wiktionary.org/wiki/grundstein)
 

@@ -145,10 +145,13 @@ if test -f "${secretFile}"; then
   printf "${YELLOW}certbot certonly${NC} - generate certificates for ${hostnames.join(' ')}\\n"
 
   certbot certonly \
+-n \
 --dns-digitalocean \
---dns-digitalocean-credentials /.secrets/digitalocean.ini \
+--dns-digitalocean-credentials ${secretFile} \
 --dns-digitalocean-propagation-seconds 60 \
-${hostnames.map(h => `-d *.${h}`).join(' ')}
+--agree-tos \
+--email grundstein@jaeh.at \
+-d ${hostnames.join(',')}
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi

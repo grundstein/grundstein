@@ -1,5 +1,5 @@
 [Unit]
-Description=grs - grundstein proxy service
+Description=gps - grundstein proxy service
 Documentation=https://docs.grundstein.it/gps
 After=network.target
 

@@ -147,7 +147,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}nodejs${NC}"
 
-command -v node >/dev/null 2>&1 && NODE_VERSION=$(node --version) || NODE_VERSION="0"
+command -v node >/dev/null 2>&1 && export NODE_VERSION=$(node --version) || export NODE_VERSION="0"
 
 if (test "$NODE_VERSION" != "v13.*") then
   printf " - install - "
@@ -156,7 +156,7 @@ if (test "$NODE_VERSION" != "v13.*") then
 
   printf " - ${GREEN}done${NC}\\n\\n"
 else
-  echo " $NODE_VERSION - already ${GREEN}installed${NC}\\n\\n"
+  printf " \${NODE_VERSION} - already ${GREEN}installed${NC}\\n\\n"
 fi
 
 

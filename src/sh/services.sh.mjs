@@ -224,6 +224,8 @@ iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 80
 iptables -A INPUT -j DROP
 
 # save
+iptables-save > /etc/iptables/rules.v4
+
 netfilter-persistent save ${redirectLog}
 netfilter-persistent reload ${redirectLog}
 

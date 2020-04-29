@@ -137,6 +137,9 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
     if (is.defined(config.args.prod)) {
       const secretFile = '/.secrets/digitalocean.ini'
+
+      const hostnameString = hostnames.map(n => `*.${n}`).join(',')
+
       createLetsencryptCertificates = `
 
 
@@ -152,7 +155,7 @@ if test -f "${secretFile}"; then
 --agree-tos \
 --cert-name ${host.name} \
 --email grundstein@jaeh.at \
--d ${hostnames.map(n => `*.${n}`).join(',')}
+-d ${hostnameString}
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi

@@ -60,10 +60,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}language${NC} - setup"
 
-echo 'LANG=en_US\\nLANGUAGE=en_US:en' > /etc/default/locale
-
-export LANG=en_US
-export LANGUAGE=en_US:en
+localectl set-locale LANG='en_US.utf-8'
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

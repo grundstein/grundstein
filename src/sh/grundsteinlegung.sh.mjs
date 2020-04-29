@@ -11,8 +11,6 @@ export default async config => {
 
   const { INSTALL_LOG, LOG_DIR } = env
 
-  const logDir = path.dirname(INSTALL_LOG)
-
   const lockFileHandling = is.defined(config.args.force)
     ? 'rm -f /grundstein.lock'
     : `
@@ -39,28 +37,23 @@ touch /grundstein.lock
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
-printf "${YELLOW}log dir${NC} - mkdir ${logDir}"
-
-mkdir -p ${logDir}
-
-printf " - ${GREEN}created${NC}\\n\\n"
-
+printf "${YELLOW}log dir${NC} - mkdir -p ${LOG_DIR}"
 
 mkdir -p ${LOG_DIR}
 
-echo "GRUNDSTEIN - starting install.\\n\\n" > ${INSTALL_LOG}
+printf " - ${GREEN}created${NC}\\n\\n"
 
-printf "${YELLOW}apt update${NC}"
-
-apt-get -y update >> ${INSTALL_LOG} 2>&1
-
-printf " - ${GREEN}done${NC}\\n\\n"
-
-
+echo "GRUNDSTEIN - starting.\\n\\n" > ${INSTALL_LOG}
 
 printf "${YELLOW}language${NC} - setup"
 
-localectl set-locale LANG='en_US.utf-8'
+sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+
+locale-gen >> ${INSTALL_LOG} 2>&1
+
+export LANG='en_US.UTF-8'
+export LANGUAGE='en_US:en'
+export LC_ALL='en_US.UTF-8'
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -68,11 +61,21 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 printf "${YELLOW}timezones${NC} - setup"
 
+apt-get install -y tzdata ntp >> ${INSTALL_LOG} 2>&1
+
 ln -fs /usr/share/zoneinfo/${env.TZ} /etc/localtime
 
-apt-get install -y tzdata >> ${INSTALL_LOG} 2>&1
-
 dpkg-reconfigure -f noninteractive tzdata >> ${INSTALL_LOG} 2>&1
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
+
+
+printf "${YELLOW}apt update${NC}"
+
+apt-get -y update >> ${INSTALL_LOG} 2>&1
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -89,7 +92,6 @@ git \
 makepasswd \
 curl \
 software-properties-common \
-ntp \
 nano \
 >> ${INSTALL_LOG} 2>&1
 
@@ -140,11 +142,23 @@ id -u "${env.USERNAME}" &>/dev/null || (
 printf " - ${GREEN}done${NC}\\n\\n"
 
 
-printf "${YELLOW}install${NC} nodejs"
 
-/usr/bin/env bash /grundsteinlegung/bash/node.sh >> ${INSTALL_LOG} 2>&1
 
-printf " - ${GREEN}done${NC}\\n\\n"
+printf "${YELLOW}nodejs${NC}"
+
+command -v node >/dev/null 2>&1 && NODE_VERSION=$($NODE_EXEC --version) || NODE_VERSION=0
+
+if (test "$NODE_VERSION" != "v13.*") then
+
+  printf " - install - "
+
+  /usr/bin/env bash /grundsteinlegung/bash/node.sh >> ${INSTALL_LOG} 2>&1
+
+  printf " - ${GREEN}done${NC}\\n\\n"
+else
+  echo " $NODE_VERSION - already ${GREEN}installed${NC}\\n\\n"
+fi
+
 
 `.trimStart()
 

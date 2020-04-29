@@ -138,7 +138,9 @@ printf " - ${GREEN}done${NC}\\n\\n"
     if (is.defined(config.args.prod)) {
       const secretFile = '/.secrets/digitalocean.ini'
 
-      const hostnameString = hostnames.map(n => `*.${n},${n}`).join(',')
+      const apexNames = [...new Set(hostnames.map(h => h.split('.').slice(-2).join('.')))]
+
+      const hostnameString = apexNames.map(name => `*.${name},${name}`).join(',')
 
       createLetsencryptCertificates = `
 

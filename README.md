@@ -1,4 +1,4 @@
-## grundstein
+## grundsteinlegung
 
 ### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
 
@@ -8,15 +8,9 @@ Grundstein (plural Grundsteine) [german]
 
 * By extension, that which is prominent, fundamental, noteworthy, or central.
 
-*Exceptional service is the cornerstone of the hospitality industry.*
-
-*That is the cornerstone of any meaningful debate about budgets and projects, regulations and policies.*
-
-via: [wiktionary](https://en.wiktionary.org/wiki/grundstein)
+via: [wiktionary](https://en.wiktionary.org/wiki/Grundstein)
 
 --------------------------------------------------
-
-### grundstein installer.
 
 #### requirements:
 

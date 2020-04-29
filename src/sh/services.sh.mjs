@@ -152,7 +152,7 @@ if test -f "${secretFile}"; then
 --agree-tos \
 --cert-name ${host.name} \
 --email grundstein@jaeh.at \
-${hostnames.map(n => `-d *.${n} -d ${n}`).join(' ')}
+-d ${hostnames.map(n => `*.${n}`).join(',')}
 
   printf "certbot certonly - ${GREEN}done${NC}\\n\\n"
 fi

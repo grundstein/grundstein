@@ -19,6 +19,13 @@ export default async config => {
   const configString = JSON.stringify(config, null, 2)
   const configFile = await writeFile({ name: 'config.json', contents: configString, config, dir })
 
+  let devDirectory = path.join(dir, '..', 'dev')
+  const devDirectoryExists = await fs.exists(devDirectory)
+
+  if (!devDirectoryExists) {
+    devDirectory = path.join(dir, '..', 'node_modules', 'grundstein', 'cli', 'dev')
+  }
+
   const hostInitScripts = hostScripts
     .map(script =>
       `
@@ -50,7 +57,7 @@ if [[ $(sudo docker ps -aq -f name=${containerName}) ]]; then
   sudo docker rm -f "${containerName}"
 fi
 
-sudo docker build dev --tag="${containerName}"
+sudo docker build ${devDirectory} --tag="${containerName}"
 
 # TODO: change 2323:4343 to 443:4343 once the local certificates are being generated.
 sudo docker run -td -p 2350:2350 -p 2351:2351 -p 80:8080 -p 2323:4343 --name="${containerName}" "${containerName}"

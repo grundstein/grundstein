@@ -23,7 +23,8 @@
     "grundstein": "src/bin.mjs"
   },
   "files": [
-    "src"
+    "src",
+    "dev"
   ],
   "repository": {
     "type": "git",

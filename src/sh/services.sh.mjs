@@ -46,7 +46,7 @@ fi
 
 cd ${serviceRootDir}/${service}
 
-rm -r node_modules package-lock.json ${redirectLog}
+rm -rf node_modules package-lock.json ${redirectLog}
 
 npm install ${redirectLog}
 
@@ -270,7 +270,7 @@ ${runServices}
 printf "${YELLOW}removing /grundstein.lock${NC}"
 
 # this file got touch'ed in grundsteinlegung.sh
-rm /grundstein.lock
+rm -f /grundstein.lock
 
 printf " - ${GREEN}done${NC}\\n\\n"
 

@@ -1,8 +1,8 @@
 import path from 'path'
 
-import { cli, fs, is, log } from '@grundstein/commons'
+import { fs } from '@grundstein/commons'
 
-import { mergeConfig, writeFile, writeEtcHosts } from './lib/index.mjs'
+import { mergeConfig, writeEtcHosts } from './lib/index.mjs'
 
 import sh from './sh/index.mjs'
 

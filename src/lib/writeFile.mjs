@@ -1,9 +1,7 @@
 import path from 'path'
 import { fs, log } from '@grundstein/commons'
 
-import sh from '../sh/index.mjs'
-
-export const writeFile = async ({ dir, name, config, contents }) => {
+export const writeFile = async ({ dir, name, contents }) => {
   if (!name.endsWith('.mjs') && !name.endsWith('.json') && !name.endsWith('.sh')) {
     name = `${name}.sh`
   }

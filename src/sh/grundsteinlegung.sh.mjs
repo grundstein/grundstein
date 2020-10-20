@@ -1,6 +1,4 @@
-import path from 'path'
-
-import { is, log } from '@grundstein/commons'
+import { is } from '@grundstein/commons'
 
 import { colors, writeFile } from '../lib/index.mjs'
 

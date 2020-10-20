@@ -23,7 +23,7 @@ export default async config => {
   const devDirectoryExists = await fs.exists(devDirectory)
 
   if (!devDirectoryExists) {
-    devDirectory = path.join(dir, '..', 'node_modules', '@grundstein', 'cli', 'dev')
+    devDirectory = path.join(dir, '..', 'node_modules', 'grundstein', 'dev')
   }
 
   const hostInitScripts = hostScripts

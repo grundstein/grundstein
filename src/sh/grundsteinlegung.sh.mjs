@@ -80,6 +80,22 @@ printf " - ${GREEN}done${NC}\\n\\n"
 
 
 
+printf "${YELLOW}apt upgrade${NC}"
+
+apt-get -qq -y upgrade ${redirectLog}
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
+printf "${YELLOW}apt autoremove${NC}"
+
+apt-get -y autoremove ${redirectLog}
+
+printf " - ${GREEN}done${NC}\\n\\n"
+
+
+
 printf "${YELLOW}install${NC} dependencies"
 
 # curl needed for nvm
@@ -93,22 +109,6 @@ curl \
 software-properties-common \
 nano \
 ${redirectLog}
-
-printf " - ${GREEN}done${NC}\\n\\n"
-
-
-
-printf "${YELLOW}apt upgrade${NC}"
-
-apt-get -qq -y upgrade ${redirectLog}
-
-printf " - ${GREEN}done${NC}\\n\\n"
-
-
-
-printf "${YELLOW}apt autoremove${NC}"
-
-apt-get -y autoremove ${redirectLog}
 
 printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -158,7 +158,7 @@ else
 fi
 
 
-`.trimStart()
+`.trim()
 
   await writeFile({ name: 'grundsteinlegung', config, contents, dir })
 

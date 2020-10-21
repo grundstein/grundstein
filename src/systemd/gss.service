@@ -1,0 +1,13 @@
+[Unit]
+Description=gss - grundstein static server
+Documentation=https://docs.grundstein.it/gss
+After=network.target
+
+[Service]
+Type=simple
+User=grundstein
+ExecStart=/usr/bin/gss
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

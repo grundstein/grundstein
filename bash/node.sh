@@ -1,14 +1,16 @@
+#!/usr/bin/env bash
+
 # Discussion, issues and change requests at:
 #   https://github.com/nodesource/distributions
 #
-# Script to install the NodeSource Node.js 13.x repo onto a
+# Script to install the NodeSource Node.js 14.x repo onto a
 # Debian or Ubuntu system.
 #
 # Run as root or insert `sudo -E` before `bash`:
 #
-# curl -sL https://deb.nodesource.com/setup_13.x | bash -
+# curl -sL https://deb.nodesource.com/setup_14.x | bash -
 #   or
-# wget -qO- https://deb.nodesource.com/setup_13.x | bash -
+# wget -qO- https://deb.nodesource.com/setup_14.x | bash -
 #
 # CONTRIBUTIONS TO THIS SCRIPT
 #
@@ -19,9 +21,9 @@
 
 
 export DEBIAN_FRONTEND=noninteractive
-SCRSUFFIX="_13.x"
-NODENAME="Node.js 13.x"
-NODEREPO="node_13.x"
+SCRSUFFIX="_14.x"
+NODENAME="Node.js 14.x"
+NODEREPO="node_14.x"
 NODEPKG="nodejs"
 
 print_status() {

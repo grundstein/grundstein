@@ -92,8 +92,6 @@ fi
 PRE_INSTALL_PKGS=""
 
 # Check that HTTPS transport is available to APT
-# (Check snaked from: https://get.docker.io/ubuntu/)
-
 if [ ! -e /usr/lib/apt/methods/https ]; then
     PRE_INSTALL_PKGS="${PRE_INSTALL_PKGS} apt-transport-https"
 fi

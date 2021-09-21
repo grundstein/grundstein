@@ -34,7 +34,7 @@
     "url": "https://github.com/grundstein/legung/issues"
   },
   "dependencies": {
-    "@grundstein/commons": "github:grundstein/commons"
+    "@grundstein/commons": "0.0.1"
   },
   "devDependencies": {
     "@magic/format": "0.0.29",

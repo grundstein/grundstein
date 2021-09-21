@@ -63,8 +63,8 @@ printf "${YELLOW}docker${NC} - dev build - ${GREEN}done${NC}\\n\\n\\n"
 
 
 ${hostScripts
-      .map(script =>
-        `
+  .map(script =>
+    `
 printf "${YELLOW}add init script${NC}: ${script}\\n"
 
 sudo docker exec -it ${containerName} mkdir -p "${hostDir}"
@@ -77,8 +77,8 @@ sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basena
 
 printf "add init script: ${GREEN}done${NC}\\n\\n"
 `.trim(),
-      )
-      .join('\n\n')}
+  )
+  .join('\n\n')}
 
 
 

@@ -1,12 +1,11 @@
 {
   "name": "grundstein",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "author": "Wizards & Witches",
   "homepage": "https://docs.grundstein.it/grundsteinlegung",
   "license": "AGPL-3.0",
   "description": "### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET! install this package to get started with grundstein. npm i -g grundstein",
   "main": "src/index.mjs",
-  "private": true,
   "engines": {
     "node": ">=14.14.0"
   },

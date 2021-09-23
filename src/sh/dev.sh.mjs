@@ -33,9 +33,9 @@ set -euf -o pipefail
 
 printf "${YELLOW}GRUNDSTEIN DEV DOCKER${NC} \\n\\n"
 
-printf "this script builds and runs docker, it needs the root.\\n\\n\\n"
+printf "this script builds and runs docker, it needs root.\\n\\n\\n"
 
-# remove docker if it is running
+# remove docker container if it is running
 if [[ $(sudo docker ps -aq -f name=${containerName}) ]]; then
   sudo docker rm -f "${containerName}"
 fi
@@ -46,6 +46,11 @@ sudo docker build ${devDirectory} --tag="${containerName}"
 sudo docker run \
 --cap-add=NET_ADMIN \
 --privileged=true \
+-e container=docker \
+--tmpfs /run \
+--tmpfs /tmp \
+-v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+--cap-add SYS_ADMIN \
 -td \
 -p 2350:2350 \
 -p 2351:2351 \
@@ -63,8 +68,8 @@ printf "${YELLOW}docker${NC} - dev build - ${GREEN}done${NC}\\n\\n\\n"
 
 
 ${hostScripts
-  .map(script =>
-    `
+      .map(script =>
+        `
 printf "${YELLOW}add init script${NC}: ${script}\\n"
 
 sudo docker exec -it ${containerName} mkdir -p "${hostDir}"
@@ -77,8 +82,8 @@ sudo docker exec -it ${containerName} /usr/bin/env bash ${hostDir}/${path.basena
 
 printf "add init script: ${GREEN}done${NC}\\n\\n"
 `.trim(),
-  )
-  .join('\n\n')}
+      )
+      .join('\n\n')}
 
 
 

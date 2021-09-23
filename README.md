@@ -1,5 +1,3 @@
-### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
-
 ## Grundstein (plural Grundsteine) [german]
 
 * A ceremonial stone set at the corner of a building.
@@ -8,6 +6,8 @@
 via: [wiktionary](https://en.wiktionary.org/wiki/Grundstein)
 
 --------------------------------------------------
+
+### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET!
 
 ## grundstein
 

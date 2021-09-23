@@ -20,7 +20,10 @@ const opts = {
     },
     example: `
 # run development:
-grundstein --dev
+grundstein
+
+# connect to server and (re)install the services.
+grundstein --prod
 `,
   },
 }

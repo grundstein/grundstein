@@ -105,3 +105,16 @@ all of this without touching dns.
 * keep 3 versions alive at all times
 
 * add functionality to allow custom cloud apis
+
+### changelog
+
+#### v0.0.1-alpha.0
+first release
+
+#### v0.0.1-alpha.1
+* fix systemd docker container handling
+* update dependencies
+
+#### v0.0.1 - unreleased
+...
+

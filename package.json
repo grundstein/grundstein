@@ -2,7 +2,7 @@
   "name": "grundstein",
   "version": "0.0.1-alpha.1",
   "author": "Wizards & Witches",
-  "homepage": "https://docs.grundstein.it/grundsteinlegung",
+  "homepage": "https://grundstein.it/",
   "license": "AGPL-3.0",
   "description": "### WIP. NOT IN PRODUCTION, TESTED AND/OR BENCHMARKED YET! install this package to get started with grundstein. npm i -g grundstein",
   "main": "src/index.mjs",
@@ -27,10 +27,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grundstein/legung.git"
+    "url": "git+https://github.com/grundstein/grundstein.git"
   },
   "bugs": {
-    "url": "https://github.com/grundstein/legung/issues"
+    "url": "https://github.com/grundstein/grundstein/issues"
   },
   "dependencies": {
     "@grundstein/commons": "0.0.3"
@@ -42,7 +42,8 @@
   "keywords": [
     "grundstein",
     "legung",
-    "server"
+    "server",
+    "devops"
   ],
   "contributors": [
     {

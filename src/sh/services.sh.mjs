@@ -135,7 +135,7 @@ printf " - ${GREEN}done${NC}\\n\\n"
   if (services.includes('gps')) {
     let createLetsencryptCertificates = ''
 
-    if (is.defined(config.args.prod)) {
+    if (is.defined(config.prod)) {
       const secretFile = '/.secrets/digitalocean.ini'
 
       const apexNames = [...new Set(hostnames.map(h => h.split('.').slice(-2).join('.')))]

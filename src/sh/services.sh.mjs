@@ -26,7 +26,7 @@ export const createBash = async config => {
 
   const serviceRootDir = `${USERHOME}/services`
 
-  const install = Object.keys(services)
+  const install = services
     .map(
       service => `
 

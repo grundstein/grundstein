@@ -24,10 +24,10 @@ export const hosts = [
     // which services should be installed and started on this pod?
     services: [
       // this service should run on only one pod.
-      // last to be decentralized, it is the certificate root until grundstein/gca exists.
+      // last to be decentralized, it is the certificate root until @grundstein/gca exists.
       'gps',
 
-      // redirects http to https and www. to apex
+      // redirects http to https and www. to apex domain
       'grs',
 
       // serves static html, js and css
@@ -37,20 +37,21 @@ export const hosts = [
       'gas',
     ],
 
-    // which repositories should gbs use to build from.
-    // these repositories will be watched and rebuilt when pushed to.
+    // which repositories should we clone and update.
     repositories: {
       'grundstein.local': {
         host: 'github.com',
         org: 'magic-examples',
         repo: 'magic-examples.github.io',
         branch: 'dev',
+        dir: 'docs',
       },
       'magic.local': {
         host: 'github.com',
         org: 'magic-modules',
         repo: 'magic-modules.github.io',
         branch: 'dev',
+        dir: 'docs',
       },
     },
   },

@@ -5,7 +5,7 @@ import { cli, fs, is, log } from '@grundstein/commons'
 import { getAllHostnames } from './getAllHostnames.mjs'
 
 export const writeEtcHosts = async config => {
-  if (is.defined(config.args.prod)) {
+  if (is.defined(config.prod)) {
     return
   }
 

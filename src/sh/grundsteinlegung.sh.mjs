@@ -3,7 +3,7 @@ import { is } from '@grundstein/commons'
 import { colors, writeFile } from '../lib/index.mjs'
 
 export default async config => {
-  const { dir, env } = config
+  const { dir, env, force } = config
 
   const { GREEN, RED, YELLOW, NC } = colors
 
@@ -11,7 +11,7 @@ export default async config => {
 
   const redirectLog = `>> ${INSTALL_LOG} 2>&1`
 
-  const lockFileHandling = is.defined(config.args.force)
+  const lockFileHandling = is.defined(force)
     ? 'rm -f /grundstein.lock'
     : `
 if test -f "/grundstein.lock"; then

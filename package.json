@@ -33,11 +33,11 @@
     "url": "https://github.com/grundstein/grundstein/issues"
   },
   "dependencies": {
-    "@grundstein/commons": "0.0.3"
+    "@grundstein/commons": "0.0.9"
   },
   "devDependencies": {
-    "@magic/format": "0.0.30",
-    "@magic/test": "0.1.75"
+    "@magic/format": "0.0.40",
+    "@magic/test": "0.2.11"
   },
   "keywords": [
     "grundstein",

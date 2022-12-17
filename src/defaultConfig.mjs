@@ -17,6 +17,8 @@ export const hosts = [
     // this option will disappear once pods get provisioned through the api.
     ip: '172.17.0.2',
 
+    nodejsversion: '18',
+
     // the hostnames this pod will serve publicly,
     // this is in addition to the hosts in the repositories list below
     hostnames: [],
@@ -31,7 +33,7 @@ export const hosts = [
       'grs',
 
       // serves static html, js and css
-      'gms',
+      'gss',
 
       // serves the api lambdas
       'gas',

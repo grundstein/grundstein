@@ -15,18 +15,18 @@ runs a production ci/cd environment for us (and you?).
 
 it is built to serve [magic](https://github.com/magic) pages and apis.
 
-we also use it for the [Artificial Museum](https://artificialmuseum.com).
+we also use it to host the [Artificial Museum](https://artificialmuseum.com).
 
 ### requirements:
 
 #### server
 
-tested on ubuntu.
+tested on ubuntu 22.04.
 
-expected server packages: systemd, apt, ssh, and bash.
+expected preinstalled and setup server packages: systemd, apt, ssh, and bash.
 
 grundsteinlegung.sh is a bash script and gets sent to the server via ssh,
-all other dependencies get installed automagically.
+all other dependencies get installed by it and automagically.
 
 might work on other linuxes, if systemd and apt exist there.
 
@@ -76,8 +76,9 @@ cd cloud.domain.name
 npm install
 
 # add a digitalocean api token to .secrets/digitalocean.ini
-# to generate letsencrypt certificates.
-# at the moment, this also requires you to use the digitalocean nameservers for your domain!
+# or a hetzner api token to .secrets/hetzner.ini
+# to allow us to use the digitalocean or hetzner apis during the letsencrypt certificate generation step.
+# this also requires you to use the digitalocean / hetzner nameservers for your domain!
 
 # start dev server
 npm start

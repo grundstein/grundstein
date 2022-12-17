@@ -136,8 +136,6 @@ printf " - ${GREEN}done${NC}\\n\\n"
     let createLetsencryptCertificates = ''
 
     if (is.defined(config.prod)) {
-      const secretFile = '/.secrets/digitalocean.ini'
-
       const apexNames = [...new Set(hostnames.map(h => h.split('.').slice(-2).join('.')))]
 
       const certificateList = apexNames
@@ -145,16 +143,32 @@ printf " - ${GREEN}done${NC}\\n\\n"
           name => `
   printf "${YELLOW}certbot certonly${NC} - generate certificates for ${name}"
 
-  certbot certonly \\
-    -n \\
-    --dns-digitalocean \\
-    --dns-digitalocean-credentials ${secretFile} \\
-    --dns-digitalocean-propagation-seconds 10 \\
-    --agree-tos \\
-    --cert-name ${name} \\
-    --email grundstein@jaeh.at \\
-    -d *.${name} -d ${name} \\
-    ${redirectLog}
+  if test -f "/.secrets/digitalocean.ini"; then
+    certbot certonly \\
+      -n \\
+      --dns-digitalocean \\
+      --dns-digitalocean-credentials /.secrets/digitalocean.ini \\
+      --dns-digitalocean-propagation-seconds 10 \\
+      --agree-tos \\
+      --cert-name ${name} \\
+      --email grundstein@jaeh.at \\
+      -d "*.${name}" -d "${name}" \\
+      ${redirectLog}
+  fi
+
+  if test -f "/.secrets/hetzner.ini"; then
+    certbot certonly \\
+      -n \\
+      --dns-hetzner \\
+      --dns-hetzner-credentials /.secrets/hetzner.ini \\
+      --dns-hetzner-propagation-seconds 10 \\
+      --agree-tos \\
+      --cert-name ${name} \\
+      --email grundstein@jaeh.at \\
+      -d "*.${name}" -d "${name}" \\
+      ${redirectLog}
+  fi
+
 
   printf " - ${GREEN}done${NC}\\n\\n"
 
@@ -176,6 +190,7 @@ if test -f "${secretFile}"; then
   apt-get -y install \\
   python \\
   python3-certbot-dns-digitalocean \\
+  python3-certbot-dns-hetzner \\
   certbot \\
   ${redirectLog}
 

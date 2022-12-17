@@ -21,6 +21,11 @@ if test -f ".secrets/digitalocean.ini"; then
   scp .secrets/digitalocean.ini root@${host.ip}:/.secrets/digitalocean.ini
   ssh root@${host.ip} 'chmod 600 /.secrets/digitalocean.ini'
 fi
+if test -f ".secrets/hetzner.ini"; then
+  ssh root@${host.ip} 'mkdir -p /.secrets'
+  scp .secrets/hetzner.ini root@${host.ip}:/.secrets/hetzner.ini
+  ssh root@${host.ip} 'chmod 600 /.secrets/hetzner.ini'
+fi
 
 ssh root@${host.ip} bash -s < bootstrap/grundsteinlegung.sh
 ssh root@${host.ip} bash -s < bootstrap/hosts/${host.ip}.sh

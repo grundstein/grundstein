@@ -9,6 +9,7 @@ const opts = {
     ['--help', '-help', 'help', '--h', '-h'],
     ['--prod', '-p'],
     ['--force', '-f'],
+    ['--build', '-b'],
   ],
   single: ['--prod', '--force'],
   help: {
@@ -17,6 +18,7 @@ const opts = {
     options: {
       '--prod': 'connect to production server and start installation.',
       '--force': 'force reinstallation. use with caution. treat this like git push -f.',
+      '--build': 'only build sh files, do not (re)start any services',
     },
     example: `
 # run development:
@@ -33,6 +35,7 @@ const { args } = cli(opts)
 const doIt = async () => {
   const isProd = is.defined(args.prod)
   const isForced = is.defined(args.force)
+  const isBuild = is.defined(args.build)
 
   if (isForced && isProd) {
     log.warn('SERVER INSTALL', 'This will force (re?)installation on your production server!')
@@ -48,10 +51,12 @@ const doIt = async () => {
 
   await run(args)
 
-  if (!isProd) {
-    await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/dev.sh'])
-  } else {
-    await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/prod.sh'])
+  if (!isBuild) {
+    if (!isProd) {
+      await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/dev.sh'])
+    } else {
+      await cli.spawn('/usr/bin/env', ['bash', 'bootstrap/prod.sh'])
+    }
   }
 }
 

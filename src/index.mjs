@@ -22,7 +22,7 @@ export const run = async args => {
   // this file gets executed on every host and installs all dependencies.
   await sh.grundsteinlegung(config)
 
-  // this generates one file per host, including the services, this host should start.
+  // this generates one file per host, including the services that should start on these hosts.
   await sh.services(config)
 
   // generate the bootstrap/dev.sh file,

@@ -1,0 +1,5 @@
+GIT_HOST='github.com'
+GIT_ORG='grundstein'
+GIT_REPO='grundstein.it'
+GIT_BRANCH: 'master'
+PAGE_DIR: 'docs'

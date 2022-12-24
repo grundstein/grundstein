@@ -1,0 +1,21 @@
+## global definitions
+global:
+  debug: yes
+  verbose: no
+  debugging:
+    detailed: no
+    header: "debugging started"
+
+services:
+  - "gss"
+  - "gas"
+  - "gps"
+
+magic_local:
+  host: "magic.local"
+  git:
+    host: "github.com"
+
+## output
+output:
+  file: "yes"

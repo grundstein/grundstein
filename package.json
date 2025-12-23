@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@magic/format": "0.0.40",
-    "@magic/test": "0.2.11"
+    "@magic/test": "0.2.20"
   },
   "keywords": [
     "grundstein",
